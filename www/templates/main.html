@@ -1,1 +1,80 @@
-main
+<div class="dt-container">
+    <div class="dt-header" id="dt-header" style="position: relative;-webkit-app-region: drag;">
+        <div class="windows-close" onclick="close_window()" style="-webkit-app-region: no-drag;">
+            <img src="desktop/images/home/guanbi.png">
+        </div>
+        <div id="div_normal" style="display:none;-webkit-app-region: no-drag;" class="normal"
+             onclick="maxed_normed_window()">
+            <img src="desktop/images/home/shizhong.png">
+        </div>
+        <div id="div_max" class="maximize" onclick="maxed_normed_window()" style="-webkit-app-region: no-drag;">
+            <img src="desktop/images/home/suoxiao.png">
+        </div>
+        <div class="minimize" onclick="mined_window()" style="-webkit-app-region: no-drag;">
+            <img src="desktop/images/home/zuixiao.png">
+        </div>
+        <input type="search" class="top_search" style="-webkit-app-region: no-drag;" id="top_search"
+               placeholder="搜索联系人">
+    </div>
+    <div class="dt-body"><!--内容部分-->
+        <div class="dt-sidebar"><!--侧边栏-->
+            <div class="dt-profile">
+                <div class="inline-block" style="margin-top: 18px">
+                    <div class="dt-img"><img src="desktop/images/img-header.png" id="current_img">
+                    </div>
+                    <!--头像-->
+                    <div class="dt-name" id="current_realname"></div>
+                    <!--姓名4个字以上转成省略号-->
+                </div>
+            </div>
+
+            <div class="dt-menu" id="push" select_button onclick="openView('push');">
+                <span class="icon_container"><img src="desktop/images/home/push.png"></span>&nbsp;&nbsp;PUSH
+                <span class="badge badge-warning" style="display: none">...</span>
+            </div>
+            <div class="dt-menu " select_button id="message" onclick="openView('message');">
+                <!--消息菜单-->
+                <span class="icon_container"><img src="desktop/images/home/xiaoxi.png"></span>&nbsp;&nbsp;消息
+                <span class="badge badge-danger pull-right" style="background: red;color: #fff;"
+                      id="message_red_dot"></span>
+            </div>
+            <div class="dt-menu " select_button id="goujia" onclick="openView('goujia');">
+                <span class="icon_container"><img src="desktop/images/home/lianxiren.png"></span>&nbsp;&nbsp;联系人
+            </div>
+            <div class="dt-menu" select_button id="application" onclick="openView('application');">
+                <span class="icon_container"><img src="desktop/images/home/yingyong.png"></span>&nbsp;&nbsp;应用
+            </div>
+
+            <div class="dt-sidebar-bottom dropup">
+                <button class="dt-sidebar-file" onclick="openView('cloud');">云盘</button>
+                <div>
+                    <button class="dt-sidebar-create dropdown-toggle" data-toggle="dropdown">创建</button>
+                    <ul class="dropdown-menu" style="margin-bottom: .5em;border-radius: 6px !important;">
+                        <li onclick="request_friend();"><a>邀请好友</a></li>
+                        <li onclick="show_select_user_dial();"><a>发起聊天</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <button class="dt-sidebar-cog dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">设置
+                    </button>
+                    <ul class="dropdown-menu" style="margin-bottom: .5em;border-radius: 6px !important;">
+                        <% if(ttjd_config.is_emp && is_ns_manage_admin){ %>
+                        <!--<li onclick="openView('zhgl_manage');"><a>综合管理</a></li>-->
+                        <li onclick="openView('sys_message');"><a>系统消息</a></li>
+                        <li onclick="openView('project_manage');"><a>项目管理</a></li>
+                        <li onclick="openView('user_manage');"><a>用户管理</a></li>
+                        <li onclick="openView('addedservice');"><a>增值服务</a></li>
+                        <% } %>
+                        <li onclick="set_password();"><a>重置密码</a></li>
+                        <li onclick="logout_desktop();"><a>退出</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--侧边栏结束-->
+        <div ui-view>
+            <!--内容框结束-->
+        </div>
+    </div>
+</div>

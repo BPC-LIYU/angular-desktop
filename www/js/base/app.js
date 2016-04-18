@@ -9,7 +9,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             templateUrl: "templates/main.html",
             controller: "mainCtrl"
         })
-       
+        .state('main.message', {
+            url: '/message',
+            templateUrl: "templates/message.html",
+            controller: "messageCtrl"
+        })
 
     $urlRouterProvider.otherwise('/main');
 }]);

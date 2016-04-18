@@ -6,12 +6,23 @@ var iconfont = require('gulp-iconfont');
 var sourcemaps = require('gulp-sourcemaps');
 var iconfontCss = require('gulp-iconfont-css');
 var concat = require('gulp-concat');
+var autoprefixer = require('gulp-autoprefixer')
 
-
+var autoprefixerOptions = {
+    browsers: [
+        'last 2 versions',
+        'iOS >= 7',
+        'Android >= 4',
+        'Explorer >= 10',
+        'ExplorerMobile >= 11'
+    ],
+    cascade: false
+};
 gulp.task('less', function () {
     gulp.src('less/**/*.less')
         .pipe(sourcemaps.init())
         .pipe(less())
+        .pipe(autoprefixer(autoprefixerOptions))
         .pipe(concat('less_all.css'))
         .pipe(minifyCss())
         .pipe(rename({suffix: '.min'}))

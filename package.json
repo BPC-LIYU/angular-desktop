@@ -4,6 +4,7 @@
   "description": "",
   "dependencies": {
     "gulp": "^3.5.6",
+    "gulp-autoprefixer": "^3.1.0",
     "gulp-clean-css": "^2.0.4",
     "gulp-concat": "^2.6.0",
     "gulp-consolidate": "^0.2.0",

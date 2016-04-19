@@ -62,69 +62,6 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
         }
     })
     /**
-     * kv存储
-     by: 范俊伟 at:2016-02-18
-     */
-    .factory('Store', function ($q, $cookieStore, $timeout) {
-        return {
-            set: function (key, value) {
-                var deferred = $q.defer();
-                $timeout(function () {
-                    try {
-                        window.localStorage.setItem(key, value);
-                    }
-                    catch (e) {
-                    }
-                    try {
-                        $cookieStore.put(key, value);
-                    }
-                    catch (e) {
-                    }
-                    deferred.resolve();
-                }, 0);
-                return deferred.promise;
-            },
-            get: function (key) {
-                var deferred = $q.defer();
-                $timeout(function () {
-                    var value = null;
-                    try {
-                        if (value == null) {
-                            value = window.localStorage.getItem(key);
-                        }
-                    } catch (e) {
-                    }
-                    try {
-                        if (value == null) {
-                            value = $cookieStore.get(key);
-                        }
-                    } catch (e) {
-                    }
-
-                    deferred.resolve(value);
-                }, 0);
-                return deferred.promise;
-            },
-            remove: function (key) {
-                var deferred = $q.defer();
-                $timeout(function () {
-                    try {
-                        window.localStorage.removeItem(key);
-                    }
-                    catch (e) {
-                    }
-                    try {
-                        $cookieStore.remove(key);
-                    }
-                    catch (e) {
-                    }
-                    deferred.resolve();
-                }, 0);
-                return deferred.promise;
-            }
-        };
-    })
-    /**
      * 处理接口状态码
      by: 范俊伟 at:2016-02-18
      */
@@ -138,9 +75,9 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
              不显示成功信息
              by: 范俊伟 at:2015-06-12
              */
-            var Auth = $injector.get('Auth');
+            var auth = $injector.get('auth');
             if (data.status_code == 1) {
-                Auth.logout();
+                auth.logout();
                 return false;
             }
             return true;
@@ -152,11 +89,14 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      by: 范俊伟 at:2016-02-18
      */
     .service("showToast", function () {
-        return function (message) {
+        return function (message, type, options) {
             /**
              * toast
              * by:范俊伟 at:2015-01-22
              */
+            if (!type)
+                type = 'danger';
+            $.simplyToast(message, type, options);
 
         }
     })
@@ -223,8 +163,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      by: 范俊伟 at:2016-02-18
      */
     .service("httpReq", function ($http, $q, globalStateCheck, showErrorMessage, $injector, showToast, $timeout) {
-        var self = this;
-        var Store = $injector.get('Store');
+        var localStorage = $injector.get('localStorage');
         var parseURL = $injector.get('parseURL');
         var result_map = {};
         var last_cache_key;
@@ -254,69 +193,68 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             if (!data) {
                 data = {};
             }
-            Store.get("ttjd_sessionid").then(function (sessionid) {
-                var urlp = parseURL(window.location.href);
-                var local_host = urlp.host + ":" + urlp.port;
-                var urlp = parseURL(url);
-                var req_host = urlp.host + ":" + urlp.port;
-                if (sessionid && local_host != req_host) {
-                    parmss.headers['sessionid'] = sessionid;
+            var sessionid = localStorage.get("ttjd_sessionid");
+            var urlp = parseURL(window.location.href);
+            var local_host = urlp.host + ":" + urlp.port;
+            urlp = parseURL(url);
+            var req_host = urlp.host + ":" + urlp.port;
+            if (sessionid && local_host != req_host) {
+                parmss.headers['sessionid'] = sessionid;
+            }
+            if (data) {
+                parmss['data'] = $.param(data);
+            }
+            if (cache || wait) {
+                cache_key = md5(url + JSON.stringify(data));
+            }
+            if (cache) {
+                if (result_map[cache_key]) {
+                    deferred.resolve(result_map[cache_key]);
                 }
-                if (data) {
-                    parmss['data'] = $.param(data);
+            }
+            if (wait) {
+                if (last_cache_key == cache_key) {
+                    deferred.reject();
+                    return;
                 }
-                if (cache || wait) {
-                    cache_key = md5(url + JSON.stringify(data));
-                }
-                if (cache) {
-                    if (result_map[cache_key]) {
-                        deferred.resolve(result_map[cache_key]);
-                    }
-                }
-                if (wait) {
-                    if (last_cache_key == cache_key) {
-                        deferred.reject();
-                        return;
-                    }
-                    last_cache_key = cache_key;
-                    // $ionicLoading.show({
-                    //   template: '<ion-spinner icon="ios"></ion-spinner>',
-                    //   noBackdrop: true
-                    // });
-                }
-                $http(parmss).success(
-                    function (data, status, headers, config) {
+                last_cache_key = cache_key;
+                // $ionicLoading.show({
+                //   template: '<ion-spinner icon="ios"></ion-spinner>',
+                //   noBackdrop: true
+                // });
+            }
+            $http(parmss).success(
+                function (data, status, headers, config) {
 
-                        if (globalStateCheck(data)) {
-                            if (notShowErrorMessage) {
+                    if (globalStateCheck(data)) {
+                        if (notShowErrorMessage) {
+                            if (cache) {
+                                result_map[cache_key] = data;
+                            }
+                            deferred.resolve(data);
+                        }
+                        else {
+                            if (data.success) {
                                 if (cache) {
                                     result_map[cache_key] = data;
                                 }
                                 deferred.resolve(data);
                             }
                             else {
-                                if (data.success) {
-                                    if (cache) {
-                                        result_map[cache_key] = data;
-                                    }
-                                    deferred.resolve(data);
-                                }
-                                else {
-                                    $timeout(function () {
-                                        showErrorMessage(data);
-                                    });
-                                    deferred.reject(null, data);
-                                }
+                                $timeout(function () {
+                                    showErrorMessage(data);
+                                });
+                                deferred.reject(null, data);
                             }
                         }
-                        else {
-                            deferred.reject(null, data);
-                        }
                     }
-                ).error(function (data, status, headers, config) {
-                    showToast('网络异常');
-                    deferred.reject(null, data);
-                });
+                    else {
+                        deferred.reject(null, data);
+                    }
+                }
+            ).error(function (data, status, headers, config) {
+                showToast('网络异常');
+                deferred.reject(null, data);
             });
             var promise = deferred.promise;
             if (wait) {
@@ -665,6 +603,19 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 localStorage.removeItem(key);
             }
         }
-    });
+    })
+    .factory('auth', function () {
+
+        return {
+            login: function (username, password) {
+
+            },
+            logout: function () {
+
+            }
+
+        }
+    })
+
 
 

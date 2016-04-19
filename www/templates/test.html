@@ -1,6 +1,5 @@
-<div>
-    <button class="btn btn-default" ng-click="showModal()">模态框</button>
-</div>
-<div>
-    <button class="btn btn-default" ng-click="showConfirm()">Confirm</button>
+<div class="container-fluid">
+    <div ng-repeat="item in tests">
+        <button class="btn btn-default" ng-click="item.callback()">{{item.name}}</button>
+    </div>
 </div>

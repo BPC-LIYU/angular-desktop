@@ -1,0 +1,58 @@
+<div class="lg-body">
+    <img src="static/desktop/images/home/close.png" class="login-windows-close" onclick="close_window()">
+    <div class="lg-body">
+        <img src="static/desktop/images/home/home-close.png" class="login-windows-close" onclick="close_window()">
+        <div class="lg-logo">
+            <a href="#"><img src="static/desktop/images/logo.png"></a>
+            <div>一个新的建筑方式</div>
+        </div>
+        <div class="lg-container">
+            <div class="lg-top">
+                <div class="lg-top-btn lg-top-btn-active" id="div_first_head" onclick="$v.lfirst()">扫码登录</div>
+                <div class="lg-top-btn" id="div_second_head" onclick="$v.lsecond()">密码登录</div>
+                <% if(!ttjd_config.is_emp){ %>
+                <div class="lg-top-btn" id="div_three_head" onclick="$v.lthree()">用户注册</div>
+                <% } %>
+            </div>
+            <!--{#    二维码登录#}-->
+            <div id="div_first">
+                <div class="lg-erweima-container">
+                    <img style="display: none" class="lg-erweima" onload="$v.qrcode_loaded()" id="qrcode_image" src="">
+                </div>
+                <div id="scan_div" style="text-align: center;color: red;display: none">扫码成功,在手机点击确认</div>
+            </div>
+
+            <!--{#    密码登录#}-->
+            <div class="lg-login-container" style="display: none" id="div_second">
+                <div>
+                    <input class="form-control" placeholder="账号" id="username" name="username">
+                    <input type="password" class="form-control" placeholder="密码" id="password" name="password" onkeydown="$v.keyLogin()">
+                    <button class="lg-login-btn" onclick="$v.login()">登录</button>
+                    <!--{#                    <a href="/forget_password" class="pull-right">忘记密码</a>#}-->
+                </div>
+            </div>
+            <!--{#    用户注册#}-->
+            <% if(!ttjd_config.is_emp){ %>
+            <div class="lg-sign" style="display: none" id="div_three">
+                <input id="tel" class="form-control user-num" placeholder="请输入手机号码">
+
+                <div class="lg-sign-content">
+
+                    <input id="password" class="form-control pull-left" placeholder="请输入密码">
+                    <input id="re_password" class="form-control pull-right" placeholder="请确认密码">
+                    <input id="realname" class="form-control pull-left" placeholder="请输入真实姓名">
+                    <input class="form-control pull-right" placeholder="请确认昵称">
+                    <input id="sms_code" class="form-control pull-left" placeholder="请输入验证码">
+                    <button class="btn btn-info yanzhenma" onclick="$v.sendsms()">发送验证码</button>
+
+                </div>
+                <input type="checkbox" id="ck_reg" class="pull-left">
+
+                <div class="pull-left sign-text">阅读并同意《“天天建道”APP平台服务协议》<a
+                        href="http://www.ddbuild.cnstatic/govsite/vone/xieyi.html">点击阅读</a></div>
+
+                <div class="lg-login-btn" onclick="$v.register_user()">注&nbsp;&nbsp;&nbsp;&nbsp;册</div>
+            </div>
+            <% } %>
+        </div>
+    </div>

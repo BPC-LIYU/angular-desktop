@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast) {
+app.controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast,Upload) {
     $scope.data2 = {
         open: false
     };
@@ -31,4 +31,22 @@ app.controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, 
     $scope.open2 = function () {
         $scope.data2.open = true;
     }
+    $scope.files = [];
+    $scope.file = null;
+    $scope.submit_file = function () {
+        alert($scope.files.length)
+    }
+    $scope.upload = function (file) {
+        Upload.upload({
+            url: 'upload/url',
+            data: {file: file, 'username': $scope.username}
+        }).then(function (resp) {
+            console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+        }, function (resp) {
+            console.log('Error status: ' + resp.status);
+        }, function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        });
+    };
 });

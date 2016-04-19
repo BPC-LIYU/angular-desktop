@@ -6,17 +6,17 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
     $stateProvider
         .state('main', {
             url: '/main',
-            templateUrl: "templates/main.html",
+            templateUrl: "templates/app/main.html",
             controller: "mainCtrl"
         })
         .state('main.message', {
             url: '/message',
-            templateUrl: "templates/message.html",
+            templateUrl: "templates/app/message.html",
             controller: "messageCtrl"
         })
         .state('main.test', {
             url: '/test',
-            templateUrl: "templates/test.html",
+            templateUrl: "templates/app/test.html",
             controller: "testCtrl"
         })
 

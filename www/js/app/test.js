@@ -2,7 +2,9 @@
  * Created by fanjunwei on 16/4/18.
  */
 app.controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast) {
-
+    $scope.data2 = {
+        open: false
+    };
     var tests = $scope.tests = [];
     tests.push({
         name: "showMessage",
@@ -23,7 +25,10 @@ app.controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, 
     tests.push({
         name: "showToast",
         callback: function () {
-            showToast("toast提示","success");
+            showToast("toast提示", "success");
         }
     });
+    $scope.open2 = function () {
+        $scope.data2.open = true;
+    }
 });

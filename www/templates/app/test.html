@@ -3,7 +3,6 @@
         <button class="btn btn-default" ng-click="item.callback()">{{item.name}}</button>
     </div>
 
-
     <uib-accordion close-others="true">
         <uib-accordion-group heading="Static Header, initially expanded" is-open="status.isFirstOpen"
                              is-disabled="status.isFirstDisabled">
@@ -32,7 +31,16 @@
             This is just some content to illustrate fancy headings.
         </uib-accordion-group>
     </uib-accordion>
-
-        <uib-datepicker ng-model="dt" ></uib-datepicker>
-
+    日历1
+    <uib-datepicker ng-model="dt"></uib-datepicker>
+    日历2
+    <p class="input-group">
+        <input type="text" class="form-control" uib-datepicker-popup ng-model="dt" is-open="data2.open"
+               datepicker-options="dateOptions" ng-required="true" close-text="Close" ng-click="open2()"/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="open2()"><i
+                    class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+    </p>
+    <uib-timepicker ng-model="mytime"></uib-timepicker>
 </div>

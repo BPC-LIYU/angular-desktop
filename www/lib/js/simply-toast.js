@@ -97,7 +97,7 @@
 		offset:
 		{
 			from: "top",
-			amount: 20
+			amount: 80
 		},
 		align: "right",
 		minWidth: 250,

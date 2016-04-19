@@ -1,0 +1,85 @@
+@import "../mixins";
+.right-top-searchbtn {
+  margin-left: 8px;
+  padding: 6px 12px;
+  border: none;
+  .border(4px);
+  background: #00AFF0;
+  color: #fff;
+}
+
+.right-top-searchbtn:hover {
+  background: #29abdc;
+  color: #fff;
+}
+
+.top_search {
+  position: absolute;
+  top: 25px;
+  right: 15px;
+  z-index: 10;
+  width: 240px;
+  height: 30px;
+  padding-left: 34px;
+  padding-right: 10px;
+  overflow: hidden;
+  color: #b5ccdd;
+  background: #009fd9 url("../images/home/img-search.png") no-repeat 10px 8px;
+  -moz-box-shadow: inset 1px 1px 10px rgba(0, 159, 217, 0.1) !important;
+  -webkit-box-shadow: inset 1px 1px 10px rgba(0, 159, 217, 0.1) !important;
+  box-shadow: inset 1px 1px 10px rgba(0, 159, 217, 0.1) !important;
+  border: 1px solid #009fd9 !important;
+  .border(6px) !important;
+  -webkit-transition-duration: 400ms;
+  -webkit-transition-property: width, background;
+  -webkit-transition-timing-function: ease;
+  -moz-transition-duration: 400ms;
+  -moz-transition-property: width, background;
+  -moz-transition-timing-function: ease;
+  -o-transition-duration: 400ms;
+  -o-transition-property: width, background;
+  -o-transition-timing-function: ease;
+
+  &::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #b5ccdd;
+  }
+
+  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #b5ccdd;
+    opacity: 1;
+  }
+
+  &::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #b5ccdd;
+    opacity: 1;
+  }
+
+  &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #b5ccdd;
+  }
+
+  &:focus {
+    width: 380px;
+    border-color: rgba(0, 0, 0, 0);
+    background: #fff url("../images/home/img-search.png") no-repeat 10px 8px;
+    color: #333;
+  }
+
+  &:focus::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color: #d9d9d9;
+  }
+
+  &:focus:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #d9d9d9;
+    opacity: 1;
+  }
+
+  &:focus::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #d9d9d9;
+    opacity: 1;
+  }
+
+  &:focus:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #d9d9d9;
+  }
+}

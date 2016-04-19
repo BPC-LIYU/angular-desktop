@@ -1,0 +1,40 @@
+//滚动条整体部分，可以设置宽度啥的
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+//滚动条两端的按钮
+::-webkit-scrollbar-button {
+  height: 0;
+}
+
+//外层轨道
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+//内层轨道，滚动条中间部分（除去）
+::-webkit-scrollbar-track-piece {
+  background: none;
+}
+
+//拖动条，滑块
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background: #ededed;
+  &:hover {
+    background: #b2b2b2;
+  }
+}
+
+//边角
+::-webkit-scrollbar-corner {
+  height: 0;
+}
+
+//定义右下角拖动块的样式
+::-webkit-resizer {
+  height: 0;
+}

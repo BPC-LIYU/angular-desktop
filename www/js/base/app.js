@@ -6,22 +6,37 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
     $stateProvider
         .state('login', {
             url: '/login',
-            templateUrl: "templates/app/login.html",
+            templateUrl: "templates/login/login.html",
             controller: "loginCtrl"
         })
         .state('main', {
             url: '/main',
-            templateUrl: "templates/app/main/main.html",
+            templateUrl: "templates/main/main.html",
             controller: "mainCtrl"
         })
         .state('main.message', {
             url: '/message',
-            templateUrl: "templates/app/message.html",
+            templateUrl: "templates/message/message.html",
             controller: "messageCtrl"
+        })
+        .state('main.contacts', {
+            url: '/contacts',
+            templateUrl: "templates/contacts/contacts.html",
+            controller: "contactsCtrl"
+        })
+        .state('main.application', {
+            url: '/application',
+            templateUrl: "templates/application/application.html",
+            controller: "applicationCtrl"
+        })
+        .state('main.push', {
+            url: '/push',
+            templateUrl: "templates/push/push.html",
+            controller: "pushCtrl"
         })
         .state('main.test', {
             url: '/test',
-            templateUrl: "templates/app/test.html",
+            templateUrl: "templates/test.html",
             controller: "testCtrl"
         })
 
@@ -29,7 +44,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         var auth = $injector.get("auth");
         auth.hasLogin().then(function (has_login) {
             if (has_login) {
-                $location.replace().path("/main");
+                $location.replace().path("/main/message");
             }
             else {
                 $location.replace().path("/login");

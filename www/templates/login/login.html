@@ -10,15 +10,14 @@
             <div class="lg-top">
                 <div class="lg-top-btn active" ng-class="{'active':tab_index==0}" ng-click="change_tab(0)">扫码登录</div>
                 <div class="lg-top-btn" ng-class="{'active':tab_index==1}" ng-click="change_tab(1)">密码登录</div>
-
                 <div class="lg-top-btn" ng-class="{'active':tab_index==2}" ng-click="change_tab(2)">用户注册</div>
             </div>
             <!--    二维码登录-->
             <div ng-if="tab_index==0">
                 <div class="lg-erweima-container">
-                    <img style="display: none" class="lg-erweima" onload="$v.qrcode_loaded()" id="qrcode_image" src="">
+                    <qrcode qrcode-style="width: 100%;height: 100%" style="width: 100%;height: 100%" data="{{qr_info.qrcode_string}}"></qrcode>
                 </div>
-                <div id="scan_div" style="text-align: center;color: red;display: none">扫码成功,在手机点击确认</div>
+                <div ng-if="scaned" style="text-align: center;color: red;">扫码成功,在手机点击确认</div>
             </div>
 
             <!--    密码登录-->

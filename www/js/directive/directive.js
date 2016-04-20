@@ -122,16 +122,16 @@ var directive_app = angular.module('directive', [])
       }
     };
   })
-  .directive('ttjdQrcode', function () {
+  .directive('qrcode', function () {
     return {
       restrict: 'E', // only activate on element attribute
       template: '<div></div>',
       replace: true,
       link: function (scope, element, attrs, ngModel) {
         function show() {
-          if (attrs.text) {
+          if (attrs.data) {
             var canvas = $(qrgen.canvas({
-              data: attrs.text
+              data: attrs.data
             }));
             canvas.attr("style", attrs.qrcodeStyle);
             canvas.attr("class", attrs.qrcodeClass);
@@ -142,7 +142,7 @@ var directive_app = angular.module('directive', [])
           }
         }
 
-        attrs.$observe("text", function () {
+        attrs.$observe("data", function () {
           show();
         });
         show();

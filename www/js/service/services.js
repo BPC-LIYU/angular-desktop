@@ -65,7 +65,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      * 处理接口状态码
      by: 范俊伟 at:2016-02-18
      */
-    .service("globalStateCheck", function ($state, $injector) {
+    .service("globalStateCheck", function ($state, $injector, $location) {
         return function globalStateCheck(data) {
             /**
              * 全局错误状态码检测,返回true则继续进行其他处理
@@ -75,9 +75,8 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
              不显示成功信息
              by: 范俊伟 at:2015-06-12
              */
-            var auth = $injector.get('auth');
             if (data.status_code == 1) {
-                auth.logout();
+                $location.replace().path("/");
                 return false;
             }
             return true;
@@ -130,8 +129,9 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      * 通用网路请求
      by: 范俊伟 at:2016-02-18
      */
-    .service("httpReq", function ($http, $q, globalStateCheck, showErrorMessage, $injector, showToast, $timeout, loading) {
+    .service("httpReq", function ($http, $q, globalStateCheck, showErrorMessage, $injector, showToast, $timeout) {
         var localStorage = $injector.get('localStorage');
+        var loading = $injector.get('loading');
         var parseURL = $injector.get('parseURL');
         var result_map = {};
         var last_cache_key;
@@ -161,7 +161,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             if (!data) {
                 data = {};
             }
-            var sessionid = localStorage.get("ttjd_sessionid");
+            var sessionid = localStorage.get("sessionid");
             var urlp = parseURL(window.location.href);
             var local_host = urlp.host + ":" + urlp.port;
             urlp = parseURL(url);
@@ -559,16 +559,39 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .factory('auth', function () {
+    .factory('auth', function (httpReq, localStorage, $q) {
         return {
             login: function (username, password) {
-
+                var deferred = $q.defer();
+                console.log("auth login");
+                httpReq("/ns/user/simple_login", {
+                    "tel": username,
+                    "password": password
+                }).then(function (data) {
+                    console.log("auth login end");
+                    localStorage.set("sessionid", data.result.sessionid);
+                    deferred.resolve();
+                }, function () {
+                    deferred.reject();
+                });
+                return deferred.promise;
             },
             logout: function () {
-
+                var deferred = $q.defer();
+                httpReq("/ns/user/logout").then(function (data) {
+                    deferred.resolve();
+                }, function () {
+                    deferred.reject();
+                });
+                return deferred.promise;
             },
             hasLogin: function () {
-
+                var deferred = $q.defer();
+                httpReq("/ns/user/check_login").then(function (data) {
+                    localStorage.set("sessionid", data.result.sessionid);
+                    deferred.resolve(data.result.has_login);
+                });
+                return deferred.promise;
             }
 
         }

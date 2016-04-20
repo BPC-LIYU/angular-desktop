@@ -47,29 +47,16 @@
 
             <div class="dt-sidebar-bottom dropup">
                 <button class="dt-sidebar-file" onclick="openView('cloud');">云盘</button>
-                <div>
-                    <button class="dt-sidebar-create dropdown-toggle" data-toggle="dropdown">创建</button>
-                    <ul class="dropdown-menu" style="margin-bottom: .5em;border-radius: 6px !important;">
-                        <li onclick="request_friend();"><a>邀请好友</a></li>
-                        <li onclick="show_select_user_dial();"><a>发起聊天</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <button class="dt-sidebar-cog dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false">设置
-                    </button>
-                    <ul class="dropdown-menu" style="margin-bottom: .5em;border-radius: 6px !important;">
-                        <% if(base_config.is_emp && is_ns_manage_admin){ %>
-                        <!--<li onclick="openView('zhgl_manage');"><a>综合管理</a></li>-->
-                        <li onclick="openView('sys_message');"><a>系统消息</a></li>
-                        <li onclick="openView('project_manage');"><a>项目管理</a></li>
-                        <li onclick="openView('user_manage');"><a>用户管理</a></li>
-                        <li onclick="openView('addedservice');"><a>增值服务</a></li>
-                        <% } %>
-                        <li onclick="set_password();"><a>重置密码</a></li>
-                        <li onclick="logout_desktop();"><a>退出</a></li>
-                    </ul>
-                </div>
+
+                <button class="dt-sidebar-create dropdown-toggle" data-toggle="dropdown">创建</button>
+
+                <button popover-placement="top" popover-append-to-body="true"
+                        uib-popover-template="'templates/app/main/setting_popover.html'"
+                        class="dt-sidebar-cog"
+                        aria-haspopup="true"
+                        aria-expanded="false">设置
+                </button>
+
             </div>
         </div>
         <!--侧边栏结束-->

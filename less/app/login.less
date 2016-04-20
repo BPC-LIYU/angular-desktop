@@ -33,7 +33,7 @@
 }
 
 .lg-logo img {
-  width: 68px;
+  width: 298px;
   margin-bottom: 24px;
 }
 
@@ -68,11 +68,10 @@
   font-size: 12px;
   letter-spacing: 1px;
   cursor: pointer;
-}
-
-.lg-top-btn-active {
-  color: #4eaef6;
-  border-bottom: 2px solid #66b9f7;
+  &.active {
+    color: #4eaef6;
+    border-bottom: 2px solid #66b9f7;
+  }
 }
 
 .lg-erweima-container {
@@ -115,6 +114,9 @@
   line-height: 32px;
   margin-bottom: 8px;
   border: none;
+  &:disabled {
+    background: #e3e3e3;
+  }
 }
 
 .lg-login-container a {
@@ -148,13 +150,13 @@
   float: right;
   padding: 2px 20px;
   width: 130px;
+  line-height: 28px;
 }
 
 .sign-text {
   width: 257px;
   margin-left: 10px;
 }
-
 
 .sign-text a {
   color: #4eaef6;

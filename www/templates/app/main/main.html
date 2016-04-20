@@ -1,17 +1,17 @@
 <div class="dt-container">
     <div class="dt-header" id="dt-header" style="position: relative;-webkit-app-region: drag;">
         <div class="windows-close" onclick="close_window()" style="-webkit-app-region: no-drag;">
-            <img src="desktop/images/home/guanbi.png">
+            <img src="images/main/guanbi.png">
         </div>
         <div id="div_normal" style="display:none;-webkit-app-region: no-drag;" class="normal"
              onclick="maxed_normed_window()">
-            <img src="desktop/images/home/shizhong.png">
+            <img src="images/main/shizhong.png">
         </div>
         <div id="div_max" class="maximize" onclick="maxed_normed_window()" style="-webkit-app-region: no-drag;">
-            <img src="desktop/images/home/suoxiao.png">
+            <img src="images/main/suoxiao.png">
         </div>
         <div class="minimize" onclick="mined_window()" style="-webkit-app-region: no-drag;">
-            <img src="desktop/images/home/zuixiao.png">
+            <img src="images/main/zuixiao.png">
         </div>
         <input type="search" class="top_search" style="-webkit-app-region: no-drag;" id="top_search"
                placeholder="搜索联系人">
@@ -20,7 +20,7 @@
         <div class="dt-sidebar"><!--侧边栏-->
             <div class="dt-profile">
                 <div class="inline-block" style="margin-top: 18px">
-                    <div class="dt-img"><img src="desktop/images/img-header.png" id="current_img">
+                    <div class="dt-img"><img src="images/main/header.png" id="current_img">
                     </div>
                     <!--头像-->
                     <div class="dt-name" id="current_realname"></div>
@@ -28,30 +28,30 @@
                 </div>
             </div>
 
-            <div class="dt-menu" id="push" select_button onclick="openView('push');">
-                <span class="icon_container"><img src="desktop/images/home/push.png"></span>&nbsp;&nbsp;PUSH
-                <span class="badge badge-warning" style="display: none">...</span>
+            <div class="dt-menu" ng-class="{'active':current_view=='push'}">
+                <span class="icon_container"><img src="images/main/push.png"></span>&nbsp;&nbsp;PUSH
+                <span class="badge badge-danger pull-right" style="background: red;color: #fff;"></span>
             </div>
-            <div class="dt-menu " select_button id="message" onclick="openView('message');">
+            <div class="dt-menu" ng-class="{'active':current_view=='message'}">
                 <!--消息菜单-->
-                <span class="icon_container"><img src="desktop/images/home/xiaoxi.png"></span>&nbsp;&nbsp;消息
-                <span class="badge badge-danger pull-right" style="background: red;color: #fff;"
-                      id="message_red_dot"></span>
+                <span class="icon_container"><img src="images/main/xiaoxi.png"></span>&nbsp;&nbsp;消息
+                <span class="badge badge-danger pull-right" style="background: red;color: #fff;"></span>
             </div>
-            <div class="dt-menu " select_button id="goujia" onclick="openView('goujia');">
-                <span class="icon_container"><img src="desktop/images/home/lianxiren.png"></span>&nbsp;&nbsp;联系人
+            <div class="dt-menu" ng-class="{'active':current_view=='contrace'}">
+                <span class="icon_container"><img src="images/main/lianxiren.png"></span>&nbsp;&nbsp;联系人
+                <span class="badge badge-danger pull-right" style="background: red;color: #fff;"></span>
             </div>
-            <div class="dt-menu" select_button id="application" onclick="openView('application');">
-                <span class="icon_container"><img src="desktop/images/home/yingyong.png"></span>&nbsp;&nbsp;应用
+            <div class="dt-menu" id="application" onclick="openView('application');">
+                <span class="icon_container"><img src="images/main/yingyong.png"></span>&nbsp;&nbsp;应用
+                <span class="badge badge-danger pull-right" style="background: red;color: #fff;"></span>
             </div>
 
             <div class="dt-sidebar-bottom dropup">
-                <button class="dt-sidebar-file" onclick="openView('cloud');">云盘</button>
-
-                <button class="dt-sidebar-create dropdown-toggle" data-toggle="dropdown">创建</button>
-
-                <button popover-placement="top" popover-append-to-body="true"
+                <button class="dt-sidebar-file">云盘</button>
+                <button class="dt-sidebar-create" >创建</button>
+                <button popover-placement="auto" popover-append-to-body="true"
                         uib-popover-template="'templates/app/main/setting_popover.html'"
+                        popover-trigger="focus"
                         class="dt-sidebar-cog"
                         aria-haspopup="true"
                         aria-expanded="false">设置

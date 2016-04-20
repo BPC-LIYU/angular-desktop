@@ -130,7 +130,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      * 通用网路请求
      by: 范俊伟 at:2016-02-18
      */
-    .service("httpReq", function ($http, $q, globalStateCheck, showErrorMessage, $injector, showToast, $timeout) {
+    .service("httpReq", function ($http, $q, globalStateCheck, showErrorMessage, $injector, showToast, $timeout, loading) {
         var localStorage = $injector.get('localStorage');
         var parseURL = $injector.get('parseURL');
         var result_map = {};
@@ -145,7 +145,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 option = {};
             }
             var method = option.method;
-            var notShowErrorMessage = option.no_error;
+            var no_error = option.no_error;
             var cache = option.cache;
             var wait = option.wait;
             if (method === undefined) {
@@ -186,34 +186,25 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                     return;
                 }
                 last_cache_key = cache_key;
-                // $ionicLoading.show({
-                //   template: '<ion-spinner icon="ios"></ion-spinner>',
-                //   noBackdrop: true
-                // });
+                loading.show();
             }
             $http(parmss).success(
                 function (data, status, headers, config) {
 
                     if (globalStateCheck(data)) {
-                        if (notShowErrorMessage) {
+                        if (data.success) {
                             if (cache) {
                                 result_map[cache_key] = data;
                             }
                             deferred.resolve(data);
                         }
                         else {
-                            if (data.success) {
-                                if (cache) {
-                                    result_map[cache_key] = data;
-                                }
-                                deferred.resolve(data);
-                            }
-                            else {
+                            if (!no_error) {
                                 $timeout(function () {
                                     showErrorMessage(data);
                                 });
-                                deferred.reject(null, data);
                             }
+                            deferred.reject(null, data);
                         }
                     }
                     else {
@@ -226,11 +217,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             });
             var promise = deferred.promise;
             if (wait) {
-                // promise.then(function () {
-                //   $ionicLoading.hide();
-                // }, function () {
-                //   $ionicLoading.hide();
-                // });
+                loading.hide();
             }
             return promise;
         }
@@ -573,17 +560,58 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
         }
     })
     .factory('auth', function () {
-
         return {
             login: function (username, password) {
 
             },
             logout: function () {
 
+            },
+            hasLogin: function () {
+
             }
 
         }
     })
+    .factory("loading", function ($templateRequest, $document) {
+        var loading_content = null;
+        var body = $document.find("body");
+        var show_count = 0;
+        return {
+            show: function () {
+
+                if (show_count == 0) {
+                    $templateRequest("templates/cover/mask.html").then(function (tplContent) {
+                        loading_content = $(tplContent);
+                        body.addClass("body-on-mask");
+                        body.append(loading_content);
+
+                    });
+                }
+                show_count++;
+
+            },
+            hide: function () {
+                if (show_count > 0) {
+                    show_count--;
+                }
+                if (show_count == 0 && loading_content) {
+                    body.removeClass("body-on-mask");
+                    loading_content.remove();
+                    loading_content = null;
+                }
+            },
+            forceHide: function () {
+                show_count = 0;
+                if (loading_content) {
+                    body.removeClass("body-on-mask");
+                    loading_content.remove();
+                    loading_content = null;
+                }
+            }
+        }
+    });
+
 
 
 

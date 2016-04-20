@@ -1,4 +1,4 @@
-.cover {
+.mask {
   position: fixed;
   top: 0;
   right: 0;
@@ -7,7 +7,21 @@
   background-color: #777;
   z-index: 1002;
   left: 0;
-  display: none;
   opacity: 0.5;
   -moz-opacity: 0.5;
+  .progress-content {
+    padding: 20px;
+    position: fixed;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 50%;
+    width: 80%;
+    max-width: 700px;
+    overflow: hidden;
+  }
+}
+
+.body-on-mask {
+  overflow: hidden;
 }

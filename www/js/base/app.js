@@ -25,5 +25,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             controller: "testCtrl"
         })
 
-    $urlRouterProvider.otherwise('/main');
+    $urlRouterProvider.otherwise(function ($injector, $location) {
+        $location.replace().path("/main");
+    });
 }]);

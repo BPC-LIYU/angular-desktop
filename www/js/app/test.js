@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast,Upload) {
+app.controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast, Upload, loading, $timeout) {
     $scope.data2 = {
         open: false
     };
@@ -26,6 +26,15 @@ app.controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, 
         name: "showToast",
         callback: function () {
             showToast("toast提示", "success");
+        }
+    });
+    tests.push({
+        name: "loading",
+        callback: function () {
+            loading.show();
+            $timeout(function () {
+                loading.hide();
+            }, 1000);
         }
     });
     $scope.open2 = function () {

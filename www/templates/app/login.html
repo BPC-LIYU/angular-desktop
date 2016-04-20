@@ -10,7 +10,7 @@
             <div class="lg-top">
                 <div class="lg-top-btn lg-top-btn-active" id="div_first_head" onclick="$v.lfirst()">扫码登录</div>
                 <div class="lg-top-btn" id="div_second_head" onclick="$v.lsecond()">密码登录</div>
-                <% if(!ttjd_config.is_emp){ %>
+                <% if(!base_config.is_emp){ %>
                 <div class="lg-top-btn" id="div_three_head" onclick="$v.lthree()">用户注册</div>
                 <% } %>
             </div>
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <!--{#    用户注册#}-->
-            <% if(!ttjd_config.is_emp){ %>
+            <% if(!base_config.is_emp){ %>
             <div class="lg-sign" style="display: none" id="div_three">
                 <input id="tel" class="form-control user-num" placeholder="请输入手机号码">
 

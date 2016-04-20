@@ -127,38 +127,6 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
         }
     })
     /**
-     * 获取二维码
-     by: 范俊伟 at:2016-02-18
-     */
-    .service("getQrcode", function ($q, $timeout) {
-        var self = this;
-        return function (text) {
-            /**
-             * 通用http请求函数
-             by: 范俊伟 at:2015-03-10
-             */
-            var deferred = $q.defer();
-            var qr_parms = {};
-            qr_parms['text'] = text;
-            var qr_url = ttjd_config.base_url + "/ns/sys/get_qrcode?" + $.param(qr_parms);
-            $timeout(function () {
-                deferred.resolve(qr_url);
-            }, 0);
-            return deferred.promise;
-        }
-    })
-    .service("buildQrcodeArgs", function (getQrcode, $q) {
-        var self = this;
-        return function (parms) {
-            /**
-             * 编码二维码参数
-             by: 范俊伟 at:2015-03-10
-             */
-            var get_args = {'p': parms.join('|')};
-            return window.ttjd_config.base_url + "/ns/qrcode2?" + $.param(get_args);
-        }
-    })
-    /**
      * 通用网路请求
      by: 范俊伟 at:2016-02-18
      */
@@ -184,7 +152,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 method = 'POST';
             }
             var deferred = $q.defer();
-            url = ttjd_config.base_url + url;
+            url = base_config.base_url + url;
             var parmss = {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 url: url,

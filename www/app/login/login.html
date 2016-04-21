@@ -15,7 +15,8 @@
             <!--    二维码登录-->
             <div ng-if="tab_index==0">
                 <div class="lg-erweima-container">
-                    <qrcode qrcode-style="width: 100%;height: 100%" style="width: 100%;height: 100%" data="{{qr_info.qrcode_string}}"></qrcode>
+                    <qrcode qrcode-style="width: 100%;height: 100%" style="width: 100%;height: 100%"
+                            data="{{qr_info.qrcode_string}}"></qrcode>
                 </div>
                 <div ng-if="scaned" style="text-align: center;color: red;">扫码成功,在手机点击确认</div>
             </div>
@@ -33,7 +34,7 @@
             <!--    用户注册-->
 
             <div class="lg-sign" ng-if="tab_index==2">
-                <input id="tel" class="form-control user-num" placeholder="请输入手机号码">
+                <input id="tel" class="form-control user-num" placeholder="请输入手机号码" ng-model="reg_info.username">
 
                 <div class="lg-sign-content">
 
@@ -42,15 +43,19 @@
                     <input class="form-control pull-left" style="width: 100%" placeholder="请输入真实姓名"
                            ng-model="reg_info.realname">
                     <div class="clearfix"></div>
-                    <input class="form-control pull-left" placeholder="请输入验证码" ng-model="reg_info.realname">
-                    <button class="btn btn-info yanzhenma" ng-click="send_sms()">发送验证码</button>
+                    <input class="form-control pull-left" placeholder="请输入验证码" ng-model="reg_info.code">
+                    <button class="btn btn-info yanzhenma" ng-disabled="wait_second>0" ng-click="send_sms()">{{wait_second||"发送验证码"}}</button>
 
                 </div>
-                <input type="checkbox" id="ck_reg" class="pull-left">
+                <label>
+                    <input type="checkbox" id="ck_reg" class="pull-left" ng-checked="reg_info.agree_service==1"
+                       ng-model="reg_info.agree_service" ng-true-value="1" ng-false-value="0">
 
                 <div class="pull-left sign-text">阅读并同意《平台协议》</div>
+                </label>
 
-                <div class="lg-login-btn" ng-click="reg()">注&nbsp;&nbsp;&nbsp;&nbsp;册</div>
+
+                <button class="lg-login-btn" ng-disabled="reg_info.agree_service==0"  ng-click="reg_user()" title="请同意《平台协议》">注&nbsp;&nbsp;&nbsp;&nbsp;册</button>
             </div>
 
         </div>

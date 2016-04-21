@@ -248,7 +248,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             if (user_info) {
                 deferred.resolve(user_info);
             }
-            httpReq("/ns/user/my_userinfo").then(function (data) {
+            httpReq("/sys/my_userinfo").then(function (data) {
                 user_info = data.result;
                 deferred.resolve(user_info);
             }, function () {
@@ -564,7 +564,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             login: function (username, password) {
                 var deferred = $q.defer();
                 console.log("auth login");
-                httpReq("/ns/user/simple_login", {
+                httpReq("/sys/simple_login", {
                     "tel": username,
                     "password": password
                 }).then(function (data) {
@@ -578,7 +578,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             },
             logout: function () {
                 var deferred = $q.defer();
-                httpReq("/ns/user/logout").then(function (data) {
+                httpReq("/sys/logout").then(function (data) {
                     deferred.resolve();
                 }, function () {
                     deferred.reject();
@@ -587,9 +587,21 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             },
             hasLogin: function () {
                 var deferred = $q.defer();
-                httpReq("/ns/user/check_login").then(function (data) {
+                httpReq("/sys/check_login").then(function (data) {
                     localStorage.set("sessionid", data.result.sessionid);
                     deferred.resolve(data.result.has_login);
+                });
+                return deferred.promise;
+            },
+            reg_user: function(reg_info){
+                var deferred = $q.defer();
+                console.log("auth reg");
+                httpReq("/sys/reg_user",reg_info).then(function (data) {
+                    console.log("auth reg end");
+                    localStorage.set("sessionid", data.result.sessionid);
+                    deferred.resolve();
+                }, function () {
+                    deferred.reject();
                 });
                 return deferred.promise;
             }

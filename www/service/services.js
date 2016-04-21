@@ -15,7 +15,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             scope.message = message;
 
             var modal = $uibModal.open({
-                templateUrl: "templates/modal/message.html",
+                templateUrl: "modal/message.html",
                 scope: scope,
                 animation: true
             });
@@ -40,7 +40,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             scope.message = message;
 
             var modal = $uibModal.open({
-                templateUrl: "templates/modal/confirm.html",
+                templateUrl: "modal/confirm.html",
                 scope: scope,
                 animation: true,
                 backdrop: "static"
@@ -604,7 +604,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             show: function () {
 
                 if (show_count == 0) {
-                    $templateRequest("templates/cover/mask.html").then(function (tplContent) {
+                    $templateRequest("cover/mask.html").then(function (tplContent) {
                         loading_content = $(tplContent);
                         body.addClass("body-on-mask");
                         body.append(loading_content);
@@ -645,7 +645,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             scope.message = message;
 
             var modal = $uibModal.open({
-                windowTemplateUrl: "templates/modal/right_box.html",
+                windowTemplateUrl: "modal/right_box.html",
                 template: "test",
                 scope: scope,
                 animation: true,

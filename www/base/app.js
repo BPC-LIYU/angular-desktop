@@ -6,37 +6,37 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
     $stateProvider
         .state('login', {
             url: '/login',
-            templateUrl: "templates/login/login.html",
+            templateUrl: "app/login/login.html",
             controller: "loginCtrl"
         })
         .state('main', {
             url: '/main',
-            templateUrl: "templates/main/main.html",
+            templateUrl: "app/main/main.html",
             controller: "mainCtrl"
         })
         .state('main.message', {
             url: '/message',
-            templateUrl: "templates/message/message.html",
+            templateUrl: "app/message/message.html",
             controller: "messageCtrl"
         })
         .state('main.contacts', {
             url: '/contacts',
-            templateUrl: "templates/contacts/contacts.html",
+            templateUrl: "app/contacts/contacts.html",
             controller: "contactsCtrl"
         })
         .state('main.application', {
             url: '/application',
-            templateUrl: "templates/application/application.html",
+            templateUrl: "app/application/application.html",
             controller: "applicationCtrl"
         })
         .state('main.push', {
             url: '/push',
-            templateUrl: "templates/push/push.html",
+            templateUrl: "app/push/push.html",
             controller: "pushCtrl"
         })
         .state('main.test', {
             url: '/test',
-            templateUrl: "templates/test.html",
+            templateUrl: "app/test/test.html",
             controller: "testCtrl"
         })
 

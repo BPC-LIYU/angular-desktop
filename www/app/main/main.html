@@ -20,8 +20,10 @@
         <div class="dt-sidebar"><!--侧边栏-->
             <div class="dt-profile">
                 <div class="inline-block" style="margin-top: 18px">
-                    <div class="dt-img"><img ng-src="{{main_view.my_user_info.icon_url}}" src="images/main/header.png"
-                                             id="current_img">
+                    <div class="dt-img">
+                        <img ng-src="{{main_view.my_user_info.icon_url | icon_default:main_view.my_user_info.id:main_view.my_user_info.realname}}"
+                                src="images/main/header.png"
+                                id="current_img">
                     </div>
                     <!--头像-->
                     <div class="dt-name">{{main_view.my_user_info.realname||'...'}}</div>
@@ -42,7 +44,7 @@
                 <span class="icon_container"><img src="images/main/lianxiren.png"></span>&nbsp;&nbsp;联系人
                 <span class="badge badge-danger pull-right" style="background: red;color: #fff;"></span>
             </div>
-            <div class="dt-menu" ui-sref-active="active" ui-state="'main.application'" >
+            <div class="dt-menu" ui-sref-active="active" ui-state="'main.application'">
                 <span class="icon_container"><img src="images/main/yingyong.png"></span>&nbsp;&nbsp;应用
                 <span class="badge badge-danger pull-right" style="background: red;color: #fff;"></span>
             </div>
@@ -53,7 +55,8 @@
                         popover-append-to-body="true"
                         uib-popover-template="'app/main/add_popover.html'"
                         popover-trigger="focus"
-                        class="dt-sidebar-create">创建</button>
+                        class="dt-sidebar-create">创建
+                </button>
                 <button popover-placement="auto"
                         popover-append-to-body="true"
                         uib-popover-template="'app/main/setting_popover.html'"

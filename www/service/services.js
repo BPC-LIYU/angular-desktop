@@ -565,7 +565,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 var deferred = $q.defer();
                 console.log("auth login");
                 httpReq("/sys/simple_login", {
-                    "tel": username,
+                    "username": username,
                     "password": password
                 }).then(function (data) {
                     console.log("auth login end");

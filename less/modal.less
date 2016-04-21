@@ -27,8 +27,8 @@
   .modal-dialog {
     position: absolute;
     top: 74px;
-    bottom: 0;
-    right: 4px;
+    bottom: 5px;
+    right: 5px;
     width: 500px;
     margin: 0;
   }
@@ -40,14 +40,21 @@
     left: 0;
     background-color: #fff;
     border: 1px solid #999;
-    border-radius: 6px;
+    border-radius: 0;
+    border-bottom-right-radius: 5px;
     background-clip: padding-box;
     outline: 0;
+    box-shadow: none;
   }
 }
-.right-box-backdrop {
-  &.fade { @include opacity(0); }
-  &.in { @include opacity(0.2); }
+
+.right-box-modal-backdrop {
+  &.fade {
+    .opacity(0);
+  }
+  &.in {
+    .opacity(0.1);
+  }
 }
 
 .modal-close {
@@ -56,8 +63,4 @@
     height: 25px;
     padding: 2px;
   }
-}
-
-.opacity(@opacity) {
-  opacity: @opacity;
 }

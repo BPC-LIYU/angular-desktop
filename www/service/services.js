@@ -649,7 +649,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 template: "test",
                 scope: scope,
                 animation: true,
-                backdropClass:""
+                backdropClass:"right-box-modal-backdrop"
             });
             scope.ok = function () {
                 modal.close(true);

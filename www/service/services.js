@@ -1,10 +1,5 @@
 var service_app = angular.module('desktop.services', ['ngCookies'])
-    .service("$body", function () {
-        return function () {
-            return $("body");
-        }
-    })
-    .service("showMessage", function ($q, $uibModal, $rootScope) {
+    .factory("showMessage", function ($q, $uibModal, $rootScope) {
         /**
          * 消息框
          */
@@ -32,7 +27,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             return defered.promise;
         }
     })
-    .service("showConfirm", function ($q, $uibModal, $rootScope) {
+    .factory("showConfirm", function ($q, $uibModal, $rootScope) {
         return function (title, message) {
             var defered = $q.defer();
             var scope = $rootScope.$new();
@@ -65,7 +60,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      * 处理接口状态码
      by: 范俊伟 at:2016-02-18
      */
-    .service("globalStateCheck", function ($state, $injector, $location) {
+    .factory("globalStateCheck", function ($state, $injector, $location) {
         return function globalStateCheck(data) {
             /**
              * 全局错误状态码检测,返回true则继续进行其他处理
@@ -87,7 +82,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      * toast提示显示
      by: 范俊伟 at:2016-02-18
      */
-    .service("showToast", function () {
+    .factory("showToast", function () {
         return function (message, type, options) {
             /**
              * toast
@@ -103,7 +98,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      * 显示错误信息
      by: 范俊伟 at:2016-02-18
      */
-    .service("showErrorMessage", function (showMessage, showToast) {
+    .factory("showErrorMessage", function (showMessage, showToast) {
         return function (data) {
             /**
              * 通用错误信息显示
@@ -129,7 +124,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      * 通用网路请求
      by: 范俊伟 at:2016-02-18
      */
-    .service("httpReq", function ($http, $q, globalStateCheck, showErrorMessage, $injector, showToast, $timeout) {
+    .factory("httpReq", function ($http, $q, globalStateCheck, showErrorMessage, $injector, showToast, $timeout) {
         var localStorage = $injector.get('localStorage');
         var loading = $injector.get('loading');
         var parseURL = $injector.get('parseURL');
@@ -222,7 +217,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             return promise;
         }
     })
-    .service("readFile", function ($http, $q) {
+    .factory("readFile", function ($http, $q) {
         return function (url) {
             /**
              * 读取本地文件
@@ -306,7 +301,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         };
     })
-    .service("runFuncArray", function ($q) {
+    .factory("runFuncArray", function ($q) {
 
         return function (func_array) {
             var deferred = $q.defer();
@@ -345,7 +340,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .service("SubStrLen", function () {
+    .factory("SubStrLen", function () {
         /**
          * 截取字符串
          * by: 魏璐 at:2016-01-19
@@ -365,7 +360,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .service("Getuuid", function () {
+    .factory("Getuuid", function () {
         /**
          * 获取随机串
          * by: 魏璐 at:2016-01-19
@@ -514,7 +509,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .service("parseURL", function () {
+    .factory("parseURL", function () {
         return function (url) {
             var a = document.createElement('a');
             a.href = url;
@@ -646,7 +641,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .service("showRighBox", function ($q, $uibModal, $rootScope) {
+    .factory("showRighBox", function ($q, $uibModal, $rootScope) {
         /**
          * 消息框
          */

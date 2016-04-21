@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast, Upload, loading, $timeout) {
+app.controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast, Upload, loading, $timeout, showRighBox) {
     $scope.data2 = {
         open: false
     };
@@ -37,6 +37,13 @@ app.controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, 
             }, 1000);
         }
     });
+    tests.push({
+        name: "showRighBox",
+        callback: function () {
+            showRighBox("温馨提示", "保存成功");
+        }
+    });
+
     $scope.open2 = function () {
         $scope.data2.open = true;
     }

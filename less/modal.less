@@ -1,7 +1,63 @@
+@import "mixins";
+//.modal {
+//  display: block;
+//}
+//
+//
+//.modal {
+//  display: flex;
+//  flex-direction: column;
+//  justify-content: center;
+//  align-items: center;
+//}
+//
+//.modal-dialog {
+//  margin: 0;
+//}
+
+.right-box {
+  &.fade .modal-dialog {
+    .translate(100%, 0);
+    .transition-transform(0.3s ease-out);
+  }
+  &.in .modal-dialog {
+    .translate(0, 0)
+  }
+
+  .modal-dialog {
+    position: absolute;
+    top: 74px;
+    bottom: 0;
+    right: 4px;
+    width: 500px;
+    margin: 0;
+  }
+  .modal-content {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #999;
+    border-radius: 6px;
+    background-clip: padding-box;
+    outline: 0;
+  }
+}
+.right-box-backdrop {
+  &.fade { @include opacity(0); }
+  &.in { @include opacity(0.2); }
+}
+
 .modal-close {
   .close {
     width: 25px;
     height: 25px;
     padding: 2px;
   }
+}
+
+.opacity(@opacity) {
+  opacity: @opacity;
 }

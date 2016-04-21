@@ -633,7 +633,37 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 }
             }
         }
-    });
+    })
+    .service("showRighBox", function ($q, $uibModal, $rootScope) {
+        /**
+         * 消息框
+         */
+        return function (title, message) {
+            var defered = $q.defer();
+            var scope = $rootScope.$new();
+            scope.title = title;
+            scope.message = message;
+
+            var modal = $uibModal.open({
+                windowTemplateUrl: "templates/modal/right_box.html",
+                template: "test",
+                scope: scope,
+                animation: true,
+                backdropClass:""
+            });
+            scope.ok = function () {
+                modal.close(true);
+            };
+            modal.result.then(function () {
+                scope.$destroy();
+                defered.resolve();
+            }, function () {
+                scope.$destroy();
+                defered.resolve();
+            });
+            return defered.promise;
+        }
+    })
 
 
 

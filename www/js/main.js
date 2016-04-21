@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('mainCtrl', function ($scope, httpReq, auth, $location, myUserInfo) {
+app.controller('mainCtrl', function ($scope, httpReq, auth, $location, myUserInfo, $state) {
     var main_view = $scope.main_view = {};
     $scope.logout = function () {
         auth.logout().then(function () {
@@ -14,4 +14,8 @@ app.controller('mainCtrl', function ($scope, httpReq, auth, $location, myUserInf
         })
     };
     $scope.reset_userinfo();
+
+    $scope.enter_application = function () {
+        $state.go("main.application");
+    }
 });

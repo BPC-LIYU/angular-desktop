@@ -641,7 +641,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .provider("righBox", function () {
+    .provider("modal1", function () {
         /**
          * 右侧弹出框
          */
@@ -662,12 +662,14 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 }
                 //resolve
                 var defered = $q.defer();
-                config['windowTemplateUrl'] = config['windowTemplateUrl'] || "modal/right_box.html";
-                config['backdropClass'] = config['backdropClass'] || "right-box-modal-backdrop";
                 config['resolve'] = config['resolve'] || {};
                 config['resolve']['args'] = function () {
                     return args;
                 };
+                if (config.type == 'rightBox') {
+                    config['windowTemplateUrl'] = config['windowTemplateUrl'] || "modal/right_box.html";
+                    config['backdropClass'] = config['backdropClass'] || "right-box-modal-backdrop";
+                }
                 var modal = $uibModal.open(config);
                 modal.result.then(function () {
                     defered.resolve();

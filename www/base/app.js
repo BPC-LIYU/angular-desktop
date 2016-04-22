@@ -59,9 +59,16 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', function
 
     });
 
-    modalBoxProvider.set('test', {
-        templateUrl: "app/test/test_right_box.html",
-        controller: "testRigthBoxCtrl",
-        type: "rightBox"
-    })
+    modalBoxProvider
+        .set('test', {
+            templateUrl: "app/test/test_right_box.html",
+            controller: "testRigthBoxCtrl",
+            type: "rightBox"
+        })
+        .set("develop",{
+            templateUrl: "app/develop/develop_right_box.html",
+            controller: "developRigthBoxCtrl",
+            type: "rightBox"
+        });
+
 }]);

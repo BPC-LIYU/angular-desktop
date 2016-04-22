@@ -651,8 +651,33 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             self.dial_map[name] = config;
             return self;
         };
-        this.$get = function ($q, $uibModal, $rootScope) {
+        this.$get = function ($q, $uibModal) {
+
             var self = this;
+            var unique_group_map = {};
+
+            function add_group_modal(gropu_name, modal) {
+                var group = unique_group_map[gropu_name] || [];
+                var find = _(group).find(function (item) {
+                    return item === modal;
+                });
+                if (!find) {
+                    group.push(modal);
+                }
+                unique_group_map[gropu_name] = group;
+            }
+
+            function remove_group_modal(gropu_name, modal) {
+                var group = unique_group_map[gropu_name] || [];
+                group = _(group).filter(function (item) {
+                    return item !== modal;
+                });
+                unique_group_map[gropu_name] = group;
+            }
+
+            function get_group_modal(group_name) {
+                return unique_group_map[group_name] || [];
+            }
 
             function show(name, args) {
                 var config = self.dial_map[name];
@@ -669,23 +694,40 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 if (config.type == 'rightBox') {
                     config['windowTemplateUrl'] = config['windowTemplateUrl'] || "modal/right_box.html";
                     config['backdropClass'] = config['backdropClass'] || "right-box-modal-backdrop";
+                    config['unique_group'] = config['unique_group'] || 'rightBox';
                 }
+                var unique_group = config['unique_group'];
                 var modal = $uibModal.open(config);
-                modal.result.then(function () {
-                    defered.resolve();
-                }, function () {
-                    defered.resolve();
+                if (unique_group) {
+                    var group_modals = get_group_modal(unique_group);
+                    _(group_modals).each(function (item) {
+                        item.dismiss("auto_close");
+                    });
+                    add_group_modal(unique_group, modal);
+                }
+                modal.result.then(function (result) {
+                    remove_group_modal(unique_group, modal);
+                    defered.resolve(result);
+                }, function (reason) {
+                    remove_group_modal(unique_group, modal);
+
+                    defered.reject(reason);
                 });
                 return defered.promise;
             }
 
-            function hide() {
-
-            }
+            // function close(result) {
+            //     var $uibModalInstance = $injector.get('$uibModalInstance');
+            //     $uibModalInstance.close(result);
+            // }
+            //
+            // function dismiss(reason) {
+            //     var $uibModalInstance = $injector.get('$uibModalInstance');
+            //     $uibModalInstance.dismiss(reason);
+            // }
 
             return {
-                show: show,
-                hide: hide
+                show: show
             }
         }
 

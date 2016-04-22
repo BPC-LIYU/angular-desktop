@@ -67,6 +67,14 @@ app
             });
         };
     })
-    .controller('testRigthBoxCtrl', function (args) {
+    .controller('testRigthBoxCtrl', function ($scope, args, modalBox, $uibModalInstance) {
+        $scope.list = ['1', '2', '3'];
         console.log(args);
-    })
+        $scope.modal = function () {
+            modalBox.show('test', {a: "1"});
+        };
+        $scope.close = function () {
+            $uibModalInstance.close();
+        }
+
+    });

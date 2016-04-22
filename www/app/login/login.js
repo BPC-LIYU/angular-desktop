@@ -17,6 +17,9 @@ app.controller('loginCtrl', function ($scope, httpReq, auth, $location, localSto
         $scope.login_text = "登录中...";
         auth.login($scope.login_info.username, $scope.login_info.password).then(function () {
             $location.replace().path("/");
+        },function () {
+            $scope.loading = false;
+            $scope.login_text = "登录";
         })
     };
 

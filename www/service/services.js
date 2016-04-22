@@ -1,10 +1,5 @@
 var service_app = angular.module('desktop.services', ['ngCookies'])
-    .service("$body", function () {
-        return function () {
-            return $("body");
-        }
-    })
-    .service("showMessage", function ($q, $uibModal, $rootScope) {
+    .factory("showMessage", function ($q, $uibModal, $rootScope) {
         /**
          * 消息框
          */
@@ -32,7 +27,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             return defered.promise;
         }
     })
-    .service("showConfirm", function ($q, $uibModal, $rootScope) {
+    .factory("showConfirm", function ($q, $uibModal, $rootScope) {
         return function (title, message) {
             var defered = $q.defer();
             var scope = $rootScope.$new();
@@ -65,7 +60,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      * 处理接口状态码
      by: 范俊伟 at:2016-02-18
      */
-    .service("globalStateCheck", function ($state, $injector, $location) {
+    .factory("globalStateCheck", function ($state, $injector, $location) {
         return function globalStateCheck(data) {
             /**
              * 全局错误状态码检测,返回true则继续进行其他处理
@@ -87,7 +82,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      * toast提示显示
      by: 范俊伟 at:2016-02-18
      */
-    .service("showToast", function () {
+    .factory("showToast", function () {
         return function (message, type, options) {
             /**
              * toast
@@ -103,7 +98,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      * 显示错误信息
      by: 范俊伟 at:2016-02-18
      */
-    .service("showErrorMessage", function (showMessage, showToast) {
+    .factory("showErrorMessage", function (showMessage, showToast) {
         return function (data) {
             /**
              * 通用错误信息显示
@@ -129,7 +124,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
      * 通用网路请求
      by: 范俊伟 at:2016-02-18
      */
-    .service("httpReq", function ($http, $q, globalStateCheck, showErrorMessage, $injector, showToast, $timeout) {
+    .factory("httpReq", function ($http, $q, globalStateCheck, showErrorMessage, $injector, showToast, $timeout) {
         var localStorage = $injector.get('localStorage');
         var loading = $injector.get('loading');
         var parseURL = $injector.get('parseURL');
@@ -222,7 +217,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             return promise;
         }
     })
-    .service("readFile", function ($http, $q) {
+    .factory("readFile", function ($http, $q) {
         return function (url) {
             /**
              * 读取本地文件
@@ -306,7 +301,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         };
     })
-    .service("runFuncArray", function ($q) {
+    .factory("runFuncArray", function ($q) {
 
         return function (func_array) {
             var deferred = $q.defer();
@@ -345,7 +340,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .service("SubStrLen", function () {
+    .factory("SubStrLen", function () {
         /**
          * 截取字符串
          * by: 魏璐 at:2016-01-19
@@ -365,7 +360,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .service("Getuuid", function () {
+    .factory("Getuuid", function () {
         /**
          * 获取随机串
          * by: 魏璐 at:2016-01-19
@@ -514,7 +509,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .service("parseURL", function () {
+    .factory("parseURL", function () {
         return function (url) {
             var a = document.createElement('a');
             a.href = url;
@@ -593,10 +588,10 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 });
                 return deferred.promise;
             },
-            reg_user: function(reg_info){
+            reg_user: function (reg_info) {
                 var deferred = $q.defer();
                 console.log("auth reg");
-                httpReq("/sys/reg_user",reg_info).then(function (data) {
+                httpReq("/sys/reg_user", reg_info).then(function (data) {
                     console.log("auth reg end");
                     localStorage.set("sessionid", data.result.sessionid);
                     deferred.resolve();
@@ -646,36 +641,97 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .service("showRighBox", function ($q, $uibModal, $rootScope) {
+    .provider("modalBox", function () {
         /**
-         * 消息框
+         * 右侧弹出框
          */
-        return function (title, message) {
-            var defered = $q.defer();
-            var scope = $rootScope.$new();
-            scope.title = title;
-            scope.message = message;
+        var self = this;
+        self.dial_map = {};
+        self.set = function (name, config) {
+            self.dial_map[name] = config;
+            return self;
+        };
+        this.$get = function ($q, $uibModal) {
 
-            var modal = $uibModal.open({
-                windowTemplateUrl: "modal/right_box.html",
-                template: "test",
-                scope: scope,
-                animation: true,
-                backdropClass:"right-box-modal-backdrop"
-            });
-            scope.ok = function () {
-                modal.close(true);
-            };
-            modal.result.then(function () {
-                scope.$destroy();
-                defered.resolve();
-            }, function () {
-                scope.$destroy();
-                defered.resolve();
-            });
-            return defered.promise;
+            var self = this;
+            var unique_group_map = {};
+
+            function add_group_modal(gropu_name, modal) {
+                var group = unique_group_map[gropu_name] || [];
+                var find = _(group).find(function (item) {
+                    return item === modal;
+                });
+                if (!find) {
+                    group.push(modal);
+                }
+                unique_group_map[gropu_name] = group;
+            }
+
+            function remove_group_modal(gropu_name, modal) {
+                var group = unique_group_map[gropu_name] || [];
+                group = _(group).filter(function (item) {
+                    return item !== modal;
+                });
+                unique_group_map[gropu_name] = group;
+            }
+
+            function get_group_modal(group_name) {
+                return unique_group_map[group_name] || [];
+            }
+
+            function show(name, args) {
+                var config = self.dial_map[name];
+                if (!config) {
+                    console.error('cant find the config of' + name);
+                    return null;
+                }
+                //resolve
+                var defered = $q.defer();
+                config['resolve'] = config['resolve'] || {};
+                config['resolve']['args'] = function () {
+                    return args;
+                };
+                if (config.type == 'rightBox') {
+                    config['windowTemplateUrl'] = config['windowTemplateUrl'] || "modal/right_box.html";
+                    config['backdropClass'] = config['backdropClass'] || "right-box-modal-backdrop";
+                    config['unique_group'] = config['unique_group'] || 'rightBox';
+                }
+                var unique_group = config['unique_group'];
+                var modal = $uibModal.open(config);
+                if (unique_group) {
+                    var group_modals = get_group_modal(unique_group);
+                    _(group_modals).each(function (item) {
+                        item.dismiss("auto_close");
+                    });
+                    add_group_modal(unique_group, modal);
+                }
+                modal.result.then(function (result) {
+                    remove_group_modal(unique_group, modal);
+                    defered.resolve(result);
+                }, function (reason) {
+                    remove_group_modal(unique_group, modal);
+
+                    defered.reject(reason);
+                });
+                return defered.promise;
+            }
+
+            // function close(result) {
+            //     var $uibModalInstance = $injector.get('$uibModalInstance');
+            //     $uibModalInstance.close(result);
+            // }
+            //
+            // function dismiss(reason) {
+            //     var $uibModalInstance = $injector.get('$uibModalInstance');
+            //     $uibModalInstance.dismiss(reason);
+            // }
+
+            return {
+                show: show
+            }
         }
-    })
+
+    });
 
 
 

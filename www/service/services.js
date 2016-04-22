@@ -588,10 +588,10 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 });
                 return deferred.promise;
             },
-            reg_user: function(reg_info){
+            reg_user: function (reg_info) {
                 var deferred = $q.defer();
                 console.log("auth reg");
-                httpReq("/sys/reg_user",reg_info).then(function (data) {
+                httpReq("/sys/reg_user", reg_info).then(function (data) {
                     console.log("auth reg end");
                     localStorage.set("sessionid", data.result.sessionid);
                     deferred.resolve();
@@ -641,36 +641,53 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .factory("showRighBox", function ($q, $uibModal, $rootScope) {
+    .provider("righBox", function () {
         /**
-         * 消息框
+         * 右侧弹出框
          */
-        return function (title, message) {
-            var defered = $q.defer();
-            var scope = $rootScope.$new();
-            scope.title = title;
-            scope.message = message;
+        var self = this;
+        self.dial_map = {};
+        self.set = function (name, config) {
+            self.dial_map[name] = config;
+            return self;
+        };
+        this.$get = function ($q, $uibModal, $rootScope) {
+            var self = this;
 
-            var modal = $uibModal.open({
-                windowTemplateUrl: "modal/right_box.html",
-                template: "test",
-                scope: scope,
-                animation: true,
-                backdropClass:"right-box-modal-backdrop"
-            });
-            scope.ok = function () {
-                modal.close(true);
-            };
-            modal.result.then(function () {
-                scope.$destroy();
-                defered.resolve();
-            }, function () {
-                scope.$destroy();
-                defered.resolve();
-            });
-            return defered.promise;
+            function show(name, args) {
+                var config = self.dial_map[name];
+                if (!config) {
+                    console.error('cant find the config of' + name);
+                    return null;
+                }
+                //resolve
+                var defered = $q.defer();
+                config['windowTemplateUrl'] = config['windowTemplateUrl'] || "modal/right_box.html";
+                config['backdropClass'] = config['backdropClass'] || "right-box-modal-backdrop";
+                config['resolve'] = config['resolve'] || {};
+                config['resolve']['args'] = function () {
+                    return args;
+                };
+                var modal = $uibModal.open(config);
+                modal.result.then(function () {
+                    defered.resolve();
+                }, function () {
+                    defered.resolve();
+                });
+                return defered.promise;
+            }
+
+            function hide() {
+
+            }
+
+            return {
+                show: show,
+                hide: hide
+            }
         }
-    })
+
+    });
 
 
 

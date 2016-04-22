@@ -2,7 +2,7 @@
  * Created by fanjunwei on 15/12/19.
  */
 var app = angular.module('desktop', ["ngAnimate", "ngTouch", 'ngFileUpload', 'ui.router', "ui.bootstrap", 'desktop.services', 'directive']);
-app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', 'righBoxProvider', function ($stateProvider, $urlRouterProvider, righBoxProvider) {
     $stateProvider
         .state('login', {
             url: '/login',
@@ -53,4 +53,9 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
         })
 
     });
+
+    righBoxProvider.set('test', {
+        templateUrl: "app/test/test_right_box.html",
+        controller: "testRigthBoxCtrl"
+    })
 }]);

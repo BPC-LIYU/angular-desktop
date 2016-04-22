@@ -2,7 +2,7 @@
  * Created by fanjunwei on 16/4/18.
  */
 app
-    .controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast, Upload, loading, $timeout, modal1) {
+    .controller('testCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast, Upload, loading, $timeout, modalBox) {
         $scope.data2 = {
             open: false
         };
@@ -41,7 +41,7 @@ app
         tests.push({
             name: "showRighBox",
             callback: function () {
-                modal1.show('test', {a: "1"});
+                modalBox.show('test', {a: "1"});
             }
         });
 

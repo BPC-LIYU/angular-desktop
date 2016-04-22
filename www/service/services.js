@@ -641,7 +641,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .provider("modal1", function () {
+    .provider("modalBox", function () {
         /**
          * 右侧弹出框
          */

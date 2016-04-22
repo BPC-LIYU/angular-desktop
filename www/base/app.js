@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 15/12/19.
  */
-var app = angular.module('desktop', ["ngAnimate", "ngTouch", 'ngFileUpload', 'ui.router', "ui.bootstrap", 'desktop.services', 'directive']);
+var app = angular.module('desktop', ["ngAnimate", "ngTouch", 'ngFileUpload', 'ui.router', "ui.bootstrap", 'desktop.services', 'directive', 'ui.codemirror']);
 app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('login', {
@@ -38,6 +38,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $u
             url: '/test',
             templateUrl: "app/test/test.html",
             controller: "testCtrl"
+        })
+        .state('main.develop', {
+            url: '/develop',
+            templateUrl: "app/develop/develop.html",
+            controller: "developCtrl"
         })
 
     $urlRouterProvider.otherwise(function ($injector, $location) {

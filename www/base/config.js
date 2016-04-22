@@ -3,8 +3,8 @@
  */
 (function (window) {
     var base_config = window.base_config = {};
-    base_config.base_url = "http://emp.tjeasyshare.com";
-    base_config.is_develop = false;
-    base_config.is_debug = false;
+    base_config.base_url = "http://0.0.0.0:8001";
+    base_config.is_develop = true;
+    base_config.is_debug = true;
     base_config.channel = "desktop";
 })(window);

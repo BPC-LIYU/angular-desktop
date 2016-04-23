@@ -1,8 +1,6 @@
 <div class="ellipsis" style="height: 100%;overflow: auto;"
-     infinite-scroll="show_api_replay()"
-     infinite-scroll-immediate-check="true"
-     infinite-scroll-distance='1'
-     infinite-scroll-disabled="apireplay_more">
+     infinite-scroll="show_api_comment()"
+     infinite-scroll-disabled="apicomment_more">
     <h5>接口名:{{api.name}}</h5>
     <h5>url:{{api.url}}</h5>
     <h5>函数路径:{{api.namespace}}</h5>
@@ -33,13 +31,14 @@
     <!--<textarea ui-codemirror="apicodeOption" ng-model="api.code_content"></textarea>-->
     <!-- 修改记录和评论 -->
     <div>
-        <div class="message-list ellipsis" ng-repeat="replay in apireplaylist">
-            <img src="{{replay.user__icon_url}}">
-            <h2>{{replay.user__realname}}{{replay.create_tiem}}</h2>
-            <h2 ng-if="replay.source==0">修改注释</h2>
-            <h2 ng-if="replay.source==1">文档自动对比</h2>
-            <h2 ng-if="replay.source==2">人工评论</h2>
-            <p style="max-width: 110px;">{{replay.content}}</p>
+        <div class="message-list" ng-repeat="comment in apicommentlist">
+            <img src="{{comment.user__icon_url}}">
+            <h2 ng-if="comment.user">{{comment.user__realname}}:{{comment.create_time}}</h2>
+            <h2 ng-if="comment.username">{{comment.username}}:{{comment.create_time}}</h2>
+            <h2 ng-if="comment.source==0">修改注释</h2>
+            <h2 ng-if="comment.source==1">文档自动对比</h2>
+            <h2 ng-if="comment.source==2">人工评论</h2>
+            <p>{{comment.content}}</p>
         </div>
     </div>
 </div>

@@ -26,9 +26,9 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
     $scope.current_api = {};
     $scope.current_show_type = null;
     $scope.query_app = function () {
-        httpReq("/develop/query_all_app").then(function (data) {
-            if (data.result) {
-                $scope.applist = data.result;
+        httpReq("/develop/query_all_app_list").then(function (data) {
+            if (data.result.list) {
+                $scope.applist = data.result.list;
             } else {
                 $scope.applist = [];
             }
@@ -78,13 +78,13 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
     };
 
     $scope.api = {};
-    $scope.apireplaylist = [];
-    $scope.apireplay_more = false;
-    $scope.apireplayindex = 1;
-    $scope.apireplaycount = 1;
+    $scope.apicommentlist = [];
+    $scope.apicomment_disable = false;
+    $scope.apicommentindex = 1;
+    $scope.apicommentcount = 1;
     function main() {
         $scope.show_api_detail(args);
-        $scope.show_api_replay();
+        $scope.show_api_comment();
     }
 
     $scope.show_api_detail = function (api) {
@@ -95,32 +95,32 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
         });
     };
 
-    $scope.show_api_replay = function () {
-        var defered = $q.defer();
-        if ($scope.apireplay_more) {
-            defered.reject();
+    $scope.show_api_comment = function () {
+        //var defered = $q.defer();
+        if ($scope.apicomment_disable) {
+            //defered.reject();
             return;
         }
-        $scope.apireplay_more = true;
-        httpReq('/develop/query_apireplay_list', {
+        $scope.apicomment_disable = true;
+        httpReq('/develop/query_apicomment_list', {
             api_id: $scope.api.id,
-            page_index: $scope.apireplayindex
+            page_index: $scope.apicommentindex
         }).then(function (data) {
-            $scope.apireplayindex = data.result.page_index;
-            $scope.apireplaycount = data.result.page_count;
+            $scope.apicommentindex = data.result.page_index;
+            $scope.apicommentcount = data.result.page_count;
             _(data.result.list).each(function (item) {
-                $scope.apireplaylist.push(item);
+                $scope.apicommentlist.push(item);
             });
-            if ($scope.apireplaycount <= $scope.apireplayindex) {
-                $scope.apireplay_more = true;
+            if ($scope.apicommentcount <= $scope.apicommentindex) {
+                $scope.apicomment_disable = true;
             } else {
-                $scope.apireplay_more = false;
-                $scope.apireplayindex++;
+                $scope.apicomment_disable = false;
+                $scope.apicommentindex++;
             }
-            defered.resolve();
+            //defered.resolve();
 
         });
-        return defered.promise;
+        //return defered.promise;
     };
 
     main();

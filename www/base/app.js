@@ -2,6 +2,9 @@
  * Created by fanjunwei on 15/12/19.
  */
 var app = angular.module('desktop', ["ngAnimate", "ngTouch", 'ngFileUpload', 'ui.router', "ui.bootstrap", 'desktop.services', 'directive', 'ui.codemirror', "infinite-scroll"]);
+app.run(function ($rootScope) {
+    $rootScope.base_config = base_config;
+});
 app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', function ($stateProvider, $urlRouterProvider, modalBoxProvider) {
     $stateProvider
         .state('login', {
@@ -65,7 +68,7 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', function
             controller: "testRigthBoxCtrl",
             type: "rightBox"
         })
-        .set("develop",{
+        .set("develop", {
             templateUrl: "app/develop/develop_right_box.html",
             controller: "developRigthBoxCtrl",
             type: "rightBox"

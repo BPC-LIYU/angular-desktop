@@ -50,6 +50,24 @@
                         <td>{{parm.update_time}}</td>
                     </tr>
                 </table>
+
+                <h5>返回值:{{api.response_type=='list'?"列表":"字典"}}</h5>
+                <table>
+                    <tr>
+                        <td>字段名</td>
+                        <td>字段中文名</td>
+                        <td>字段类型</td>
+                        <td>字段备注</td>
+                        <td>修改时间</td>
+                    </tr>
+                    <tr ng-repeat="parm in api.responselist">
+                        <td>{{parm.name}}</td>
+                        <td>{{parm.title}}</td>
+                        <td>{{parm.value_type}}</td>
+                        <td>{{parm.desc}}</td>
+                        <td>{{parm.update_time}}</td>
+                    </tr>
+                </table>
                 <h5>源代码:</h5>
                 <textarea ui-codemirror="apicodeOption" ng-model="api.code_content"></textarea>
             </div>
@@ -84,8 +102,26 @@
                         <td>{{parm.update_time}}</td>
                     </tr>
                 </table>
+                <h5>返回值:{{current_api.response_type=='list'?"列表":"字典"}}</h5>
+                <table>
+                    <tr>
+                        <td>字段名</td>
+                        <td>字段中文名</td>
+                        <td>字段类型</td>
+                        <td>字段备注</td>
+                        <td>修改时间</td>
+                    </tr>
+                    <tr ng-repeat="parm in current_api.responselist">
+                        <td>{{parm.name}}</td>
+                        <td>{{parm.title}}</td>
+                        <td>{{parm.value_type}}</td>
+                        <td>{{parm.desc}}</td>
+                        <td>{{parm.update_time}}</td>
+                    </tr>
+                </table>
                 <h5>源代码:</h5>
                 <textarea ui-codemirror="apicodeOption" ng-model="current_api.code_content"></textarea>
+
             </div>
         </div>
     </div>

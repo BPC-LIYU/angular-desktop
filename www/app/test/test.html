@@ -1,4 +1,4 @@
-<div class="container-fluid" style="height: 100%;width: 100%;overflow:auto">
+<div class="container-fluid"  style="height: 100%;width: 100%;overflow:auto" infinite-scroll="addMoreItems()" infinite-scroll-listen-for-event="list:filtered">
     <input popover-placement="auto" type="text" value="Click me!" uib-popover="I appeared on focus! Click away and I'll vanish..."  popover-trigger="outsideClick" class="form-control">
 
     <div ng-repeat="item in tests">

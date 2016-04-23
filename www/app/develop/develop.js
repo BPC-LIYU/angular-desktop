@@ -68,7 +68,7 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
     };
 
     main();
-}).controller('developRigthBoxCtrl', function ($scope, args, modalBox, $uibModalInstance, httpReq) {
+}).controller('developRigthBoxCtrl', function ($scope, args, modalBox, $uibModalInstance, httpReq, $q) {
 
     $scope.apicodeOption = {
         lineNumbers: true,
@@ -96,7 +96,9 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
     };
 
     $scope.show_api_replay = function () {
-        if($scope.apireplay_more){
+        var defered = $q.defer();
+        if ($scope.apireplay_more) {
+            defered.reject();
             return;
         }
         $scope.apireplay_more = true;
@@ -113,11 +115,12 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
                 $scope.apireplay_more = true;
             } else {
                 $scope.apireplay_more = false;
-                $scope.apireplayindex ++;
+                $scope.apireplayindex++;
             }
-            //$scope.$emit('list:filtered');
+            defered.resolve();
 
         });
+        return defered.promise;
     };
 
     main();

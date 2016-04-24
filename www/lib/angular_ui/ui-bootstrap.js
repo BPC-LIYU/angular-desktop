@@ -4498,6 +4498,7 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
     'mouseenter': 'mouseleave',
     'click': 'click',
     'outsideClick': 'outsideClick',
+    'always': 'always',
     'focus': 'blur',
     'none': ''
   };
@@ -4950,10 +4951,20 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
               }
             }
 
+            // hide tooltips/popovers for always trigger
+            function bodyAlwaysHideTooltipBind(e) {
+              if (!ttScope || !ttScope.isOpen || !tooltip) {
+                return;
+              }
+              hideTooltipBind();
+            }
+
             var unregisterTriggers = function() {
               triggers.show.forEach(function(trigger) {
                 if (trigger === 'outsideClick') {
                   element.off('click', toggleTooltipBind);
+                }else if(trigger === 'always'){
+                    element.off('click', toggleTooltipBind);
                 } else {
                   element.off(trigger, showTooltipBind);
                   element.off(trigger, toggleTooltipBind);
@@ -4962,6 +4973,8 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
               triggers.hide.forEach(function(trigger) {
                 if (trigger === 'outsideClick') {
                   $document.off('click', bodyHideTooltipBind);
+                } else if(trigger === 'always'){
+                  $document.off('click', bodyAlwaysHideTooltipBind());
                 } else {
                   element.off(trigger, hideTooltipBind);
                 }
@@ -4979,6 +4992,9 @@ angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.s
                   if (trigger === 'outsideClick') {
                     element.on('click', toggleTooltipBind);
                     $document.on('click', bodyHideTooltipBind);
+                  } else if (trigger === 'always') {
+                      element.on('click', toggleTooltipBind);
+                      $document.on('click', bodyAlwaysHideTooltipBind);
                   } else if (trigger === triggers.hide[idx]) {
                     element.on(trigger, toggleTooltipBind);
                   } else if (trigger) {
@@ -6280,7 +6296,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.debounce', 'ui.bootstrap
     originalScope.$watch(attrs.typeaheadMinLength, function (newVal) {
         minLength = !newVal && newVal !== 0 ? 1 : newVal;
     });
-    
+
     //minimal wait time after last character typed before typeahead kicks-in
     var waitTime = originalScope.$eval(attrs.typeaheadWaitMs) || 0;
 

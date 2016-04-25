@@ -554,12 +554,14 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .factory('auth', function (httpReq, localStorage, $q) {
+    .factory('auth', function (httpReq, localStorage, $q, $injector) {
+        var api = $injector.get("api");
         return {
             login: function (username, password) {
                 var deferred = $q.defer();
                 console.log("auth login");
-                httpReq("/sys/simple_login", {
+                console.log("api.sys.simple_login", api.sys.simple_login);
+                api.sys.simple_login({
                     "username": username,
                     "password": password
                 }).then(function (data) {

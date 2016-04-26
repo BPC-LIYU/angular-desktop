@@ -8,7 +8,7 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast, Upload, loading, $timeout, modalBox) {
+app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast, Upload, loading, $timeout, modalBox, $injector) {
 
     function main() {
         $scope.query_app();
@@ -26,22 +26,23 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
     $scope.current_api = {};
     $scope.current_show_type = null;
     $scope.query_app = function () {
-        httpReq("/develop/query_all_app_list").then(function (data) {
+        var api = $injector.get("api");
+        api.develop.query_all_app_list().then(function (data) {
             if (data.result.list) {
                 $scope.applist = data.result.list;
             } else {
                 $scope.applist = [];
             }
-
         });
     };
 
     $scope.show_app = function (app) {
+        var apiobj = $injector.get("api");
         $scope.current_show_type = 'app';
         $scope.current_app = app;
-        httpReq('/develop/get_appinfo', {appinfo_id: app.id}).then(function (data) {
+        apiobj.develop.get_appinfo({appinfo_id: app.id}).then(function (data) {
             angular.extend(app, data.result);
-            return httpReq('/develop/query_api_detail_list', {app_id: app.id, page_size: 1000})
+            return apiobj.develop.query_api_detail_list({app_id: app.id, page_size: 1000})
         }).then(function (data) {
             _(data.result.list).each(function (item) {
                 _(app.apilist).each(function (apiitem) {
@@ -54,21 +55,20 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
     };
 
     $scope.show_api = function (api) {
+
+        var apiobj = $injector.get("api");
         $scope.current_show_type = 'api';
         $scope.current_api = api;
-        httpReq('/develop/get_api', {api_id: api.id}).then(function (data) {
+        apiobj.develop.get_api({api_id: api.id}).then(function (data) {
             angular.extend(api, data.result);
-        })
-
-
+        });
     };
 
     $scope.show_api_detail = function (api) {
         modalBox.show('develop', api)
     };
-
     main();
-}).controller('developRigthBoxCtrl', function ($scope, args, modalBox, $uibModalInstance, httpReq, $q) {
+}).controller('developRigthBoxCtrl', function ($scope, args, modalBox, $uibModalInstance, httpReq, $q, $injector) {
 
     $scope.apicodeOption = {
         lineNumbers: true,
@@ -88,21 +88,20 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
     }
 
     $scope.show_api_detail = function (api) {
+        var apiobj = $injector.get("api");
         $scope.api = api;
-        httpReq('/develop/get_api_detail', {api_id: api.id}).then(function (data) {
+        apiobj.develop.get_api_detail({api_id: api.id}).then(function (data) {
             angular.extend($scope.api, data.result);
-
         });
     };
 
     $scope.show_api_comment = function () {
-        //var defered = $q.defer();
+        var apiobj = $injector.get("api");
         if ($scope.apicomment_disable) {
-            //defered.reject();
             return;
         }
         $scope.apicomment_disable = true;
-        httpReq('/develop/query_apicomment_list', {
+        apiobj.develop.query_apicomment_list({
             api_id: $scope.api.id,
             page_index: $scope.apicommentindex
         }).then(function (data) {
@@ -117,11 +116,7 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
                 $scope.apicomment_disable = false;
                 $scope.apicommentindex++;
             }
-            //defered.resolve();
-
         });
-        //return defered.promise;
     };
-
     main();
 });

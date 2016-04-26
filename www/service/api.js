@@ -8,6 +8,87 @@ service_app
     
             'chat': {
                 
+                //  friend_id:好友id
+                'add_friend': 'func',
+            
+                //  talkgroup_id:群id, user_id:用户id
+                'add_talkgroup': 'func',
+            
+                //  talkgroup_id:群id, user_id:用户id
+                'add_talkgroup_manager': 'func',
+            
+                //  content:申请内容, user_id:申请的好友用户id
+                'apply_friend': 'func',
+            
+                //  content:用户内容, talkgroup_id:群id
+                'apply_talkgroup': 'func',
+            
+                //  group_type:群类型, member_ids:成员id列表, name:群名称
+                'create_talkgroup': 'func',
+            
+                //  talkgroup_id:群id
+                'dismiss_talkgroup': 'func',
+            
+                //  talkgroup_id:群id
+                'get_talkgroup': 'func',
+            
+                //  friend_id:好友id, is_black:是否黑名单
+                'mark_friend_black': 'func',
+            
+                //  friend_id:好友id, is_muted:是否免扰
+                'mark_friend_muted': 'func',
+            
+                //  friend_id:好友id, nickname:昵称
+                'modefy_friend_nickname': 'func',
+            
+                //  friendapply_id:好友申请id
+                'pass_friendapply': 'func',
+            
+                //  talkapply_id:入群申请id
+                'pass_talkapply': 'func',
+            
+                //  page_index:页码, page_size:页长度
+                'query_black_friend_list': 'func',
+            
+                //  page_index:页码, page_size:页长度
+                'query_friendapply_list': 'func',
+            
+                //  flag:群成员md5, page_index:页码, page_size:页长度
+                'query_group_by_flag_list': 'func',
+            
+                //  page_index:页码, page_size:页长度
+                'query_my_friend_list': 'func',
+            
+                //  page_index:页码, page_size:页长度
+                'query_my_talkgroup_list': 'func',
+            
+                //  page_index:页码, page_size:页长度, talkgroup_id:群id
+                'query_talkgroup_member_list': 'func',
+            
+                //  talkgroup_id:群id
+                'quite_talkgroup': 'func',
+            
+                //  friendapply_id:好友申请id
+                'reject_friendapply': 'func',
+            
+                //  reply:拒绝理由, talkapply_id:入群申请id
+                'reject_talkapply': 'func',
+            
+                //  talkgroup_id:群id, user_id:用户id
+                'remove_talkgroup': 'func',
+            
+                //  talkgroup_id:群id, user_id:用户id
+                'remove_talkgroup_manager': 'func',
+            
+                //  talkgroup_id:群id, user_id:用户id
+                'transfer_talkgroup_manager': 'func',
+            
+                //  is_muted:是否免打扰, nickname:昵称, talkgroup_id:群id
+                'update_info_in_talkgroup': 'func',
+            
+                //  nickname:昵称, talkgroup_id:群id, user_id:用户id
+                'update_nick_in_talkgroup': 'func',
+            
             },
     
             'develop': {

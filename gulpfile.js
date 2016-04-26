@@ -6,7 +6,7 @@ var iconfont = require('gulp-iconfont');
 var sourcemaps = require('gulp-sourcemaps');
 var iconfontCss = require('gulp-iconfont-css');
 var concat = require('gulp-concat');
-var autoprefixer = require('gulp-autoprefixer')
+var autoprefixer = require('gulp-autoprefixer');
 
 var autoprefixerOptions = {
     browsers: [

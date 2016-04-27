@@ -5,7 +5,7 @@ var app = angular.module('desktop', ["ngAnimate", "ngTouch", 'ngFileUpload', 'ui
 app.run(function ($rootScope) {
     $rootScope.base_config = base_config;
 });
-app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', function ($stateProvider, $urlRouterProvider, modalBoxProvider) {
+app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', 'mqttProvider', function ($stateProvider, $urlRouterProvider, modalBoxProvider, mqttProvider) {
     $stateProvider
         .state('login', {
             url: '/login',
@@ -73,5 +73,13 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', function
             controller: "developRigthBoxCtrl",
             type: "rightBox"
         });
+
+
+    mqttProvider.set(
+        {
+            host: "mqtt://localhost:1884",
+            client_type: "web"
+        }
+    );
 
 }]);

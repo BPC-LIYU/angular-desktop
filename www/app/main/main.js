@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('mainCtrl', function ($scope, httpReq, auth, $location, myUserInfo, $state, mqtt, showConfirm) {
+app.controller('mainCtrl', function ($scope, httpReq, auth, api, $location, myUserInfo, $state, mqtt, showConfirm) {
     var main_view = $scope.main_view = {};
 
 
@@ -30,7 +30,10 @@ app.controller('mainCtrl', function ($scope, httpReq, auth, $location, myUserInf
         $scope.reset_userinfo();
         myUserInfo.getUserInfo().then(function (my_user_info) {
             mqtt.login(my_user_info.id, my_user_info.imusername, my_user_info.impassword)
-        })
+        });
+        api.org.query_my_org_list().then(function (data) {
+            
+        });
     }
 
     init();

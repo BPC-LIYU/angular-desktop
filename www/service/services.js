@@ -234,9 +234,10 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             return deferred.promise;
         }
     })
-    .factory('myUserInfo', function ($q, httpReq) {
+    .factory('myUserInfo', function ($q, httpReq, $injector) {
 
         var user_info = null;
+        var api = $injector.get("api");
 
         function getUserInfo() {
             var deferred = $q.defer();

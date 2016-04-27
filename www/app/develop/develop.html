@@ -68,8 +68,13 @@
                         <td>{{parm.update_time}}</td>
                     </tr>
                 </table>
-                <h5>源代码:</h5>
-                <textarea ui-codemirror="apicodeOption" ng-model="api.code_content"></textarea>
+                <label>
+                    <input type="checkbox" class="pull-left" ng-checked="api.show_code==1"
+                       ng-model="api.show_code" ng-true-value="1" ng-false-value="0">
+
+                <div class="pull-left sign-text">显示源代码</div>
+                </label>
+                <textarea ng-if="api.show_code==1" ui-codemirror="apicodeOption" ng-model="api.code_content" ></textarea>
             </div>
         </div>
         <!-- 显示api的信息 -->
@@ -119,8 +124,13 @@
                         <td>{{parm.update_time}}</td>
                     </tr>
                 </table>
-                <h5>源代码:</h5>
-                <textarea ui-codemirror="apicodeOption" ng-model="current_api.code_content"></textarea>
+                <label>
+                    <input type="checkbox" class="pull-left" ng-checked="current_api.show_code==1"
+                       ng-model="current_api.show_code" ng-true-value="1" ng-false-value="0">
+
+                <div class="pull-left sign-text">显示源代码</div>
+                </label>
+                <textarea ng-if="current_api.show_code==1" ui-codemirror="apicodeOption" ng-model="current_api.code_content" ></textarea>
 
             </div>
         </div>

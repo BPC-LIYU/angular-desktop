@@ -27,8 +27,13 @@
             <td>{{parm.update_time}}</td>
         </tr>
     </table>
-    <h5>源代码:</h5>
-    <!--<textarea ui-codemirror="apicodeOption" ng-model="api.code_content"></textarea>-->
+    <label>
+        <input type="checkbox" class="pull-left" ng-checked="api.box_show_code==1"
+               ng-model="api.box_show_code" ng-true-value="1" ng-false-value="0">
+
+        <div class="pull-left sign-text">显示源代码</div>
+    </label>
+    <textarea ng-if="api.box_show_code==1" ui-codemirror="apicodeOption" ng-model="api.code_content"></textarea>
     <!-- 修改记录和评论 -->
     <div>
         <div class="message-list" ng-repeat="comment in apicommentlist">

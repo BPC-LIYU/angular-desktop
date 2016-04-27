@@ -2,7 +2,7 @@
     <div class="left">
         <uib-accordion close-others="false">
             <uib-accordion-group heading="{{app.name}}" is-open="status.isFirstOpen"
-                                 is-disabled="status.isFirstDisabled" ng-repeat="app in applist"
+                                 is-disabled="status.isFirstDisabled" ng-repeat="app in applist track by app.id"
                                  ng-dblclick="show_app(app)">
                 <div class="ellipsis" ng-repeat="api in app.apilist" ng-click="show_api(api)">
                     <span ng-if="api.is_confirm">new</span>
@@ -23,12 +23,12 @@
             <h5>应用描述:{{current_app.desc}}</h5>
             <h5>模块名:{{current_app.namespace}}</h5>
             <div class="ellipsis" ng-repeat="api in current_app.apilist">
-                <h5>接口名:{{api.name}}</h5>
+                <h5>接口名:{{::api.name}}</h5>
                 <button class="btn btn-info" ng-click="show_api_detail(api)">查看详情</button>
-                <h5>url:{{api.url}}</h5>
-                <h5>函数路径:{{api.namespace}}</h5>
-                <h5>最后修改时间:{{api.update_time}}</h5>
-                <h5>是否可用:{{api.is_active}}</h5>
+                <h5>url:{{::api.url}}</h5>
+                <h5>函数路径:{{::api.namespace}}</h5>
+                <h5>最后修改时间:{{::api.update_time}}</h5>
+                <h5>是否可用:{{::api.is_active}}</h5>
                 <h5>参数信息:</h5>
                 <table>
                     <tr>
@@ -40,18 +40,18 @@
                         <td>参数备注</td>
                         <td>修改时间</td>
                     </tr>
-                    <tr ng-repeat="parm in api.parameterlist">
-                        <td>{{parm.name}}</td>
-                        <td>{{parm.title}}</td>
-                        <td>{{parm.parm_type}}</td>
-                        <td>{{parm.is_required?"是":"否"}}</td>
-                        <td>{{parm.default===null?"null":parm.default===''?"空字符串":parm.default}}</td>
-                        <td>{{parm.desc}}</td>
-                        <td>{{parm.update_time}}</td>
+                    <tr ng-repeat="parm in ::api.parameterlist">
+                        <td>{{::parm.name}}</td>
+                        <td>{{::parm.title}}</td>
+                        <td>{{::parm.parm_type}}</td>
+                        <td>{{::parm.is_required?"是":"否"}}</td>
+                        <td>{{::parm.default===null?"null":parm.default===''?"空字符串":parm.default}}</td>
+                        <td>{{::parm.desc}}</td>
+                        <td>{{::parm.update_time}}</td>
                     </tr>
                 </table>
 
-                <h5>返回值:{{api.response_type=='list'?"列表":"字典"}}</h5>
+                <h5>返回值:{{::api.response_type=='list'?"列表":"字典"}}</h5>
                 <table>
                     <tr>
                         <td>字段名</td>
@@ -60,16 +60,21 @@
                         <td>字段备注</td>
                         <td>修改时间</td>
                     </tr>
-                    <tr ng-repeat="parm in api.responselist">
-                        <td>{{parm.name}}</td>
-                        <td>{{parm.title}}</td>
-                        <td>{{parm.value_type}}</td>
-                        <td>{{parm.desc}}</td>
-                        <td>{{parm.update_time}}</td>
+                    <tr ng-repeat="parm in ::api.responselist">
+                        <td>{{::parm.name}}</td>
+                        <td>{{::parm.title}}</td>
+                        <td>{{::parm.value_type}}</td>
+                        <td>{{::parm.desc}}</td>
+                        <td>{{::parm.update_time}}</td>
                     </tr>
                 </table>
-                <h5>源代码:</h5>
-                <textarea ui-codemirror="apicodeOption" ng-model="api.code_content"></textarea>
+                <label>
+                    <input type="checkbox" class="pull-left" ng-checked="api.show_code==1"
+                       ng-model="api.show_code" ng-true-value="1" ng-false-value="0">
+
+                <div class="pull-left sign-text">显示源代码</div>
+                </label>
+                <textarea ng-if="api.show_code==1" ui-codemirror="apicodeOption" ng-model="::api.code_content" ></textarea>
             </div>
         </div>
         <!-- 显示api的信息 -->
@@ -93,13 +98,13 @@
                         <td>修改时间</td>
                     </tr>
                     <tr ng-repeat="parm in current_api.parameterlist">
-                        <td>{{parm.name}}</td>
-                        <td>{{parm.title}}</td>
-                        <td>{{parm.parm_type}}</td>
-                        <td>{{parm.is_required?"是":"否"}}</td>
-                        <td>{{parm.default===null?"null":parm.default===''?"空字符串":parm.default}}</td>
-                        <td>{{parm.desc}}</td>
-                        <td>{{parm.update_time}}</td>
+                        <td>{{::parm.name}}</td>
+                        <td>{{::parm.title}}</td>
+                        <td>{{::parm.parm_type}}</td>
+                        <td>{{::parm.is_required?"是":"否"}}</td>
+                        <td>{{::parm.default===null?"null":parm.default===''?"空字符串":parm.default}}</td>
+                        <td>{{::parm.desc}}</td>
+                        <td>{{::parm.update_time}}</td>
                     </tr>
                 </table>
                 <h5>返回值:{{current_api.response_type=='list'?"列表":"字典"}}</h5>
@@ -112,15 +117,20 @@
                         <td>修改时间</td>
                     </tr>
                     <tr ng-repeat="parm in current_api.responselist">
-                        <td>{{parm.name}}</td>
-                        <td>{{parm.title}}</td>
-                        <td>{{parm.value_type}}</td>
-                        <td>{{parm.desc}}</td>
-                        <td>{{parm.update_time}}</td>
+                        <td>{{::parm.name}}</td>
+                        <td>{{::parm.title}}</td>
+                        <td>{{::parm.value_type}}</td>
+                        <td>{{::parm.desc}}</td>
+                        <td>{{::parm.update_time}}</td>
                     </tr>
                 </table>
-                <h5>源代码:</h5>
-                <textarea ui-codemirror="apicodeOption" ng-model="current_api.code_content"></textarea>
+                <label>
+                    <input type="checkbox" class="pull-left" ng-checked="current_api.api_show_code==1"
+                       ng-model="current_api.api_show_code" ng-true-value="1" ng-false-value="0">
+
+                <div class="pull-left sign-text">显示源代码</div>
+                </label>
+                <textarea ng-if="current_api.api_show_code==1" ui-codemirror="apicodeOption" ng-model="current_api.code_content" ></textarea>
 
             </div>
         </div>

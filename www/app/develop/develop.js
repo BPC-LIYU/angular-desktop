@@ -8,7 +8,7 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast, Upload, loading, $timeout, modalBox, $injector) {
+app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfirm, showToast, Upload, loading, $timeout, modalBox, api) {
 
     function main() {
         $scope.query_app();
@@ -26,7 +26,6 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
     $scope.current_api = {};
     $scope.current_show_type = null;
     $scope.query_app = function () {
-        var api = $injector.get("api");
         api.develop.query_all_app_list().then(function (data) {
             if (data.result.list) {
                 $scope.applist = data.result.list;
@@ -37,12 +36,11 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
     };
 
     $scope.show_app = function (app) {
-        var apiobj = $injector.get("api");
         $scope.current_show_type = 'app';
         $scope.current_app = app;
-        apiobj.develop.get_appinfo({appinfo_id: app.id}).then(function (data) {
+        api.develop.get_appinfo({appinfo_id: app.id}).then(function (data) {
             angular.extend(app, data.result);
-            return apiobj.develop.query_api_detail_list({app_id: app.id, page_size: 1000})
+            return api.develop.query_api_detail_list({app_id: app.id, page_size: 1000})
         }).then(function (data) {
             _(data.result.list).each(function (item) {
                 _(app.apilist).each(function (apiitem) {
@@ -54,21 +52,20 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
         });
     };
 
-    $scope.show_api = function (api) {
+    $scope.show_api = function (apiobj) {
 
-        var apiobj = $injector.get("api");
         $scope.current_show_type = 'api';
-        $scope.current_api = api;
-        apiobj.develop.get_api({api_id: api.id}).then(function (data) {
-            angular.extend(api, data.result);
+        $scope.current_api = apiobj;
+        api.develop.get_api({api_id: apiobj.id}).then(function (data) {
+            angular.extend(apiobj, data.result);
         });
     };
 
-    $scope.show_api_detail = function (api) {
-        modalBox.show('develop', api)
+    $scope.show_api_detail = function (apiobj) {
+        modalBox.show('develop', apiobj)
     };
     main();
-}).controller('developRigthBoxCtrl', function ($scope, args, modalBox, $uibModalInstance, httpReq, $q, $injector) {
+}).controller('developRigthBoxCtrl', function ($scope, args, modalBox, $uibModalInstance, httpReq, $q, api) {
 
     $scope.apicodeOption = {
         lineNumbers: true,
@@ -87,21 +84,19 @@ app.controller('developCtrl', function ($scope, httpReq, showMessage, showConfir
         $scope.show_api_comment();
     }
 
-    $scope.show_api_detail = function (api) {
-        var apiobj = $injector.get("api");
-        $scope.api = api;
-        apiobj.develop.get_api_detail({api_id: api.id}).then(function (data) {
+    $scope.show_api_detail = function (apiobj) {
+        $scope.api = apiobj;
+        api.develop.get_api_detail({api_id: apiobj.id}).then(function (data) {
             angular.extend($scope.api, data.result);
         });
     };
 
     $scope.show_api_comment = function () {
-        var apiobj = $injector.get("api");
         if ($scope.apicomment_disable) {
             return;
         }
         $scope.apicomment_disable = true;
-        apiobj.develop.query_apicomment_list({
+        api.develop.query_apicomment_list({
             api_id: $scope.api.id,
             page_index: $scope.apicommentindex
         }).then(function (data) {

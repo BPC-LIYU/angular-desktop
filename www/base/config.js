@@ -7,4 +7,8 @@
     base_config.is_develop = true;
     base_config.is_debug = true;
     base_config.channel = "desktop";
+    base_config.mqtt = {
+        host: "mqtt://192.168.2.10:1884",
+        client_type: "web"
+    }
 })(window);

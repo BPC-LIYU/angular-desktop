@@ -14,7 +14,7 @@ service_app
         this.set = function (config) {
             angular.extend(this.config, config);
         };
-        this.$get = function ($q, $uibModal) {
+        this.$get = function ($q, $uibModal, $rootScope, $injector) {
             var self = this;
             var client;
 
@@ -27,6 +27,12 @@ service_app
                         client.end();
                         client = null;
                     }
+                }
+                else if (event_type === 'kick') {
+                    console.error(event_obj.message);
+                    client.end();
+                    client = null;
+                    $rootScope.$broadcast('im_kick');
                 }
             }
 

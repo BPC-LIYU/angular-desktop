@@ -554,7 +554,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .factory('auth', function (httpReq, localStorage, $q, $injector) {
+    .factory('auth', function (httpReq, localStorage, $q, $injector, $location) {
         var api = $injector.get("api");
         return {
             login: function (username, password) {
@@ -576,6 +576,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             logout: function () {
                 var deferred = $q.defer();
                 httpReq("/sys/logout").then(function (data) {
+                    $location.replace().path("/login");
                     deferred.resolve();
                 }, function () {
                     deferred.reject();

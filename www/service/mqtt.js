@@ -72,8 +72,16 @@ service_app
                 init();
             }
 
+            function logout() {
+                if (client) {
+                    client.end();
+                    client = null;
+                }
+            }
+
             return {
-                login: login
+                login: login,
+                logout: logout
             }
         }
 

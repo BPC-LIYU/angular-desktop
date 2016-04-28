@@ -14,7 +14,7 @@ service_app
         this.set = function (config) {
             angular.extend(this.config, config);
         };
-        this.$get = function ($q, $uibModal, $rootScope, $injector) {
+        this.$get = function ($q, $rootScope) {
             var self = this;
             var client;
             var request_callback_map = {};

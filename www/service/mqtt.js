@@ -41,15 +41,15 @@ service_app
                     cleanup();
                     $rootScope.$broadcast('im_kick');
                 }
-                else if (event_type === 'query') {
-                    alert('query');
-                    var callback_id = object.callback_id;
-                    var result = object.result;
-                    var cb = query_callback_map[callback_id];
-                    if (cb) {
-                        query_callback_map[callback_id] = null;
-                        cb(result);
-                    }
+            }
+
+            function handle_query(object) {
+                var callback_id = object.callback_id;
+                var result = object.result;
+                var cb = query_callback_map[callback_id];
+                if (cb) {
+                    query_callback_map[callback_id] = null;
+                    cb(result);
                 }
             }
 
@@ -64,8 +64,8 @@ service_app
                         if (message.type === 'event') {
                             handle_event('user', message.obj);
                         }
-                        else {
-
+                        else if (message.type === 'query') {
+                            handle_query(message.obj);
                         }
                     }
                     else if (topic.indexOf('group/') === 0) {
@@ -74,15 +74,9 @@ service_app
                         if (message.type === 'event') {
                             handle_event('group', message.obj);
                         }
-                        else {
-
-                        }
                     }
 
                 });
-                query('test', 123, function (result) {
-                    alert(result);
-                })
             }
 
             function login(user_id, username, password) {

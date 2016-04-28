@@ -74,7 +74,7 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', 'mqttPro
             type: "rightBox"
         });
 
-
+    base_config.mqtt.device_id = (new Date()).valueOf();
     mqttProvider.set(base_config.mqtt);
 
 }]);

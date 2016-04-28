@@ -9,5 +9,10 @@
         </div>
 
     </div>
-    <div class="right">123</div>
+    <div class="right">
+        <div class="message-item" ng-repeat="m in messages">
+            {{m}}
+        </div>
+        <button class="btn btn-default" ng-click="send_text()">发送消息</button>
+    </div>
 </div>

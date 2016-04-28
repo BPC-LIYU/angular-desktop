@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('mainCtrl', function ($scope, httpReq, auth, api, $location, myUserInfo, $state, mqtt, showConfirm) {
+app.controller('mainCtrl', function ($scope, auth, api, my_organization, modalBox, $location, myUserInfo, $state, mqtt, showConfirm) {
     var main_view = $scope.main_view = {};
 
 
@@ -11,7 +11,7 @@ app.controller('mainCtrl', function ($scope, httpReq, auth, api, $location, myUs
     $scope.reset_userinfo = function () {
         myUserInfo.getUserInfo().then(function (my_user_info) {
             main_view.my_user_info = my_user_info;
-        })
+        });
     };
     $scope.enter_application = function () {
         $state.go("main.application");
@@ -25,14 +25,21 @@ app.controller('mainCtrl', function ($scope, httpReq, auth, api, $location, myUs
         }, function () {
             auth.logout();
         })
-    })
+    });
+
+    $scope.create_organization = function () {
+        modalBox.show('create_organization', null);
+    };
+
     function init() {
         $scope.reset_userinfo();
         myUserInfo.getUserInfo().then(function (my_user_info) {
             mqtt.login(my_user_info.id, my_user_info.imusername, my_user_info.impassword)
         });
-        api.org.query_my_org_list().then(function (data) {
-            
+        my_organization.get_my_organziation().then(function (myorganizationlist) {
+            if (myorganizationlist.length == 0) {
+                modalBox.show('create_organization', null);
+            }
         });
     }
 

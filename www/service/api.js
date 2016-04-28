@@ -216,6 +216,14 @@ service_app
                 //  group_id:非必填:分组id, name:非必填:分组名称, org_id:必填:组织id
                 'create_group': 'func',
             
+                // 创建组织
+                //  icon_url:非必填:组织头像, name:必填:组织名称
+                'create_organization': 'func',
+            
+                // 查询组织中的未分组成员
+                //  group_id:非必填:分组id, org_id:必填:组织id
+                'get_org_or_group_contacts': 'func',
+            
                 // 查询组织信息信息
                 //  org_id:必填:组织id
                 'get_organization': 'func',
@@ -223,6 +231,10 @@ service_app
                 // 从组织中删除应用
                 //  app_id:必填:应用id, org_id:必填:组织id, role_id:非必填:角色, user_id:必填:用户id组
                 'make_appinfo_permission': 'func',
+            
+                // 生成登录二维码数值
+                //  org_id:必填:组织id
+                'qrcode_join_org_string': 'func',
             
                 // 查询组织的应用列表
                 //  org_id:必填:组织id, page_index:非必填:页码, page_size:非必填:页长度
@@ -299,6 +311,10 @@ service_app
                 // 修改分组的信息
                 //  group_id:必填:分组id, icon_url:非必填:头像, name:非必填:分组名称, org_id:必填:组织id, parent_id:非必填:父级分组id
                 'update_group': 'func',
+            
+                // 查询组织信息信息
+                //  icon_url:非必填:组织头像, name:必填:组织名称, org_id:必填:组织id
+                'update_organization': 'func',
             
                 // 修改组织成员信息
                 //  email:非必填:电子邮件, is_gaoguan:非必填:是否高管, is_show_email:非必填:是否显示邮箱, is_show_tel:非必填:是否显示手机号, org_id:必填:组织id, realname:非必填:姓名, title:非必填:职务, user_id:必填:用户id

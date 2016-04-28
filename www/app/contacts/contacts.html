@@ -1,8 +1,63 @@
 <div class="app-container">
     <div class="left">
-        联系人
+        <div class="contact-top-btn">
+            <button ng-class="{'active':select_index==0}" ng-click="show_organizations_group()">架构</button>
+            <button ng-class="{'active':select_index==1}" ng-click="show_relation()">关系</button>
+
+            <button ng-class="{'active':select_index==2}" ng-click="show_contacts()">通信录</button>
+
+        </div>
+        <div ng-if="select_index==0">
+            <div ng-repeat="org in my_organization_list">
+                <img ng-src="org.icon_url"><h5 ng-click="show_organization(org)">{{org.name}}</h5>
+                <div ng-repeat="group in org.my_group_list">
+                    <h4 ng-click="show_group(org, group)">{{group.name}}</h4>
+                </div>
+            </div>
+        </div>
+        <div ng-if="select_index==1">
+            <div class="col-md-12 font-big ellipsis"
+                 onclick="$v.show_contacts_friend()">
+                <div>
+                    <img src="">
+                </div>
+                <span>我的好友</span>
+            </div>
+            <div class="col-md-12 font-big ellipsis" >
+                <div>
+                    <img src="">
+                </div>
+                <span>我的群</span>
+            </div>
+            <div class="col-md-12 font-big ellipsis">
+                <!--此处需要修改,修改后删除注释-->
+                <div>
+                    <img src="">
+                </div>
+                <span>讨论组</span>
+            </div>
+            <div class="col-md-12 font-big ellipsis" >
+                <div>
+                    <img src="">
+                </div>
+                <span>好友申请</span>
+            </div>
+        </div>
+        <div ng-if="select_index==2"></div>
     </div>
-    <div class="right">
+    <div class="right" ng-if="select_index==0">
+        <div>{{current_organization.name}}</div>
+        <div ng-repeat="group in current_group.group_list">
+
+        </div>
+        <div ng-repeat="person in current_group.member_list">
+
+        </div>
+    </div>
+    <div class="right" ng-if="select_index==1">
+
+    </div>
+    <div class="right" ng-if="select_index==2">
 
     </div>
 </div>

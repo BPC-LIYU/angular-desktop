@@ -234,18 +234,25 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             return deferred.promise;
         }
     })
-    .factory('myUserInfo', function ($q, httpReq, $injector) {
+    .factory('myUserInfo', function ($q, httpReq, $injector, $rootScope) {
 
-        var user_info = null;
+        var user_info = {};
         var api = $injector.get("api");
+        $rootScope.$on("userinfo_change", function () {
+            getUserInfo(true);
+        });
 
-        function getUserInfo() {
+        function getUserInfo(is_mast) {
             var deferred = $q.defer();
-            if (user_info) {
-                deferred.resolve(user_info);
+            if (!is_mast) {
+                if (user_info) {
+                    deferred.resolve(user_info);
+                }
             }
-            httpReq("/sys/my_userinfo").then(function (data) {
-                user_info = data.result;
+
+            api.sys.my_userinfo().then(function (data) {
+                angular.extend(user_info, data.result);
+                // user_info = data.result;
                 deferred.resolve(user_info);
             }, function () {
                 deferred.reject();
@@ -254,35 +261,9 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
         }
 
         return {
-            clear: function () {
-                user_info = null;
-            },
-            getUserInfo: function () {
-                return getUserInfo();
-            },
-            getHxusername: function () {
-                if (user_info) {
-                    return user_info.hxusername;
-                }
-                else {
-                    return null;
-                }
-            },
-            getHxpassword: function () {
-                if (user_info) {
-                    return user_info.hxpassword;
-                }
-                else {
-                    return null;
-                }
-            },
-            getName: function () {
-                if (user_info) {
-                    return user_info.name;
-                }
-                else {
-                    return null;
-                }
+
+            getUserInfo: function (is_must) {
+                return getUserInfo(is_must);
             },
             getRealname: function () {
                 if (user_info) {
@@ -735,6 +716,66 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
 
+    })
+    .factory('my_organization', function ($q, httpReq, $injector, $rootScope) {
+
+        var my_organization = [];
+        var api = $injector.get("api");
+        $rootScope.$on("add_organization", function (data) {
+            get_my_organziation(true);
+        });
+
+        function get_my_organziation(is_must) {
+            var deferred = $q.defer();
+            if (!is_must) {
+                if (my_organization.length>0) {
+                    deferred.resolve(my_organization);
+                }
+            }
+
+            api.org.query_my_org_list().then(function (data) {
+                _(data.result.list).each(function (item) {
+                    var has_item = _(my_organization).find(function (initem) {
+                        return initem.id == item.id;
+                    });
+                    if(has_item){
+                        angular.extend(has_item, item);
+                    }else{
+                        my_organization.push(item);
+                    }
+                });
+                var d_list = [];
+                _(my_organization).each(function (item) {
+                    var has_item = _(data.result.list).find(function (initem) {
+                        return initem.id == item.id;
+                    });
+                    if(!has_item){
+                        d_list.push(item);
+                    }
+                });
+                for(var i=my_organization.length-1;i>=0;i--){
+                    var d_item = _(d_list).find(function (initem) {
+                        return initem.id == my_organization[i].id;
+                    });
+                    if(d_item){
+                        my_organization.slice(i,1);
+                    }
+                }
+                deferred.resolve(my_organization);
+            }, function () {
+                deferred.reject();
+            });
+            return deferred.promise;
+        }
+
+        return {
+            clear: function () {
+                my_organization.clear();
+            },
+            get_my_organziation: function (is_must) {
+                return get_my_organziation(is_must);
+            }
+        };
     });
 
 

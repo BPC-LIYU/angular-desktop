@@ -1,0 +1,43 @@
+* {
+  box-sizing: border-box;
+}
+
+.contact-top-btn {
+  overflow: hidden;
+  button {
+    float: left;
+    width: 32%;
+    height: 40px;
+    border: none;
+    color: #212121;
+    font-size: 14px;
+    line-height: 40px;
+    position: relative;
+    background: #f8fbff;
+    vertical-align: top;
+    border-bottom: 1px solid #ccc;
+    &:first-child:after {
+      content: '';
+      width: 1px;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      background: #e4e4e4;
+    }
+
+    &.active {
+      background: white;
+      color: #60cff9;
+      border-bottom: none;
+    }
+  }
+}
+
+.architecture-top-btn {
+  .architecture-top-btn-active {
+    background: white;
+    color: #60cff9;
+    border-bottom: none;
+  }
+}

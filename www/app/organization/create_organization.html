@@ -1,0 +1,162 @@
+<div class="modal-header">
+    <h3 class="modal-title" ng-if="step==0">填写组织信息</h3>
+    <h3 class="modal-title" ng-if="step==1">创建组织架构</h3>
+    <h3 class="modal-title" ng-if="step==2">添加组织成员</h3>
+</div>
+<div class="modal-body" ng-if="step==0">
+    <div>
+        <div class="form-group">
+            <label for="organization_name">组织名称</label>
+            <input type="text" class="form-control" id="organization_name" ng-model="organization.name"
+                   value="{{organization.name}}" placeholder="组织名称">
+        </div>
+        <div class="form-group">
+            <label>组织头像</label>
+            <div>
+                <img ng-repeat="iconid in iconurls" class="org-icon" ng-class="{'active':select_index==iconid}"
+                     ng-click="select_org_icon(iconid)"
+                     ng-src="http://7xtgsx.com2.z0.glb.clouddn.com/default/img/organization/{{iconid}}.png">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="organization_url">上传组织头像</label>
+            <input type="file" id="organization_url">
+            <p class="help-block">如果不使用默认的,可以自己上传组织头像.</p>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal-footer" ng-if="step==0">
+    <button type="button" class="btn btn-primary" ng-click="create_update_organization()">创建组织</button>
+</div>
+
+
+<div class="modal-body" ng-if="step==1">
+    <div>
+        <div class="form-group">
+            <label>使用常见组织架构</label>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <table style="width: 200px;">
+                            <tr>
+                                <th>生产型组织</th>
+                            </tr>
+                            <tr>
+                                <td>营业部</td>
+                            </tr>
+                            <tr>
+                                <td>人事部</td>
+                            </tr>
+                            <tr>
+                                <td>人力资源部</td>
+                            </tr>
+                            <tr>
+                                <td>总务部</td>
+                            </tr>
+                            <tr>
+                                <td>财务部</td>
+                            </tr>
+                            <tr>
+                                <td>销售部</td>
+                            </tr>
+                            <tr>
+                                <td>促销部</td>
+                            </tr>
+                            <tr>
+                                <td>国际部</td>
+                            </tr>
+                            <tr>
+                                <td>出口部</td>
+                            </tr>
+                            <tr>
+                                <td>进口部</td>
+                            </tr>
+                            <tr>
+                                <td>公共关系</td>
+                            </tr>
+                            <tr>
+                                <td>广告部</td>
+                            </tr>
+                            <tr>
+                                <td>企划部</td>
+                            </tr>
+                            <tr>
+                                <td>产品开发部</td>
+                            </tr>
+                            <tr>
+                                <td>研发部</td>
+                            </tr>
+                            <tr>
+                                <td>秘书室</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-sm-6">
+                        <table style="width: 200px;">
+                            <tr>
+                                <th colspan="2">IT团队</th>
+                            </tr>
+
+                            <tr>
+                                <td>人力资源部</td>
+                            </tr>
+
+                            <tr>
+                                <td>财务部</td>
+                            </tr>
+                            <tr>
+                                <td>行政部</td>
+                            </tr>
+                            <tr>
+                                <td>市场部</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3">研发部</td>
+                                <td>测试</td>
+                            </tr>
+                            <tr>
+                                <td>开发</td>
+                            </tr>
+                            <tr>
+                                <td>产品</td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <p class="help-block">您也可以跳过此步骤,以后再自定义组织架构.</p>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal-footer" ng-if="step==1">
+    <button type="button" class="btn" ng-click="goto_invite_members()">跳过</button>
+    <button type="button" class="btn btn-primary" ng-click="save_organization_group()">创建组织架构</button>
+</div>
+
+<div class="modal-body" ng-if="step==2">
+    <div>
+        <div class="form-group">
+            <label>扫码二维码加入组织</label>
+            <div>
+                <qrcode qrcode-style="width: 100%;height: 100%" style="width: 200px;height: 200px;"
+                        data="{{organization.qrcode_string}}"></qrcode>
+            </div>
+            <p class="help-block">您也可以跳过此步骤,以后再自定义组织架构.</p>
+        </div>
+        <div class="form-group">
+            <label>点击邀请链接加入组织</label>
+
+            <p class="bg-primary">{{organization.add_url}}</p>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal-footer" ng-if="step==2">
+    <button type="button" class="btn btn-primary" ng-click="close()">完成</button>
+</div>

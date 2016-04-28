@@ -17,6 +17,15 @@ service_app
         this.$get = function ($q, $uibModal, $rootScope, $injector) {
             var self = this;
             var client;
+            var query_callback_map = {};
+
+            function cleanup() {
+                if (client) {
+                    client.end();
+                    client = null;
+                }
+                query_callback_map = {};
+            }
 
             function handle_event(topic_type, object) {
                 var event_type = object.event_type;
@@ -24,15 +33,23 @@ service_app
                 if (event_type === 'login_error') {
                     console.error(event_obj.message);
                     if (event_obj.code === 501) {
-                        client.end();
-                        client = null;
+                        cleanup();
                     }
                 }
                 else if (event_type === 'kick') {
                     console.error(event_obj.message);
-                    client.end();
-                    client = null;
+                    cleanup();
                     $rootScope.$broadcast('im_kick');
+                }
+            }
+
+            function handle_query(object) {
+                var callback_id = object.callback_id;
+                var result = object.result;
+                var cb = query_callback_map[callback_id];
+                if (cb) {
+                    query_callback_map[callback_id] = null;
+                    cb(result);
                 }
             }
 
@@ -47,33 +64,57 @@ service_app
                         if (message.type === 'event') {
                             handle_event('user', message.obj);
                         }
-                        else {
-
+                        else if (message.type === 'query') {
+                            handle_query(message.obj);
                         }
                     }
                     else if (topic.indexOf('group/') === 0) {
                         message = JSON.parse(message.toString());
                         console.log('--group', topic, message);
+                        if (message.type === 'event') {
+                            handle_event('group', message.obj);
+                        }
                     }
 
                 });
             }
 
-            function login(id, username, password) {
-                if (client) {
-                    client.end();
-                    client = null;
-                }
+            function login(user_id, username, password) {
+                cleanup();
+                var config = self.config;
+                config.user_id = user_id;
+                config.username = username;
+                config.password = password;
                 client = mqtt.connect(self.config.host, {
-                    clientId: self.config.client_type + "_" + id,
-                    username: username,
-                    password: password
+                    clientId: config.client_type + "_" + config.user_id,
+                    username: config.username,
+                    password: config.password
                 });
                 init();
             }
 
+            function logout() {
+                cleanup();
+            }
+
+            function query(route, parms, cb) {
+                if (client) {
+                    var callback_id = self.config.client_type + "_" + self.config.user_id + "_" + (new Date).valueOf();
+                    var payload = {
+                        callid: callback_id,
+                        route: route,
+                        parms: parms
+                    };
+                    if (cb) {
+                        query_callback_map[callback_id] = cb;
+                    }
+                    client.publish("query/" + self.config.user_id, JSON.stringify(payload), {qos: 0, retain: false});
+                }
+            }
+
             return {
-                login: login
+                login: login,
+                logout: logout
             }
         }
 

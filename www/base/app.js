@@ -79,11 +79,6 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', 'mqttPro
         });
 
 
-    mqttProvider.set(
-        {
-            host: "mqtt://localhost:1884",
-            client_type: "web"
-        }
-    );
+    mqttProvider.set(base_config.mqtt);
 
 }]);

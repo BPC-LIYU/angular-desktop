@@ -245,7 +245,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
         function getUserInfo(is_mast) {
             var deferred = $q.defer();
             if (!is_mast) {
-                if (user_info) {
+                if (user_info.id) {
                     deferred.resolve(user_info);
                 }
             }
@@ -730,7 +730,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
         function get_my_organziation(is_must) {
             var deferred = $q.defer();
             if (!is_must) {
-                if (my_organization.length>0) {
+                if (my_organization.length > 0) {
                     deferred.resolve(my_organization);
                 }
             }
@@ -740,9 +740,9 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                     var has_item = _(my_organization).find(function (initem) {
                         return initem.id == item.id;
                     });
-                    if(has_item){
+                    if (has_item) {
                         angular.extend(has_item, item);
-                    }else{
+                    } else {
                         my_organization.push(item);
                     }
                 });
@@ -751,16 +751,16 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                     var has_item = _(data.result.list).find(function (initem) {
                         return initem.id == item.id;
                     });
-                    if(!has_item){
+                    if (!has_item) {
                         d_list.push(item);
                     }
                 });
-                for(var i=my_organization.length-1;i>=0;i--){
+                for (var i = my_organization.length - 1; i >= 0; i--) {
                     var d_item = _(d_list).find(function (initem) {
                         return initem.id == my_organization[i].id;
                     });
-                    if(d_item){
-                        my_organization.slice(i,1);
+                    if (d_item) {
+                        my_organization.slice(i, 1);
                     }
                 }
                 deferred.resolve(my_organization);

@@ -17,14 +17,14 @@ service_app
         this.$get = function ($q, $uibModal, $rootScope, $injector) {
             var self = this;
             var client;
-            var query_callback_map = {};
+            var request_callback_map = {};
 
             function cleanup() {
                 if (client) {
                     client.end();
                     client = null;
                 }
-                query_callback_map = {};
+                request_callback_map = {};
             }
 
             function handle_event(topic_type, object) {
@@ -43,14 +43,18 @@ service_app
                 }
             }
 
-            function handle_query(object) {
+            function handle_request(object) {
                 var callback_id = object.callback_id;
                 var result = object.result;
-                var cb = query_callback_map[callback_id];
+                var cb = request_callback_map[callback_id];
                 if (cb) {
-                    query_callback_map[callback_id] = null;
+                    request_callback_map[callback_id] = null;
                     cb(result);
                 }
+            }
+
+            function handle_chat(object) {
+
             }
 
             function init() {
@@ -64,8 +68,11 @@ service_app
                         if (message.type === 'event') {
                             handle_event('user', message.obj);
                         }
-                        else if (message.type === 'query') {
-                            handle_query(message.obj);
+                        else if (message.type === 'request') {
+                            handle_request(message.obj);
+                        }
+                        else if (message.type === 'chat') {
+                            handle_chat(message.obj);
                         }
                     }
                     else if (topic.indexOf('group/') === 0) {
@@ -73,6 +80,9 @@ service_app
                         console.log('--group', topic, message);
                         if (message.type === 'event') {
                             handle_event('group', message.obj);
+                        }
+                        else if (message.type === 'chat') {
+                            handle_chat(message.obj);
                         }
                     }
 
@@ -97,7 +107,7 @@ service_app
                 cleanup();
             }
 
-            function query(route, parms, cb) {
+            function request(route, parms, cb) {
                 if (client) {
                     var callback_id = self.config.client_type + "_" + self.config.user_id + "_" + (new Date).valueOf();
                     var payload = {
@@ -106,15 +116,16 @@ service_app
                         parms: parms
                     };
                     if (cb) {
-                        query_callback_map[callback_id] = cb;
+                        request_callback_map[callback_id] = cb;
                     }
-                    client.publish("query/" + self.config.user_id, JSON.stringify(payload), {qos: 0, retain: false});
+                    client.publish("request/" + self.config.user_id, JSON.stringify(payload), {qos: 0, retain: false});
                 }
             }
 
             return {
                 login: login,
-                logout: logout
+                logout: logout,
+                request: request
             }
         }
 

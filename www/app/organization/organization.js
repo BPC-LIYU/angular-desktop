@@ -110,7 +110,9 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         $scope.file = null;
     };
     $scope.upload = function () {
-        lyUpload($scope.file, 'public').then(function (id) {
+        lyUpload($scope.file, 'public', function (progress) {
+            console.log(progress);
+        }).then(function (id) {
             console.log(id);
         })
     };

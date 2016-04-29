@@ -34,6 +34,7 @@ service_app
                         filetype = filename.substring(index, filename.length);
                     }
                 }
+                filetype = filetype.toLowerCase().replace(/\./, '');
                 return api.nf.get_upload_files_url({filename: filename, filetype: filetype, access_type: access_type});
             }
 

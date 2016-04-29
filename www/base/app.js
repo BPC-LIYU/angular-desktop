@@ -78,7 +78,7 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', 'mqttPro
             controller: "organizationCreateCtrl"
         });
 
-
+    base_config.mqtt.device_id = (new Date()).valueOf();
     mqttProvider.set(base_config.mqtt);
 
 }]);

@@ -68,9 +68,10 @@
              ng-repeat="group in current_group.groups track by group.id">
             <h4>{{group.name}}</h4>
             <h5>{{group.member_ids.length}}人</h5>
+            <button nf-if="current_group.my_person|org_manager_checker">修改分组信息</button>
         </div>
         <div ng-repeat="person in current_group.members track by person.user_id">
-            <img ng-src="{{person.user__icon_url}}"/>
+            <img class="user_head" ng-src="{{person.user__icon_url | icon_default:person.user_id:person.realname}}"/>
             <h4 ng-click="show_person(person.user_id)">{{person.realname}}</h4>
             <h4 ng-if="person.manager_type==1">管理员</h4>
             <h4 ng-if="person.manager_type==2">超级管理员</h4>

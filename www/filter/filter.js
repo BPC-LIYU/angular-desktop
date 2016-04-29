@@ -2,10 +2,10 @@
  * Created by fanjunwei on 16/1/24.
  */
 app.filter('trust', function ($sce) {
-        return function (url) {
-            return $sce.trustAsResourceUrl(url);
-        }
-    })
+    return function (url) {
+        return $sce.trustAsResourceUrl(url);
+    }
+})
     .filter('first_item', function () {
         return function (array, count) {
             if (count < array.length) {
@@ -78,6 +78,17 @@ app.filter('trust', function ($sce) {
             else {
                 return getFileTypeIcon(filename);
             }
+        }
+    })
+    .filter('org_manager_checker', function () {
+        return function (person, org) {
+            /**
+             * 根据person 校验用户的身份是否管理员
+             */
+            if (person.org_id == org.id && (person.manager_type == 1 || person.manager_type == 2)) {
+                    return true;
+            }
+            return false;
         }
     })
 

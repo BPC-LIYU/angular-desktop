@@ -31,16 +31,13 @@ app.controller('mainCtrl', function ($scope, auth, api, my_organization, modalBo
         modalBox.show('create_organization', null);
     };
 
+
     function init() {
         $scope.reset_userinfo();
         myUserInfo.getUserInfo().then(function (my_user_info) {
             mqtt.login(my_user_info.id, my_user_info.imusername, my_user_info.impassword)
         });
-        my_organization.get_my_organziation().then(function (myorganizationlist) {
-            if (myorganizationlist.length == 0) {
-                modalBox.show('create_organization', null);
-            }
-        });
+        my_organization.get_my_organziation();
     }
 
     init();

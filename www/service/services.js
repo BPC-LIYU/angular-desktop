@@ -719,7 +719,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
         }
 
     })
-    .factory('my_organization', function ($q, httpReq, $injector, $rootScope) {
+    .factory('my_organization', function ($q, httpReq, $injector, $rootScope, modalBox) {
 
         var my_organization = [];
         var api = $injector.get("api");
@@ -727,15 +727,12 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             get_my_organziation(true);
         });
 
-        function get_my_organziation(is_must) {
-            var deferred = $q.defer();
-            if (!is_must) {
-                if (my_organization.length > 0) {
-                    deferred.resolve(my_organization);
+        function get_my_organziation_by_page(page_index) {
+            api.org.query_my_org_list({page_index: page_index}).then(function (data) {
+                if(data.result.list.length==0&&data.result.page_count==0){
+                    modalBox.show('create_organization', null);
                 }
-            }
-
-            api.org.query_my_org_list().then(function (data) {
+                
                 _(data.result.list).each(function (item) {
                     var has_item = _(my_organization).find(function (initem) {
                         return initem.id == item.id;
@@ -763,10 +760,21 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                         my_organization.slice(i, 1);
                     }
                 }
-                deferred.resolve(my_organization);
+
+                if (data.result.page_index < data.result.page_count) {
+                    get_my_organziation_by_page(data.result.page_index + 1);
+                }
             }, function () {
-                deferred.reject();
             });
+        }
+
+        function get_my_organziation(is_must) {
+            var deferred = $q.defer();
+
+            deferred.resolve(my_organization);
+            if (is_must || my_organization.length == 0) {
+                get_my_organziation_by_page();
+            }
             return deferred.promise;
         }
 

@@ -14,7 +14,8 @@ service_app
         this.set = function (config) {
             angular.extend(this.config, config);
         };
-        this.$get = function ($q, $rootScope) {
+        this.$get = function ($q, $rootScope, $injector) {
+            var safeApply = $injector.get('safeApply');
             var self = this;
             var client;
             var request_callback_map = {};
@@ -39,7 +40,9 @@ service_app
                 else if (event_type === 'kick') {
                     console.error(event_obj.message);
                     cleanup();
-                    $rootScope.$broadcast('im_kick');
+                    safeApply($rootScope,function () {
+                        $rootScope.$broadcast('im_kick');
+                    })
                 }
             }
 
@@ -54,7 +57,10 @@ service_app
             }
 
             function handle_chat(object) {
-                $rootScope.$broadcast('im_chat', object);
+                safeApply($rootScope,function () {
+                    $rootScope.$broadcast('im_chat', object);
+                })
+
             }
 
             function init() {

@@ -81,12 +81,18 @@ app.filter('trust', function ($sce) {
         }
     })
     .filter('org_manager_checker', function () {
-        return function (person, org) {
+        return function (person, org, parent_group, group) {
             /**
              * 根据person 校验用户的身份是否管理员
              */
-            if (person.org_id == org.id && (person.manager_type == 1 || person.manager_type == 2)) {
+            if(person.org_id != org.id ){
+                return false;
+            }
+            if (person.manage_type == 1 || person.manage_type == 2) {
                     return true;
+            }
+            if(person.id == parent_group.charge_id || person.id == parent_group.aide_id){
+                return true;
             }
             return false;
         }

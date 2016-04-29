@@ -47,14 +47,14 @@ app.controller('contactsCtrl', function ($scope, api, my_organization) {
 
     $scope.show_organization = function (org) {
         $scope.current_organization = org;
-        api.org.get_org_or_group_contacts({org_id:org.id}).then(function (data) {
+        api.org.get_org_or_group_contacts({org_id: org.id}).then(function (data) {
             $scope.current_group = data.result;
         });
     };
 
     $scope.show_group = function (org, group) {
         $scope.current_organization = org;
-        api.org.get_org_or_group_contacts({org_id:org.id, group_id:group.id}).then(function (data) {
+        api.org.get_org_or_group_contacts({org_id: org.id, group_id: group.id}).then(function (data) {
             $scope.current_group = data.result;
         });
     };
@@ -65,6 +65,10 @@ app.controller('contactsCtrl', function ($scope, api, my_organization) {
 
     $scope.show_contacts = function () {
         $scope.select_index = 2;
+    };
+    
+    $scope.show_person = function (user_id) {
+        alert("显示用户信息"+user_id);    
     };
 
     main();

@@ -19,8 +19,13 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="organization_url">上传组织头像</label>
-            <input type="file" id="organization_url">
+            <label>上传组织头像</label>
+            <img class="header-img" ng-if="file" ngf-thumbnail="file|file_type_icon">
+            <div class="btn-group">
+                <button class="btn btn-sm btn-default" ngf-select="select_file($file)">选择头像</button>
+                <button class="btn btn-sm btn-default" ng-if="file" ng-click="clean_file()">清空</button>
+                <button class="btn btn-sm btn-default" ng-if="file" ng-click="upload()">上传测试</button>
+            </div>
             <p class="help-block">如果不使用默认的,可以自己上传组织头像.</p>
         </div>
 

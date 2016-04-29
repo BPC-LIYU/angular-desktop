@@ -1,7 +1,7 @@
 /**
  * Created by wangjian on 16/4/27.
  */
-app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibModalInstance, $q, api, my_organization, showToast) {
+app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibModalInstance, $q, api, my_organization, showToast, lyUpload) {
 
     $scope.organization = {};
     $scope.step = 0;
@@ -39,7 +39,7 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
                 {name: "市场部"},
                 {
                     name: "研发部",
-                    group: [{name:"测试"},{name:"开发"},{name:"产品设计"}]
+                    group: [{name: "测试"}, {name: "开发"}, {name: "产品设计"}]
                 },
             ]
         },
@@ -93,7 +93,7 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
     $scope.goto_invite_members = function () {
         $scope.step = 2;
         api.org.qrcode_join_org_string({org_id: $scope.organization.id}).then(function (data) {
-            angular.extend($scope.organization, {qrcode_string: data.result.text, add_url:data.result.text});
+            angular.extend($scope.organization, {qrcode_string: data.result.text, add_url: data.result.text});
         })
     };
 
@@ -101,5 +101,18 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         $uibModalInstance.close();
     };
 
+    $scope.select_file = function (file) {
+        if (file) {
+            $scope.file = file;
+        }
+    };
+    $scope.clean_file = function () {
+        $scope.file = null;
+    };
+    $scope.upload = function () {
+        lyUpload($scope.file, 'public').then(function (id) {
+            console.log(id);
+        })
+    };
     main();
 });

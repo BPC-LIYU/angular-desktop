@@ -1,4 +1,5 @@
 @import "mixins";
+
 .drag {
   position: absolute;
   top: 0;
@@ -174,4 +175,60 @@
     left: 0;
     z-index: 1;
   }
+}
+
+.people-header-line {
+  height: 60px;
+  position: relative;
+  padding: 0 0 0 60px;
+  img {
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    .border(50%);
+  }
+  div {
+    line-height: 60px;
+    .ellipsis;
+  }
+}
+
+.people-header-close {
+  width: 14px;
+  height: 14px;
+  .border(7px);
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(-50%, 0);
+}
+
+.people-header {
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  img {
+    width: 42px;
+    height: 42px;
+    overflow: hidden;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+  }
+  div {
+    width: 60px;
+    .ellipsis;
+  }
+}
+
+.header-img {
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
 }

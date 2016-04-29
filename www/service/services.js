@@ -778,6 +778,27 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 return get_my_organziation(is_must);
             }
         };
+    })
+    .factory('getFileTypeIcon', function () {
+        return function (filename) {
+            var filetype = "unknown";
+            if (filename) {
+                filename = filename.replace(/\?.*$/, '');
+                var index = filename.lastIndexOf(".");
+                if (index !== -1) {
+                    filetype = filename.substring(index, filename.length);
+                }
+            }
+            filetype = filetype.toLowerCase().replace(/\./, '');
+            var known_file_type = ['doc', 'docx', 'pdf', 'ppt', 'pptx', 'xls', 'xlsx'];
+            var find = _(known_file_type).find(function (item) {
+                return item === filetype;
+            });
+            if (!find) {
+                filetype = "file";
+            }
+            return "images/file_icon/" + filetype + ".png";
+        }
     });
 
 

@@ -56,5 +56,28 @@ app.filter('trust', function ($sce) {
                 return base_config.base_url + "/sys/user_icon?id=" + id + "&realname=" + name;
             }
         }
-    });
+    })
+    .filter('file_type_icon', function (getFileTypeIcon) {
+        return function (file) {
+            /**
+             * 返回非图片的文件类型图片
+             */
+            var filename = file.name;
+            var filetype = "unknown";
+            if (filename) {
+                var index = filename.lastIndexOf(".");
+                if (index !== -1) {
+                    filetype = filename.substring(index, filename.length);
+                }
+            }
+            filetype = filetype.toLowerCase().replace(/\./, '');
+            if (filetype === 'png' || filetype === 'jpg' || filetype === 'gif' || filetype === 'bmp' || filetype === 'jpeg') {
+
+                return file;
+            }
+            else {
+                return getFileTypeIcon(filename);
+            }
+        }
+    })
 

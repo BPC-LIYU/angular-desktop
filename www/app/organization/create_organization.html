@@ -13,7 +13,7 @@
         <div class="form-group">
             <label>组织头像</label>
             <div>
-                <img ng-repeat="iconid in iconurls" class="org-icon" ng-class="{'active':select_index==iconid}"
+                <img ng-repeat="iconid in iconurls" class="org-icon" ng-class="{'active':select_index==iconid&&file==null}"
                      ng-click="select_org_icon(iconid)"
                      ng-src="http://7xtgsx.com2.z0.glb.clouddn.com/default/img/organization/{{iconid}}.png">
             </div>
@@ -25,7 +25,6 @@
                     <button class="btn btn-sm btn-default" ngf-select="select_file($file)" ngf-accept="'image/*'">选择头像
                 </button>
                 <button class="btn btn-sm btn-default" ng-if="file" ng-click="clean_file()">清空</button>
-                <button class="btn btn-sm btn-default" ng-if="file" ng-click="upload()">上传测试</button>
             </div>
             <p class="help-block">如果不使用默认的,可以自己上传组织头像.</p>
         </div>

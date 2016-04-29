@@ -9,7 +9,7 @@
         </div>
         <div ng-if="select_index==0">
             <div ng-repeat="org in my_organization_list">
-                <img ng-src="org.icon_url"><h5 ng-click="show_organization(org)">{{org.name}}</h5>
+                <img ng-src="{{org.icon_url}}"><h5 ng-click="show_organization(org)">{{org.name}}</h5>
                 <div ng-repeat="group in org.my_group_list">
                     <h4 ng-click="show_group(org, group)">{{group.name}}</h4>
                 </div>

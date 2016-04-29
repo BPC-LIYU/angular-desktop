@@ -51,6 +51,9 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
 
     $scope.show_organization = function (organization) {
         if (organization) {
+            if(organization.icon_url){
+                $scope.select_index = -1;
+            }
             $scope.organization = organization;
         }
 
@@ -62,6 +65,10 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
 
     $scope.create_update_organization = function () {
         var save_organization_callback = function (data) {
+            if($scope.file){
+                angular.extend($scope.organization, data.result);
+                $scope.upload();
+            }
             //todo:暂时写成手动刷新,以后可以改为 事件刷新
             my_organization.get_my_organziation().then(function (my_organization_list) {
                 var org = _(my_organization_list).find(function (item) {
@@ -81,6 +88,14 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         if ($scope.organization.id) {
             api.org.update_organization($scope.organization).then(save_organization_callback);
         } else {
+            if($scope.file){
+                $scope.organization.icon_url = "";
+            }else{
+                if($scope.select_index>=0){
+                    $scope.organization.icon_url = "http://7xtgsx.com2.z0.glb.clouddn.com/default/img/organization/"+$scope.select_index+".png"
+                }
+
+            }
             api.org.create_organization($scope.organization).then(save_organization_callback);
         }
 
@@ -113,7 +128,10 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         lyUpload($scope.file, 'public', function (progress) {
             console.log(progress);
         }).then(function (id) {
-            console.log(id);
+            api.org.create_org_headicon({org_id:$scope.organization.id, nsfile_id:id}).then(function (data) {
+                angular.extend($scope.organization, data.result);
+                my_organization.get_my_organziation(true);
+            })
         })
     };
     main();

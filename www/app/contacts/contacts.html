@@ -17,13 +17,13 @@
         </div>
         <div ng-if="select_index==1">
             <div class="col-md-12 font-big ellipsis"
-                 onclick="$v.show_contacts_friend()">
+                 >
                 <div>
                     <img src="">
                 </div>
                 <span>我的好友</span>
             </div>
-            <div class="col-md-12 font-big ellipsis" >
+            <div class="col-md-12 font-big ellipsis">
                 <div>
                     <img src="">
                 </div>
@@ -36,7 +36,7 @@
                 </div>
                 <span>讨论组</span>
             </div>
-            <div class="col-md-12 font-big ellipsis" >
+            <div class="col-md-12 font-big ellipsis">
                 <div>
                     <img src="">
                 </div>
@@ -48,10 +48,13 @@
     <div class="right" ng-if="select_index==0">
         <div>{{current_organization.name}}</div>
         <div ng-repeat="group in current_group.group_list">
-
+            <h4 ng-click="show_group(current_organization, group)">{{group.name}}</h4>
         </div>
         <div ng-repeat="person in current_group.member_list">
-
+            <img ng-src="{{person.user__icon_url}}" />
+            <h4 ng-click="show_person(person.user_id)">{{person.realname}}</h4>
+            <h4 ng-if="person.manager_type==1">管理员</h4>
+            <h4 ng-if="person.manager_type==2">超级管理员</h4>
         </div>
     </div>
     <div class="right" ng-if="select_index==1">

@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 16/4/20.
  */
-app.controller('contactsCtrl', function ($scope, api, my_organization) {
+app.controller('contactsCtrl', function ($scope, api, my_organization, modalBox) {
 
     $scope.select_index = 0;
     $scope.my_organization_list = [];
@@ -66,10 +66,28 @@ app.controller('contactsCtrl', function ($scope, api, my_organization) {
     $scope.show_contacts = function () {
         $scope.select_index = 2;
     };
-    
+
     $scope.show_person = function (user_id) {
-        alert("显示用户信息"+user_id);    
+        alert("显示用户信息" + user_id);
     };
+
+    $scope.create_group = function (org, group) {
+        modalBox.show('create_group', {"group": group, "org": org});
+
+    };
+
+    $scope.$on("create_group", function (event, obj) {
+        if ($scope.current_group.id == obj.id && $scope.current_group.org_id == obj.org_id) {
+            var parm = {org_id: $scope.current_organization.id};
+            if(obj.org_id){
+                parm.group_id = obj.id;
+            }
+
+            api.org.get_org_or_group_contacts(parm).then(function (data) {
+                $scope.current_group = data.result;
+            });
+        }
+    });
 
     main();
 });

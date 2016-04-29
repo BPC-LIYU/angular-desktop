@@ -76,6 +76,13 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', 'mqttPro
         .set("create_organization", {
             templateUrl: "app/organization/create_organization.html",
             controller: "organizationCreateCtrl"
+        })
+        .set("create_group", {
+            templateUrl: "app/organization/create_group.html",
+            controller: "groupCreateCtrl"})
+        .set("modefy_group", {
+            templateUrl: "app/organization/modefy_group.html",
+            controller: "groupModefyCtrl"
         });
 
     base_config.mqtt.device_id = (new Date()).valueOf();

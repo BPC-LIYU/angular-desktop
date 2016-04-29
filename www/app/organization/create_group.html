@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <h3 class="modal-title" >创建分组</h3>
+</div>
+<div class="modal-body">
+    <div>
+        <div class="form-group">
+            <label for="create_group_name">分组名称</label>
+            <input type="text" class="form-control" id="create_group_name" ng-model="current_group.name"
+                   value="{{current_group.name}}" placeholder="分组名称">
+        </div>
+        <div class="form-group">
+            <label >主管</label>
+
+            <p class="help-block">主管具有操作子分组和分组成员的权限,在任务、审核等模块作为默认审核人;分组可以没有主管.</p>
+        </div>
+        <div class="form-group">
+            <label>主管助理</label>
+
+            <p class="help-block">主管助理具有辅助主管操作子分组和分组成员的权限;分组可以没有主管.</p>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" ng-click="create_group()">创建分组</button>
+</div>

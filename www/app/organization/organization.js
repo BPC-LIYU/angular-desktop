@@ -117,4 +117,45 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         })
     };
     main();
+}).controller("groupCreateCtrl", function ($scope, args, modalBox, $uibModalInstance, $q, api, $rootScope, showToast) {
+
+    $scope.type = "create";
+    $scope.parent_group = {};
+    $scope.current_org = {};
+    $scope.current_group = {};
+
+    function main() {
+        $scope.type = args['type'];
+        $scope.parent_group = args['group'];
+        $scope.current_org = args['org'];
+    }
+
+    $scope.create_group = function () {
+        var parm = {
+                name: $scope.current_group.name,
+                org_id: $scope.current_org.id
+            };
+        if ($scope.current_org != $scope.parent_group) {
+            parm.group_id = $scope.parent_group.id;
+        }
+        api.org.create_group(parm).then(function (data) {
+            showToast(data.message, "success");
+            $rootScope.$broadcast('create_group', $scope.parent_group);
+            $uibModalInstance.close();
+        });
+    };
+
+    main();
+}).controller("groupModefyCtrl", function ($scope, args, modalBox, $uibModalInstance, $q, api, my_organization, showToast) {
+
+    $scope.type = "create";
+    $scope.current_group = {};
+    $scope.parent_group = {};
+
+    function main() {
+        $scope.type = args['type'];
+        $scope.current_group = args['group'];
+    }
+
+    main();
 });

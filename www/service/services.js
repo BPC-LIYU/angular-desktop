@@ -536,9 +536,10 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
-    .factory('auth', function (httpReq, localStorage, $q, $injector, $location) {
+    .factory('auth', function (httpReq, localStorage, $q, $injector, $location, $rootScope) {
         var api = $injector.get("api");
         var mqtt = $injector.get("mqtt");
+        var myUserInfo = $injector.get("myUserInfo");
         return {
             login: function (username, password) {
                 var deferred = $q.defer();
@@ -550,7 +551,11 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 }).then(function (data) {
                     console.log("auth login end");
                     localStorage.set("sessionid", data.result.sessionid);
-                    deferred.resolve();
+                    myUserInfo.getUserInfo().then(function (user_info) {
+                        $rootScope.my_user_info = user_info;
+                        deferred.resolve();
+                    });
+
                 }, function () {
                     deferred.reject();
                 });
@@ -560,6 +565,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 var deferred = $q.defer();
                 httpReq("/sys/logout").then(function (data) {
                     mqtt.logout();
+                    $rootScope.my_user_info = null;
                     $location.replace().path("/login");
                     deferred.resolve();
                 }, function () {
@@ -729,10 +735,10 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
 
         function get_my_organziation_by_page(page_index) {
             api.org.query_my_org_list({page_index: page_index}).then(function (data) {
-                if(data.result.list.length==0&&data.result.page_count==0){
+                if (data.result.list.length == 0 && data.result.page_count == 0) {
                     modalBox.show('create_organization', null);
                 }
-                
+
                 _(data.result.list).each(function (item) {
                     var has_item = _(my_organization).find(function (initem) {
                         return initem.id == item.id;
@@ -807,7 +813,38 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
             return "images/file_icon/" + filetype + ".png";
         }
-    });
+    })
+    .factory("format_datetime", function () {
+        return function (str) {
+            /**
+             * 格式化列表时间
+             */
+            if (!str || str == "") {
+                return "";
+            }
+            var datetime = moment(str);
+            var now = moment();
+            if (now < datetime) {
+                return datetime.format('HH:mm');
+            }
+            if (datetime.year() != now.year()) {
+                return datetime.format('YYYY-MM-DD');
+            }
+            else if (datetime.dayOfYear() - now.dayOfYear() > 2) {
+                return datetime.format('MM-DD HH:mm');
+            }
+            else if (datetime.dayOfYear() - now.dayOfYear() == 2) {
+                return datetime.format('前天 HH:mm');
+            }
+            else if (datetime.dayOfYear() - now.dayOfYear() == 1) {
+                return datetime.format('昨天 HH:mm');
+            }
+            else if (datetime.dayOfYear() - now.dayOfYear() == 0) {
+                return datetime.format('HH:mm');
+            }
+            return datetime.format('MM-DD HH:mm');
+        }
+    })
 
 
 

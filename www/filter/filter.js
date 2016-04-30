@@ -2,10 +2,10 @@
  * Created by fanjunwei on 16/1/24.
  */
 app.filter('trust', function ($sce) {
-    return function (url) {
-        return $sce.trustAsResourceUrl(url);
-    }
-})
+        return function (url) {
+            return $sce.trustAsResourceUrl(url);
+        }
+    })
     .filter('first_item', function () {
         return function (array, count) {
             if (count < array.length) {
@@ -36,6 +36,15 @@ app.filter('trust', function ($sce) {
             else {
                 return "";
             }
+        }
+    })
+    .filter('timestamp_to_time', function (format_datetime) {
+        return function (str) {
+
+            /**
+             * 时间戳转时间
+             */
+            return format_datetime(str);
         }
     })
     .filter('format_datetime', function (format_datetime) {
@@ -85,13 +94,13 @@ app.filter('trust', function ($sce) {
             /**
              * 根据person 校验用户的身份是否管理员
              */
-            if(person.org_id != org.id ){
+            if (person.org_id != org.id) {
                 return false;
             }
             if (person.manage_type == 1 || person.manage_type == 2) {
-                    return true;
+                return true;
             }
-            if(person.id == parent_group.charge_id || person.id == parent_group.aide_id){
+            if (person.id == parent_group.charge_id || person.id == parent_group.aide_id) {
                 return true;
             }
             return false;

@@ -7,7 +7,7 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt) {
         mqtt.send_text_message(0, '123', 1, '123');
     }
     $scope.$on('im_chat', function (event, data) {
-        console.log('event data', data);
+        console.log('im_chat data:', data);
         $scope.messages.push(data);
     })
 });

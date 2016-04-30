@@ -1,18 +1,35 @@
 <div class="app-container">
     <div class="left">
-        <div ng-repeat="sesion in chat_session_list" class="message-list ellipsis">
+        <div ng-repeat="session in chat_session_list" class="chat-session-item ellipsis">
             <img class="message-close" src="images/message/del_message.png">
-            <img src="images/main/header.png">
-            <span ng-bind="sesion.last_message_time|format_datetime"></span>
-            <h2 ng-bind="sesion.name"></h2>
-            <p style="max-width: 110px;" ng-bind="sesion.last_message.content.text"></p>
+            <img ng-src="{{session.icon_url}}" src="images/main/header.png">
+            <span ng-bind="session.last_message_time|format_datetime"></span>
+            <h2 ng-bind="session.name"></h2>
+            <p style="max-width: 110px;" ng-bind="session.last_message.content.text"></p>
         </div>
-
     </div>
-    <div class="right">
-        <div class="message-item" ng-repeat="message in message_list">
+    <div class="right message-content-container">
+        <div class="message-top">
 
         </div>
-        <button class="btn btn-default" ng-click="send_text()">发送消息</button>
+        <div class="message-content">
+            <div class="message-item" ng-repeat="message in message_list">
+
+            </div>
+        </div>
+        <div class="message-bottom">
+            <div class="message-bottom-left">
+                <div class="toolbar">
+                    <button class="btn btn-default btn-sm">附件</button>
+                </div>
+                <div contenteditable="true" class="input-area">
+
+                </div>
+
+            </div>
+            <button class="btn btn-default send-button" ng-click="send_text()">发送消息</button>
+        </div>
+
+
     </div>
 </div>

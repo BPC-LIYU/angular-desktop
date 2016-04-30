@@ -61,9 +61,13 @@ app.filter('trust', function ($sce) {
             /**
              * 返回默认头像
              */
+            if (str) {
+                return str;
+            }
             if (!str && id && name) {
                 return base_config.base_url + "/sys/user_icon?id=" + id + "&realname=" + name;
             }
+
         }
     })
     .filter('file_type_icon', function (getFileTypeIcon) {

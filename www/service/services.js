@@ -295,33 +295,6 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             return promise;
         }
     })
-    .factory('HxUserInfo', function ($q, httpReq) {
-        var user_info_map_by_hx_usename = {};
-
-        function getByHxUsername(hxusername) {
-            var deferred = $q.defer();
-            if (user_info_map_by_hx_usename[hxusername]) {
-                deferred.resolve(user_info_map_by_hx_usename[hxusername]);
-            }
-            httpReq("/ns/user/get_userinfo_by_hxusername", {hxusername: hxusername}, {no_error: true}).then(function (data) {
-                if (data.success) {
-                    user_info_map_by_hx_usename[hxusername] = data.result;
-                    deferred.resolve(data.result);
-                } else {
-                    deferred.reject({person_delete: true});
-                }
-            }, function () {
-                deferred.reject();
-            });
-            return deferred.promise;
-        }
-
-        return {
-            getByHxUsername: function (hxusername) {
-                return getByHxUsername(hxusername);
-            }
-        }
-    })
     .factory("SubStrLen", function () {
         /**
          * 截取字符串
@@ -361,119 +334,25 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             return uuid;
         }
     })
-    .factory('UserInfo', function ($q, httpReq) {
+    .factory('UserInfo', function ($q, $injector) {
 
-        var user_info_map_by_id = {};
-        var user_info_map_by_hx_usename = {};
+        var api = $injector.get('api');
 
         function getUserInfoById(id) {
-            var deferred = $q.defer();
-            if (user_info_map_by_id[id]) {
-                deferred.resolve(user_info_map_by_id[id]);
-            }
-            httpReq("/ns/project/get_userinfo", {user_id: id}).then(function (data) {
-                user_info_map_by_id[id] = data.result;
-                user_info_map_by_hx_usename[data.hxusername] = data.result;
-                deferred.resolve(data.result);
-            }, function () {
-                deferred.reject();
+            var defered = $q.defer();
+            api.sys.get_userinfo({user_id: id}).then(function (data) {
+                defered.resolve(data.result);
+            }, function (error) {
+                defered.reject(error);
             });
-            return deferred.promise;
-        }
-
-        function getUserInfoByTel(tel) {
-            var deferred = $q.defer();
-            httpReq("/ns/project/get_userinfo", {tel: tel}).then(function (data) {
-                deferred.resolve(data.result);
-            }, function () {
-                deferred.reject();
-            });
-            return deferred.promise;
-        }
-
-        function getUserInfoByHxUsername(hxusername) {
-            var deferred = $q.defer();
-            if (user_info_map_by_hx_usename[hxusername]) {
-                deferred.resolve(user_info_map_by_hx_usename[hxusername]);
-            }
-            else {
-                httpReq("/ns/project/get_userinfo", {hxusername: hxusername}).then(function (data) {
-                    user_info_map_by_id[data.id] = data.result;
-                    user_info_map_by_hx_usename[data.hxusername] = data.result;
-                    deferred.resolve(data.result);
-                }, function () {
-                    deferred.reject();
-                });
-            }
-            return deferred.promise;
+            return defered.promise;
         }
 
         return {
             getUserInfoById: function (id) {
                 return getUserInfoById(id);
-            },
-            getUserInfoByTel: function (tel) {
-                return getUserInfoByTel(tel);
-            },
-            getUserInfoByHxUsername: function (hxusername) {
-                return getUserInfoByHxUsername(hxusername);
             }
         }
-    })
-    .factory('hxGroupInfo', function ($q, httpReq) {
-
-        var hxGroup_info_map_by_id = {};
-        var hxGroup_info_map_by_hx_groupname = {};
-
-        function getHxGroupInfoById(id) {
-            var deferred = $q.defer();
-            if (hxGroup_info_map_by_id[id]) {
-                deferred.resolve(hxGroup_info_map_by_id[id]);
-            }
-            else {
-                httpReq("/ns/hxgroup/get_hxgroup_info", {id: id}, {notShowErrorMessage: true}).then(function (data) {
-                    hxGroup_info_map_by_id[data.id] = data.result;
-                    hxGroup_info_map_by_hx_groupname[data.hxgroupid] = data.result;
-                    deferred.resolve(data.result);
-                }, function () {
-                    deferred.reject();
-                });
-            }
-            return deferred.promise;
-        }
-
-        function getHxGroupInfoByHxUsername(hxgroupname) {
-            var deferred = $q.defer();
-            if (hxGroup_info_map_by_hx_groupname[hxgroupname]) {
-                deferred.resolve(hxGroup_info_map_by_hx_groupname[hxgroupname]);
-            }
-            httpReq("/ns/hxgroup/get_hxgroup_info_by_hx", {hxgroupid: hxgroupname}, {
-                notShowErrorMessage: true,
-                no_error: true
-            }).then(function (data) {
-                //alert(JSON.stringify(data));
-                if (data.success) {
-                    hxGroup_info_map_by_id[data.id] = data.result;
-                    hxGroup_info_map_by_hx_groupname[hxgroupname] = data.result;
-                    deferred.resolve(data.result);
-                } else {
-                    deferred.reject({group_delete: true});
-                }
-            }, function () {
-                deferred.reject();
-            });
-
-            return deferred.promise;
-        }
-
-        return {
-            getHxGroupInfoById: function (id) {
-                return getHxGroupInfoById(id);
-            },
-            getHxGroupInfoByHxUsername: function (hxgroupname) {
-                return getHxGroupInfoByHxUsername(hxgroupname);
-            }
-        };
     })
     .factory('safeApply', function ($rootScope) {
         return function ($scope, fn) {
@@ -843,6 +722,16 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 return datetime.format('HH:mm');
             }
             return datetime.format('MM-DD HH:mm');
+        }
+    })
+    .factory('icon_default', function () {
+        return function (icon_url, id, name) {
+            if (icon_url) {
+                return icon_url;
+            }
+            if (!icon_url && id && name) {
+                return base_config.base_url + "/sys/user_icon?id=" + id + "&realname=" + name;
+            }
         }
     })
 

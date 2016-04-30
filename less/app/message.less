@@ -71,7 +71,9 @@
     flex-grow: 1;
     background: #fff;
     border-bottom: solid 1px @boder-color;
-
+    overflow-y: auto;
+    padding-left: 16px;
+    padding-right: 16px;
   }
   .message-bottom {
     background: #fff;
@@ -112,13 +114,48 @@
 }
 
 .message-item {
-
+  margin-top: 12px;
   .my-message-item {
+    .messag-profile-info {
+      padding-left: 45px;
+      color: @grey-text-color;
+      .message-name {
+        line-height: 1.2em;
+      }
 
+    }
+
+    .message-info {
+      padding-right: 50px;
+      .messge-header-img {
+        width: 33px;
+        height: 33px;
+        border-radius: 50%;
+      }
+      .messag-block {
+        margin-left: 12px;
+        padding: 5px 11px;
+        border: solid 1px @boder-color;
+        border-radius: @border-radius;
+        max-width: 90%;
+        word-break: break-all;
+      }
+    }
   }
 
   .target-message-item {
 
+  }
+  .message-time {
+    display: none;
+    font-size: 0.8em;
+    padding-left: 10px;
+    line-height: 1.2em;
+  }
+  &:hover {
+    .message-time {
+      display: inline-block;
+    }
   }
 }
 

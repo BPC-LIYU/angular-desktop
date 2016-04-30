@@ -13,16 +13,38 @@
 
         </div>
         <div class="message-content">
-            <div class="message-item" ng-repeat="message in message_list">
 
+            <div class="message-item clearfix" ng-repeat="message in message_list">
+                <div class="my-message-item">
+                    <div class="messag-profile-info clearfix">
+                            <span class="message-name">
+                                {{message.fname}}
+                            </span>
+
+                            <span class="message-time">
+                                {{message.time|format_datetime}}
+                            </span>
+                    </div>
+                    <div class="message-info">
+                        <img class="messge-header-img pull-left" src="images/main/header.png">
+                        <div class="messag-block pull-left">
+                            <div ng-if="message.ctype=='txt'">
+                                {{message.content.text}}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
+
         </div>
         <div class="message-bottom">
             <div class="message-bottom-left">
                 <div class="toolbar">
                     <button class="btn btn-default btn-sm">附件</button>
                 </div>
-                <div contenteditable="true" class="input-area">
+                <div contenteditable="true" ng-model="input_content" class="input-area">
 
                 </div>
 

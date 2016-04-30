@@ -236,7 +236,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
     })
     .factory('myUserInfo', function ($q, httpReq, $injector, $rootScope) {
 
-        var user_info = {};
+        var user_info = $rootScope.my_user_info = {};
         var api = $injector.get("api");
         $rootScope.$on("userinfo_change", function () {
             getUserInfo(true);
@@ -431,7 +431,6 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                     console.log("auth login end");
                     localStorage.set("sessionid", data.result.sessionid);
                     myUserInfo.getUserInfo().then(function (user_info) {
-                        $rootScope.my_user_info = user_info;
                         deferred.resolve();
                     });
 

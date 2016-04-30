@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_default, $timeout, safeApply) {
+app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_default, $timeout, safeApply, $rootScope) {
     $scope.test_a = [{}, {}];
 
     $timeout(function () {
@@ -11,7 +11,7 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
     $scope.message_list = [];
     $scope.chat_session_list = [];
     $scope.send_text = function () {
-        mqtt.send_text_message(0, '123', 1, '123');
+        mqtt.send_text_message(0, $rootScope.my_user_info.realname, 1, $scope.input_content);
     };
     $scope.$on('im_chat', function (event, data) {
         // console.log('im_chat data:', data);
@@ -30,7 +30,7 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
         }
         else {
             UserInfo.getUserInfoById(target).then(function (info) {
-                safeApply($scope,function () {
+                safeApply($scope, function () {
                     chat_session.icon_url = icon_default(info.icon_url, info.id, info.realname);
                 })
             })

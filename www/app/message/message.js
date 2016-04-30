@@ -2,16 +2,13 @@
  * Created by fanjunwei on 16/4/18.
  */
 app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_default, $timeout, safeApply, $rootScope) {
-    $scope.test_a = [{}, {}];
-
-    $timeout(function () {
-        $scope.test_a [0].url = "aaa";
-    }, 1000);
-
+    $scope.current_session = null;
     $scope.message_list = [];
     $scope.chat_session_list = [];
+    $scope.input_content = "";
     $scope.send_text = function () {
         mqtt.send_text_message(0, $rootScope.my_user_info.realname, 1, $scope.input_content);
+        $scope.input_content="";
     };
     $scope.$on('im_chat', function (event, data) {
         // console.log('im_chat data:', data);
@@ -37,6 +34,9 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
         }
     }
 
+    $scope.select_session = function (session) {
+        $scope.current_session = session;
+    };
     mqtt.ready(function () {
         mqtt.get_chat_session().then(function (list) {
             $scope.chat_session_list = list;

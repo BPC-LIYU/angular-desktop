@@ -1,6 +1,7 @@
 <div class="app-container">
     <div class="left">
-        <div ng-repeat="session in chat_session_list" class="chat-session-item ellipsis">
+        <div ng-repeat="session in chat_session_list" class="chat-session-item ellipsis"
+             ng-class="{'active':current_session==session}" ng-click="select_session(session)">
             <img class="message-close" src="images/message/del_message.png">
             <img ng-src="{{session.icon_url}}" src="images/main/header.png">
             <span ng-bind="session.last_message_time|format_datetime"></span>
@@ -8,15 +9,16 @@
             <p style="max-width: 110px;" ng-bind="session.last_message.content.text"></p>
         </div>
     </div>
-    <div class="right message-content-container">
-        <div class="message-top">
+    <div class="right">
+        <div ng-if="current_session" class="message-content-container">
+            <div class="message-top">
 
-        </div>
-        <div class="message-content">
+            </div>
+            <div class="message-content">
 
-            <div class="message-item clearfix" ng-repeat="message in message_list">
-                <div class="my-message-item">
-                    <div class="messag-profile-info clearfix">
+                <div class="message-item clearfix" ng-repeat="message in message_list">
+                    <div class="my-message-item">
+                        <div class="messag-profile-info clearfix">
                             <span class="message-name">
                                 {{message.fname}}
                             </span>
@@ -24,34 +26,34 @@
                             <span class="message-time">
                                 {{message.time|format_datetime}}
                             </span>
-                    </div>
-                    <div class="message-info">
-                        <img class="messge-header-img pull-left" src="images/main/header.png">
-                        <div class="messag-block pull-left">
-                            <div ng-if="message.ctype=='txt'">
-                                {{message.content.text}}
+                        </div>
+                        <div class="message-info">
+                            <img class="messge-header-img pull-left" src="images/main/header.png">
+                            <div class="messag-block pull-left">
+                                <div ng-if="message.ctype ==='txt'">
+                                    {{message.content.text}}
+                                </div>
                             </div>
                         </div>
+
                     </div>
-
                 </div>
-            </div>
 
-
-        </div>
-        <div class="message-bottom">
-            <div class="message-bottom-left">
-                <div class="toolbar">
-                    <button class="btn btn-default btn-sm">附件</button>
-                </div>
-                <div contenteditable="true" ng-model="input_content" class="input-area">
-
-                </div>
 
             </div>
-            <button class="btn btn-default send-button" ng-click="send_text()">发送消息</button>
+            <div class="message-bottom">
+                <div class="message-bottom-left">
+                    <div class="toolbar">
+                        <button class="btn btn-default btn-sm">附件</button>
+                    </div>
+                    <div contenteditable ng-model="$parent.input_content" class="input-area"></div>
+                </div>
+                <button class="btn btn-default send-button" ng-click="send_text()">发送消息</button>
+            </div>
         </div>
-
+        <div ng-if="!current_session" class="empty-message-content">
+                空白页面
+        </div>
 
     </div>
 </div>

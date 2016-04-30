@@ -68,7 +68,7 @@ var directive_app = angular.module('directive', [])
         };
         element.html(value_to_html(ngModel.$viewValue));
         // Listen for change events to enable binding
-        element.on('blur change input', function () {
+        element.on('blur change input keyup', function () {
           read();
         });
         // Write data to the model

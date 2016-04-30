@@ -19,6 +19,8 @@ service_app
             var self = this;
             var client;
             var request_callback_map = {};
+            var state_defered_array = [];
+            var state = 0;//0:未登录 1:已登录 -1:错误
 
             function cleanup() {
                 if (client) {
@@ -26,6 +28,7 @@ service_app
                     client = null;
                 }
                 request_callback_map = {};
+                state = 0;
             }
 
             function handle_event(topic_type, object) {
@@ -40,7 +43,7 @@ service_app
                 else if (event_type === 'kick') {
                     console.error(event_obj.message);
                     cleanup();
-                    safeApply($rootScope,function () {
+                    safeApply($rootScope, function () {
                         $rootScope.$broadcast('im_kick');
                     })
                 }
@@ -57,8 +60,15 @@ service_app
             }
 
             function handle_chat(object) {
-                safeApply($rootScope,function () {
+                safeApply($rootScope, function () {
                     $rootScope.$broadcast('im_chat', object);
+                })
+
+            }
+
+            function handle_chat_session(object) {
+                safeApply($rootScope, function () {
+                    $rootScope.$broadcast('im_chat_session', object);
                 })
 
             }
@@ -66,6 +76,10 @@ service_app
             function init() {
                 client.on('connect', function () {
                     console.log("mqtt connect");
+                    state = 1;
+                    _(state_defered_array).each(function (defered) {
+                        defered.resolve();
+                    });
                     request("send_client_info", {
                         client_type: self.config.client_type,
                         device_id: self.config.device_id
@@ -73,6 +87,10 @@ service_app
                 });
                 client.on('error', function (error) {
                     console.error(error);
+                    _(state_defered_array).each(function (defered) {
+                        defered.reject();
+                    });
+                    state = -1;
                 });
                 client.on('message', function (topic, message) {
                     if (topic.indexOf('user/') === 0) {
@@ -87,6 +105,10 @@ service_app
                         else if (message.type === 'chat') {
                             handle_chat(message.obj);
                         }
+                        else if (message.type === 'chat_session') {
+                            handle_chat_session(message.obj);
+                        }
+
                     }
                     else if (topic.indexOf('group/') === 0) {
                         message = JSON.parse(message.toString());
@@ -97,10 +119,14 @@ service_app
                         else if (message.type === 'chat') {
                             handle_chat(message.obj);
                         }
+                        else if (message.type === 'chat_session') {
+                            handle_chat_session(message.obj);
+                        }
                     }
 
                 });
             }
+
 
             function login(user_id, username, password) {
                 cleanup();
@@ -115,6 +141,24 @@ service_app
                     password: config.password
                 });
                 init();
+            }
+
+            function ready(cb) {
+                if (state === 1) {
+                    cb(true);
+                }
+                else if (state === -1) {
+                    cb(false);
+                }
+                else {
+                    var defered = $q.defer();
+                    state_defered_array.push(defered);
+                    defered.promise.then(function () {
+                        cb(true);
+                    }, function () {
+                        cb(false);
+                    })
+                }
             }
 
             function logout() {
@@ -172,11 +216,21 @@ service_app
                 request('send_message', message);
             }
 
+            function get_chat_session() {
+                var defered = $q.defer();
+                request('get_chat_session', {}, function (list) {
+                    defered.resolve(list);
+                });
+                return defered.promise;
+            }
+
             return {
                 login: login,
+                ready: ready,
                 logout: logout,
                 request: request,
-                send_text_message: send_text_message
+                send_text_message: send_text_message,
+                get_chat_session: get_chat_session
             }
         }
 

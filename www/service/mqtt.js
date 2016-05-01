@@ -224,13 +224,18 @@ service_app
                 return defered.promise;
             }
 
+            function set_chat_session_read_time(session_id, time) {
+                request('set_chat_session_read_time', {session_id: session_id, time: time});
+            }
+
             return {
                 login: login,
                 ready: ready,
                 logout: logout,
                 request: request,
                 send_text_message: send_text_message,
-                get_chat_session: get_chat_session
+                get_chat_session: get_chat_session,
+                set_chat_session_read_time: set_chat_session_read_time
             }
         }
 

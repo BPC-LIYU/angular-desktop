@@ -733,6 +733,26 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
             }
         }
     })
+    .factory('update_array', function () {
+        return function (array1, array2, func) {
+
+            _(array1).each(function (array1_item) {
+                var find_item = _(array2).find(function (array2_item) {
+                    return func(array1_item, array2_item);
+                });
+                angular.extend(array1_item, find_item);
+            });
+            array1 = result;
+            _(array2).each(function (array2_item) {
+                var find_item = _(array1).find(function (array1_item) {
+                    return func(array1_item, array2_item);
+                });
+                if (!find_item) {
+                    array1.push(array2_item);
+                }
+            });
+        }
+    })
 
 
 

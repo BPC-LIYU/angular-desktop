@@ -1,21 +1,25 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_default, $timeout, safeApply, $rootScope) {
+app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_default, $timeout, safeApply, $rootScope, update_array) {
     $scope.current_session = null;
     $scope.message_list = [];
     $scope.chat_session_list = [];
     $scope.input_content = "";
     $scope.send_text = function () {
         mqtt.send_text_message(0, $rootScope.my_user_info.realname, 1, $scope.input_content);
-        $scope.input_content="";
+        $scope.input_content = "";
     };
     $scope.$on('im_chat', function (event, data) {
         // console.log('im_chat data:', data);
         $scope.message_list.push(data);
     });
     $scope.$on('im_chat_session', function (event, data) {
-        console.log('im_chat_session data:', data);
+
+        update_array($scope.chat_session_list, [data], function (item1, item2) {
+            return item1.session_id === item2.session_id;
+        });
+        console.log('im_chat_session data:', $scope.chat_session_list);
     });
     function get_chat_session_user_info(chat_session) {
         chat_session.icon_url = 'http://www.baidu.com';
@@ -36,6 +40,8 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
 
     $scope.select_session = function (session) {
         $scope.current_session = session;
+        session.unread = 0;
+        mqtt.set_chat_session_read_time(session.session_id, session.last_message_time);
     };
     mqtt.ready(function () {
         mqtt.get_chat_session().then(function (list) {

@@ -7,6 +7,7 @@
             <span ng-bind="session.last_message_time|format_datetime"></span>
             <h2 ng-bind="session.name"></h2>
             <p style="max-width: 110px;" ng-bind="session.last_message.content.text"></p>
+            <span ng-if="session.unread" class="badge" ng-bind="session.unread"></span>
         </div>
     </div>
     <div class="right">

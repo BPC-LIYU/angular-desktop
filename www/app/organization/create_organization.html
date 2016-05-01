@@ -1,4 +1,5 @@
 <div class="modal-header">
+    <button ng-click="close()" type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
     <h3 class="modal-title" ng-if="step==0">填写组织信息</h3>
     <h3 class="modal-title" ng-if="step==1">创建组织架构</h3>
     <h3 class="modal-title" ng-if="step==2">添加组织成员</h3>
@@ -13,7 +14,8 @@
         <div class="form-group">
             <label>组织头像</label>
             <div>
-                <img ng-repeat="iconid in iconurls" class="org-icon" ng-class="{'active':select_index==iconid&&file==null}"
+                <img ng-repeat="iconid in iconurls" class="org-icon"
+                     ng-class="{'active':select_index==iconid&&file==null}"
                      ng-click="select_org_icon(iconid)"
                      ng-src="http://7xtgsx.com2.z0.glb.clouddn.com/default/img/organization/{{iconid}}.png">
             </div>
@@ -22,7 +24,7 @@
             <label>上传组织头像</label>
             <img class="header-img" ng-if="file" ngf-thumbnail="file|file_type_icon">
             <div class="btn-group">
-                    <button class="btn btn-sm btn-default" ngf-select="select_file($file)" ngf-accept="'image/*'">选择头像
+                <button class="btn btn-sm btn-default" ngf-select="select_file($file)" ngf-accept="'image/*'">选择头像
                 </button>
                 <button class="btn btn-sm btn-default" ng-if="file" ng-click="clean_file()">清空</button>
             </div>

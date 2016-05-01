@@ -163,6 +163,10 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         });
     };
 
+    $scope.close=function () {
+        $uibModalInstance.dismiss();
+    }
+
     main();
 }).controller("groupModefyCtrl", function ($scope, args, modalBox, $uibModalInstance, $q, api, my_organization, showToast) {
 
@@ -173,6 +177,10 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
     function main() {
         $scope.type = args['type'];
         $scope.current_group = args['group'];
+    }
+
+    $scope.close=function () {
+        $uibModalInstance.dismiss();
     }
 
     main();

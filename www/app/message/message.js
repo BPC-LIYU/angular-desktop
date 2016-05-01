@@ -7,7 +7,17 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
     $scope.chat_session_list = [];
     $scope.input_content = "";
     $scope.send_text = function () {
-        mqtt.send_text_message(0, $rootScope.my_user_info.realname, 1, $scope.input_content);
+        var fname;
+        var target_type = $scope.current_session.target_type;
+        var is_group = (target_type === 1);
+        if (is_group) {
+
+        }
+        else {
+            fname = $rootScope.my_user_info.realname
+        }
+        var target = $scope.current_session.target;
+        mqtt.send_text_message(target_type, fname, target, $scope.input_content);
         $scope.input_content = "";
     };
     $scope.$on('im_chat', function (event, data) {

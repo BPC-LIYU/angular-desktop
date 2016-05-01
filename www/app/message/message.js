@@ -52,9 +52,15 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
     }
 
     $scope.select_session = function (session) {
-        $scope.current_session = session;
-        session.unread = 0;
-        mqtt.set_chat_session_read_time(session.session_id, session.last_message_time);
+        if (session !== $scope.current_session) {
+            $scope.current_session = session;
+            session.unread = 0;
+            mqtt.set_chat_session_read_time(session.session_id, session.last_message_time);
+            mqtt.get_chat_history(session.session_id).then(function (messages) {
+                $scope.message_list = messages;
+            });
+        }
+
     };
     mqtt.ready(function () {
         mqtt.get_chat_session().then(function (list) {

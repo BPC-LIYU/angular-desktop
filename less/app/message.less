@@ -143,6 +143,19 @@
       visibility: visible !important;
     }
   }
+  .msg-bubble-tri {
+    position: absolute;
+    top: 13px;
+    right: auto;
+    height: 6px;
+    width: 6px;
+    transform: rotate(45deg);
+    z-index: 10;
+    border: 0;
+    border-left: 1px solid @boder-color;
+    border-bottom: 1px solid @boder-color;
+    background-color: #fff;
+  }
   //对方消息
   .target-message-item {
     .messag-profile-info {
@@ -174,6 +187,11 @@
         word-break: break-all;
         min-width: 50px;
         min-height: 33px;
+        position: relative;
+        .msg-bubble-tri {
+          left: -4px;
+        }
+
       }
       .message-control-container {
         width: 50px;
@@ -227,6 +245,11 @@
         word-break: break-all;
         min-width: 50px;
         min-height: 33px;
+        position: relative;
+        .msg-bubble-tri {
+          right: -4px;
+          transform: rotate(225deg);
+        }
       }
       .message-control-container {
         width: 50px;

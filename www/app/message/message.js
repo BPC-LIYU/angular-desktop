@@ -43,6 +43,9 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
                 $scope.message_list.push(data);
                 mqtt.set_chat_session_read_time($scope.current_session.session_id, data.time);
             }
+            else if ($scope.current_session && data.target === $scope.current_session.target) {
+                $scope.message_list.push(data);
+            }
             else {
                 var find = _($scope.chat_session_list).find(function (item) {
                     return item.target === data.fuser;

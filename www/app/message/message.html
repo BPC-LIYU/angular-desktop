@@ -17,27 +17,31 @@
             </div>
             <div class="message-content">
 
-                <div class="message-item clearfix" ng-repeat="message in message_list">
-                    <div class="my-message-item">
-                        <div class="messag-profile-info clearfix">
-                            <span class="message-name">
+                <div class="message-item" ng-repeat="message in message_list">
+                    <div ng-class="{'target-message-item':message.fuser!==my_user_info.id,'my-message-item':message.fuser===my_user_info.id}">
+                    <!--<div ng-class="{'target-message-item':$index%2==0,'my-message-item':$index%2==1}">-->
+                        <div class="messag-profile-info">
+                            <div class="message-name">
                                 {{message.fname}}
-                            </span>
-
-                            <span class="message-time">
+                            </div>
+                            <div class="message-time">
                                 {{message.time|format_datetime}}
-                            </span>
+                            </div>
                         </div>
                         <div class="message-info">
-                            <img class="messge-header-img pull-left" src="images/main/header.png">
-                            <div class="messag-block pull-left">
+                            <img class="messge-header-img" src="images/main/header.png">
+                            <div class="messag-block">
                                 <div ng-if="message.ctype ==='txt'">
                                     {{message.content.text}}
                                 </div>
                             </div>
+                            <div class="message-control-container">
+                                <i class="message-control glyphicon glyphicon-option-horizontal"></i>
+                                <span class="read-state">已读</span>
+                            </div>
                         </div>
-
                     </div>
+
                 </div>
 
 

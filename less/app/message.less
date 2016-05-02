@@ -129,9 +129,27 @@
 
 .message-item {
   margin-top: 12px;
-  .my-message-item {
+  .message-time {
+    display: none;
+    font-size: 0.8em;
+    padding: 0 10px;
+    line-height: 1.2em;
+  }
+  &:hover {
+    .message-time {
+      display: inline-block;
+    }
+    .message-control {
+      visibility: visible !important;
+    }
+  }
+  //对方消息
+  .target-message-item {
     .messag-profile-info {
+      display: flex;
+      flex-direction: row;
       padding-left: 45px;
+      padding-bottom: 2px;
       color: @grey-text-color;
       .message-name {
         line-height: 1.2em;
@@ -140,7 +158,8 @@
     }
 
     .message-info {
-      padding-right: 50px;
+      display: flex;
+      flex-direction: row;
       .messge-header-img {
         width: 33px;
         height: 33px;
@@ -156,21 +175,79 @@
         min-width: 50px;
         min-height: 33px;
       }
+      .message-control-container {
+        width: 50px;
+        flex-shrink: 0;
+        text-align: left;
+        padding: 0 6px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-start;
+        .message-control {
+          background: #baced9;
+          color: #fff;
+          border-radius: 4px;
+          padding: 1px 2px 1px 1px;
+          visibility: hidden;
+        }
+        .read-state {
+          visibility: hidden;
+        }
+      }
     }
   }
+  //我的消息
+  .my-message-item {
+    .messag-profile-info {
+      display: flex;
+      flex-direction: row-reverse;
+      padding-right: 45px;
+      padding-bottom: 2px;
+      color: @grey-text-color;
+      .message-name {
+        line-height: 1.2em;
+      }
+    }
 
-  .target-message-item {
-
-  }
-  .message-time {
-    display: none;
-    font-size: 0.8em;
-    padding-left: 10px;
-    line-height: 1.2em;
-  }
-  &:hover {
-    .message-time {
-      display: inline-block;
+    .message-info {
+      display: flex;
+      flex-direction: row-reverse;
+      .messge-header-img {
+        width: 33px;
+        height: 33px;
+        border-radius: 50%;
+      }
+      .messag-block {
+        margin-right: 12px;
+        padding: 5px 11px;
+        border: solid 1px @boder-color;
+        border-radius: @border-radius;
+        max-width: 90%;
+        word-break: break-all;
+        min-width: 50px;
+        min-height: 33px;
+      }
+      .message-control-container {
+        width: 50px;
+        flex-shrink: 0;
+        text-align: right;
+        padding: 0 6px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        .message-control {
+          background: #baced9;
+          color: #fff;
+          border-radius: 4px;
+          padding: 1px 2px 1px 1px;
+          visibility: hidden;
+        }
+        .read-state {
+          color: @grey-text-color;
+        }
+      }
     }
   }
 }

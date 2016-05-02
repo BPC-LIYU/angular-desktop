@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 15/12/19.
  */
-var app = angular.module('desktop', ["ngAnimate", "ngTouch", 'ngFileUpload', 'ui.router', "ui.bootstrap", 'desktop.services', 'directive', 'ui.codemirror', "infinite-scroll"]);
+var app = angular.module('desktop', ["ngAnimate", "ngTouch", 'perfect_scrollbar', 'ngFileUpload', 'ui.router', "ui.bootstrap", 'desktop.services', 'directive', 'ui.codemirror', "infinite-scroll"]);
 app.run(function ($rootScope) {
     $rootScope.base_config = base_config;
 });
@@ -79,7 +79,8 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', 'mqttPro
         })
         .set("create_group", {
             templateUrl: "app/organization/create_group.html",
-            controller: "groupCreateCtrl"})
+            controller: "groupCreateCtrl"
+        })
         .set("modefy_group", {
             templateUrl: "app/organization/modefy_group.html",
             controller: "groupModefyCtrl"

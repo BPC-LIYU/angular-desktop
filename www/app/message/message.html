@@ -15,7 +15,7 @@
             <div class="message-top">
 
             </div>
-            <div class="message-content">
+            <perfect-scrollbar suppress-scroll-x="true" class="message-content" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
 
                 <div class="message-item" ng-repeat="message in message_list">
                     <div ng-class="{'target-message-item':message.fuser!==my_user_info.id,'my-message-item':message.fuser===my_user_info.id}">
@@ -46,7 +46,7 @@
                 </div>
 
 
-            </div>
+            </perfect-scrollbar>
             <div class="message-bottom">
                 <div class="message-bottom-left">
                     <div class="toolbar">

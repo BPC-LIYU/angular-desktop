@@ -26,13 +26,13 @@
         left: 0;
         right: 0;
         height: 2px;
-        background: @active-line-color;
+        background: $active-line-color;
 
       }
     }
 
   }
-  border-bottom: 1px solid @boder-color;
+  border-bottom: 1px solid $boder-color;
 }
 
 .architecture-top-btn {

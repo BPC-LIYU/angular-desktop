@@ -2,7 +2,7 @@
   margin-left: 8px;
   padding: 6px 12px;
   border: none;
-  .border(4px);
+  border-radius: 4px;
   background: #00AFF0;
   color: #fff;
 }
@@ -40,7 +40,7 @@
   -webkit-box-shadow: inset 1px 1px 10px rgba(0, 159, 217, 0.1) !important;
   box-shadow: inset 1px 1px 10px rgba(0, 159, 217, 0.1) !important;
   border: 1px solid #009fd9 !important;
-  .border(6px) !important;
+  border-radius: 6px !important;
   -webkit-transition-duration: 400ms;
   -webkit-transition-property: width, background;
   -webkit-transition-timing-function: ease;
@@ -114,7 +114,7 @@ body {
 }
 
 .dt-container {
-  .border(6px);
+  border-radius: 6px;
   min-width: 900px;
   position: absolute;
   top: 5px;
@@ -223,9 +223,8 @@ body {
   background: url("../images/main/yunfile.png") no-repeat 0 4px;
 }
 
-
 .dt-menu {
-  .show-hand;
+  @extend .show-hand;
   position: relative;
   width: 100%;
   height: 60px;

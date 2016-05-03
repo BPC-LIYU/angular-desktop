@@ -67,7 +67,7 @@
   background: #ffffff;
   border: 1px solid #ccc;
   padding: 6px 12px;
-  .border(4px);
+  border-radius: 4px;
   -webkit-transition: border-color 0.15s;
   -moz-transition: border-color 0.15s;
   -ms-transition: border-color 0.15s;
@@ -186,18 +186,18 @@
     width: 42px;
     height: 42px;
     overflow: hidden;
-    .border(50%);
+    border-radius: 50%;
   }
   div {
     line-height: 60px;
-    .ellipsis;
+    @extend .ellipsis;
   }
 }
 
 .people-header-close {
   width: 14px;
   height: 14px;
-  .border(7px);
+  border-radius: 7px;
   position: absolute;
   top: 0;
   right: 0;
@@ -218,7 +218,7 @@
   }
   div {
     width: 60px;
-    .ellipsis;
+    @extend .ellipsis;
   }
 }
 

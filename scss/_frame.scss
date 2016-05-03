@@ -28,7 +28,7 @@ body {
 
 .empty-content {
   background: #fff;
-  border-left: solid 1px @boder-color;
+  border-left: solid 1px $boder-color;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -45,14 +45,14 @@ body {
 
 .right-content-container {
   height: 100%;
-  border-left: solid 1px @boder-color;
+  border-left: solid 1px $boder-color;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   .right-content-top {
     height: 50px;
     flex-shrink: 0;
-    border-bottom: solid 1px @boder-color;
+    border-bottom: solid 1px $boder-color;
     background: #fff;
     line-height: 50px;
     font-size: 1.2em;
@@ -61,7 +61,7 @@ body {
   .right-content {
     flex-grow: 1;
     background: #fff;
-    border-bottom: solid 1px @boder-color;
+    border-bottom: solid 1px $boder-color;
     padding-left: 16px;
     padding-right: 16px;
     overflow: hidden;

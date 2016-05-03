@@ -158,7 +158,7 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         }
         api.org.create_group(parm).then(function (data) {
             showToast(data.message, "success");
-            $rootScope.$broadcast('create_group', $scope.parent_group);
+            // $rootScope.$broadcast('create_group', $scope.parent_group);
             $uibModalInstance.close();
         });
     };

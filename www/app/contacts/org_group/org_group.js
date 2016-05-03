@@ -77,5 +77,22 @@ app.controller('orgGroupCtrl', function ($scope, api, my_organization, modalBox)
         }
     });
 
+    function org_change_handler(event, obj) {
+        if ($scope.current_organization.id == obj.org_id) {
+            var parm = {org_id: $scope.current_organization.id};
+            if($scope.current_group.org_id){
+                parm.group_id = $scope.current_group.id;
+            }
+
+            api.org.get_org_or_group_contacts(parm).then(function (data) {
+                $scope.current_group = data.result;
+            });
+        }
+    }
+    
+    $scope.$on("org_group_change", org_change_handler);
+
+    $scope.$on("org_member_change", org_change_handler);
+
     main();
 });

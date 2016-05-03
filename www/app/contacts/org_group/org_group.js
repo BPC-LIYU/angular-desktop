@@ -80,7 +80,7 @@ app.controller('orgGroupCtrl', function ($scope, api, my_organization, modalBox)
     function org_change_handler(event, obj) {
         if ($scope.current_organization.id == obj.org_id) {
             var parm = {org_id: $scope.current_organization.id};
-            if($scope.current_group.org_id){
+            if($scope.current_group.my_person){
                 parm.group_id = $scope.current_group.id;
             }
 

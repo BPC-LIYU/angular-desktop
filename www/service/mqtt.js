@@ -46,6 +46,10 @@ service_app
                     safeApply($rootScope, function () {
                         $rootScope.$broadcast('im_kick');
                     })
+                }else{
+                    safeApply($rootScope, function () {
+                        $rootScope.$broadcast(event_type, event_obj);
+                    })
                 }
             }
 
@@ -74,7 +78,7 @@ service_app
             }
 
             function init() {
-                client.on('connect', function () {
+                client.on('connect', function (args) {
                     console.log("mqtt connect");
                     state = 1;
                     _(state_defered_array).each(function (defered) {

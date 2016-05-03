@@ -607,7 +607,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
 
         var my_organization = [];
         var api = $injector.get("api");
-        $rootScope.$on("add_organization", function (data) {
+        $rootScope.$on("org_change", function (data) {
             get_my_organziation(true);
         });
 

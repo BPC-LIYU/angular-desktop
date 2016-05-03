@@ -47,4 +47,4 @@ gulp.task('iconfont', function () {
         }))
         .pipe(gulp.dest('www/fonts/'));
 });
-gulp.task('default', ["iconfont", "less"]);
+gulp.task('default', ["iconfont", "sass"]);

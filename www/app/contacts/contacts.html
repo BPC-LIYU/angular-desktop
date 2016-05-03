@@ -3,7 +3,6 @@
         <div class="contact-top-btn">
             <button ng-class="{'active':select_index==0}" ng-click="show_organizations_group()">架构</button>
             <button ng-class="{'active':select_index==1}" ng-click="show_relation()">关系</button>
-
             <button ng-class="{'active':select_index==2}" ng-click="show_contacts()">通信录</button>
 
         </div>
@@ -71,7 +70,7 @@
             <button ng-if="current_group.my_person|org_manager_checker:current_organization:current_group:group">修改分组信息</button>
         </div>
         <div ng-repeat="person in current_group.members track by person.user_id">
-            <img class="user_head" ng-src="{{person.user__icon_url | icon_default:person.user_id:person.realname}}"/>
+            <img class="header-img" ng-src="{{person.user__icon_url | icon_default:person.user_id:person.realname}}"/>
             <h4 ng-click="show_person(person.user_id)">{{person.realname}}</h4>
             <h4 ng-if="person.manager_type==1">管理员</h4>
             <h4 ng-if="person.manager_type==2">超级管理员</h4>

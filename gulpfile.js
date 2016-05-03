@@ -1,7 +1,8 @@
 var gulp = require('gulp');
 var minifyCss = require('gulp-clean-css');
 var rename = require('gulp-rename');
-var less = require('gulp-less');
+// var less = require('gulp-less');
+var sass = require('gulp-sass');
 var iconfont = require('gulp-iconfont');
 var sourcemaps = require('gulp-sourcemaps');
 var iconfontCss = require('gulp-iconfont-css');
@@ -18,19 +19,18 @@ var autoprefixerOptions = {
     ],
     cascade: false
 };
-gulp.task('less', function () {
-    gulp.src('less/**/*.less')
+gulp.task('sass', function () {
+    gulp.src('scss/app.scss')
         .pipe(sourcemaps.init())
-        .pipe(less())
+        .pipe(sass())
         .pipe(autoprefixer(autoprefixerOptions))
-        .pipe(concat('less_all.css'))
         .pipe(minifyCss())
         .pipe(rename({suffix: '.min'}))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('www/css/'));
 });
-gulp.task('w', ['less'], function () {
-    gulp.watch("less/**/*.less", ['less'])
+gulp.task('w', ['sass'], function () {
+    gulp.watch("scss/**/*.scss", ['sass'])
 });
 
 gulp.task('iconfont', function () {

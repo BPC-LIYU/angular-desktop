@@ -1,0 +1,77 @@
+
+@mixin translateX($translateX) {
+  -webkit-transform: translateX($translateX);
+  -moz-transform: translateX($translateX);
+  -ms-transform: translateX($translateX);
+  -o-transform: translateX($translateX);
+  transform: translateX($translateX);
+}
+
+//圆角
+
+@mixin border($border) {
+  -webkit-border-radius: $border;
+  -moz-border-radius: $border;
+  border-radius: $border;;
+}
+
+//边距
+
+@mixin m-left($m-left) {
+  margin-left: $m-left;
+}
+
+@mixin m-right($m-right) {
+  margin-right: $m-right;
+}
+
+@mixin m-top($m-top) {
+  margin-top: $m-top;
+}
+
+@mixin m-bottom($m-bottom) {
+  margin-bottom: $m-bottom;
+}
+
+@mixin p-left($p-left) {
+  padding-left: $p-left;
+}
+
+@mixin p-right($p-right) {
+  padding-right: $p-right;
+}
+
+@mixin p-top($p-top) {
+  padding-top: $p-top;
+}
+
+@mixin p-bottom($p-bottom) {
+  padding-bottom: $p-bottom;
+}
+
+//过渡时间
+
+@mixin time($time) {
+  -webkit-transition: $time;
+  -moz-transition: $time;
+  -ms-transition: $time;
+  -o-transition: $time;
+  transition: $time;
+}
+
+@mixin translate($x, $y) {
+  -webkit-transform: translate($x, $y);
+  -ms-transform: translate($x, $y); // IE9 only
+  -o-transform: translate($x, $y);
+  transform: translate($x, $y);
+}
+
+@mixin transition-transform($transition) {
+  -webkit-transition: -webkit-transform $transition;
+  -moz-transition: -moz-transform $transition;
+  -o-transition: -o-transform $transition;
+  transition: transform $transition;
+}
+@mixin opacity($opacity) {
+  opacity: $opacity;
+}

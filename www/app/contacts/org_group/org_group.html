@@ -1,0 +1,51 @@
+<div class="app-container">
+    <div class="left">
+        <div class="contact-top-btn">
+            <button ui-sref-active="active" ui-state="'main.contacts.org_group'">架构</button>
+            <button ui-sref-active="active" ui-state="'main.contacts.relationship'">关系</button>
+            <button ui-sref-active="active">通信录</button>
+        </div>
+        <div ng-repeat="org in my_organization_list">
+            <img ng-src="{{org.icon_url}}"><h5 ng-click="show_organization(org)">{{org.name}}</h5>
+            <div ng-repeat="group in org.my_group_list">
+                <h4 ng-click="show_group(org, group)">{{group.name}}</h4>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <div>{{current_organization.name}}</div>
+        <div>
+            <h4 ng-if="current_group.group_link.length==0">{{current_organization.name}}</h4>
+            <h4 ng-if="current_group.group_link.length>0" ng-click="show_organization(current_organization)">
+                {{current_organization.name}}</h4>
+            <div ng-repeat="linkgroup in current_group.group_link track by linkgroup.id">
+                &gt;
+                <h4 ng-if="linkgroup.id != current_group.id" ng-click="show_group(current_organization, linkgroup)">
+                    {{linkgroup.name}}</h4>
+                <h4 ng-if="linkgroup.id == current_group.id">{{linkgroup.name}}</h4>
+            </div>
+            <div>
+                <button ng-if="current_group.name" ng-click="create_group(current_organization, current_group)">创建
+                    {{current_group.name}} 子分组
+                </button>
+                <button ng-if="!current_group.name" ng-click="create_group(current_organization, current_group)">创建
+                    {{current_organization.name}} 子分组
+                </button>
+            </div>
+        </div>
+        <div ng-click="show_group(current_organization, group)"
+             ng-repeat="group in current_group.groups track by group.id">
+            <h4>{{group.name}}</h4>
+            <h5>{{group.member_ids.length}}人</h5>
+            <button ng-if="current_group.my_person|org_manager_checker:current_organization:current_group:group">
+                修改分组信息
+            </button>
+        </div>
+        <div ng-repeat="person in current_group.members track by person.user_id">
+            <img class="header-img" ng-src="{{person.user__icon_url | icon_default:person.user_id:person.realname}}"/>
+            <h4 ng-click="show_person(person.user_id)">{{person.realname}}</h4>
+            <h4 ng-if="person.manager_type==1">管理员</h4>
+            <h4 ng-if="person.manager_type==2">超级管理员</h4>
+        </div>
+    </div>
+</div>

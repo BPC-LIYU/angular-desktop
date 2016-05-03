@@ -27,6 +27,16 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', 'mqttPro
             templateUrl: "app/contacts/contacts.html",
             controller: "contactsCtrl"
         })
+        .state('main.contacts.org_group', {
+            url: '/org_group',
+            templateUrl: "app/contacts/org_group/org_group.html",
+            controller: "orgGroupCtrl"
+        })
+        .state('main.contacts.relationship', {
+            url: '/relationship',
+            templateUrl: "app/contacts/relationship/relationship.html",
+            controller: "relationshipCtrl"
+        })
         .state('main.application', {
             url: '/application',
             templateUrl: "app/application/application.html",

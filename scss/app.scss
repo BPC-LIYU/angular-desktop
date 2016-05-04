@@ -1,22 +1,24 @@
 //变量
-@import "_variables";
+@import "variables";
 //函数
-@import "_mixins";
+@import "mixins";
 //基础
-@import "_util";
-@import "_button";
-@import "_form";
-@import "_frame";
-@import "_modal";
-@import "_over";
-@import "_popover";
-@import "_scroll";
-@import "_window";
+@import "util";
+@import "button";
+@import "form";
+@import "frame";
+@import "modal";
+@import "over";
+@import "popover";
+@import "scroll";
+@import "window";
+
+@import "bootstrap";
 //应用
-@import "app/_application";
-@import "app/_contacts";
-@import "app/_login";
-@import "app/_main";
-@import "app/_message";
-@import "app/_organization";
+@import "app/application";
+@import "app/contacts";
+@import "app/login";
+@import "app/main";
+@import "app/message";
+@import "app/organization";
 

@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 16/4/20.
  */
-app.controller('orgGroupCtrl', function ($scope, api, my_organization, modalBox) {
+app.controller('orgApplyCtrl', function ($scope, api, my_organization, modalBox) {
 
     $scope.my_organization_list = [];
     $scope.current_organization = {};

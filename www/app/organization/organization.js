@@ -51,7 +51,7 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
 
     $scope.show_organization = function (organization) {
         if (organization) {
-            if(organization.icon_url){
+            if (organization.icon_url) {
                 $scope.select_index = -1;
             }
             $scope.organization = organization;
@@ -65,7 +65,7 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
 
     $scope.create_update_organization = function () {
         var save_organization_callback = function (data) {
-            if($scope.file){
+            if ($scope.file) {
                 angular.extend($scope.organization, data.result);
                 $scope.upload();
             }
@@ -88,11 +88,11 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         if ($scope.organization.id) {
             api.org.update_organization($scope.organization).then(save_organization_callback);
         } else {
-            if($scope.file){
+            if ($scope.file) {
                 $scope.organization.icon_url = "";
-            }else{
-                if($scope.select_index>=0){
-                    $scope.organization.icon_url = "http://7xtgsx.com2.z0.glb.clouddn.com/default/img/organization/"+$scope.select_index+".png"
+            } else {
+                if ($scope.select_index >= 0) {
+                    $scope.organization.icon_url = "http://7xtgsx.com2.z0.glb.clouddn.com/default/img/organization/" + $scope.select_index + ".png"
                 }
 
             }
@@ -109,7 +109,7 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         $scope.step = 2;
         api.org.qrcode_join_org_string({org_id: $scope.organization.id}).then(function (data) {
             angular.extend($scope.organization, {qrcode_string: data.result.text, add_url: data.result.text});
-        })
+        });
     };
 
     $scope.close = function () {
@@ -128,7 +128,7 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         lyUpload($scope.file, 'public', function (progress) {
             console.log(progress);
         }).then(function (id) {
-            api.org.create_org_headicon({org_id:$scope.organization.id, nsfile_id:id}).then(function (data) {
+            api.org.create_org_headicon({org_id: $scope.organization.id, nsfile_id: id}).then(function (data) {
                 angular.extend($scope.organization, data.result);
                 my_organization.get_my_organziation(true);
             })
@@ -150,9 +150,9 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
 
     $scope.create_group = function () {
         var parm = {
-                name: $scope.current_group.name,
-                org_id: $scope.current_org.id
-            };
+            name: $scope.current_group.name,
+            org_id: $scope.current_org.id
+        };
         if ($scope.current_org != $scope.parent_group) {
             parm.group_id = $scope.parent_group.id;
         }
@@ -163,7 +163,7 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         });
     };
 
-    $scope.close=function () {
+    $scope.close = function () {
         $uibModalInstance.dismiss();
     }
 
@@ -179,9 +179,189 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         $scope.current_group = args['group'];
     }
 
-    $scope.close=function () {
+    $scope.close = function () {
         $uibModalInstance.dismiss();
     }
+
+    main();
+}).controller("joinOrgCtrl", function ($scope, args, modalBox, $uibModalInstance, $q, api, my_organization, showToast) {
+
+    $scope.organization = {};
+
+    function main() {
+        $scope.organization = args;
+        $scope.show_org_join_info(args);
+
+    };
+
+    $scope.close = function () {
+        $uibModalInstance.dismiss();
+    };
+
+    $scope.show_org_join_info = function (org) {
+        api.org.qrcode_join_org_string({org_id: org.id}).then(function (data) {
+            angular.extend($scope.organization, {qrcode_string: data.result.text, add_url: data.result.text});
+        })
+    };
+
+    main();
+}).controller("firstJoinOrgCtrl", function ($scope, $location, modalBox, $q, api, showToast, $interval) {
+
+    $scope.organization = {};
+    $scope.userinfo = {};
+    $scope.has_login = false;
+    $scope.tab_index = 0;
+    $scope.apply_content = "我是   ,请把我加入到组织中.";
+
+    function main() {
+        var parms = $location.search();
+        api.org.get_organization(parms).then(function (data) {
+            $scope.organization = data.result;
+
+            return api.sys.check_login();
+        }).then(function (haslogin) {
+            $scope.has_login = haslogin;
+            if ($scope.has_login) {
+                $scope.init_apply_content();
+            }
+        });
+    }
+
+    $scope.join_org = function () {
+        if (!$scope.has_login) {
+            showToast("请先登录,或注册成为用户.", "danger");
+            return;
+        }
+        api.org.apply_organization({
+            org_id: $scope.organization.id,
+            content: $scope.apply_content
+        }).then(function (data) {
+            showToast("已经发出加入组织的申请", "success");
+            $location.replace().path("/");
+        });
+    };
+
+    $scope.reject_org = function () {
+
+    };
+
+    $scope.init_apply_content = function () {
+        api.sys.my_userinfo().then(function (data) {
+            $scope.userinfo = data.result;
+            if ($scope.apply_content == "我是   ,请把我加入到组织中.") {
+                $scope.apply_content = "我是 " + data.result.realname + " ,请把我加入到组织中."
+            }
+        });
+    };
+
+    $scope.change_tab = function (index) {
+        $scope.tab_index = index;
+    };
+    $scope.login_info = {};
+    $scope.reg_info = {agree_service: 1};
+    $scope.qr_info = {};
+    $scope.qr_info.qrcode_string = "";
+    $scope.wait_second = 0;
+
+    $scope.login = function () {
+        $scope.loading = true;
+        $scope.login_text = "登录中...";
+        auth.login($scope.login_info.username, $scope.login_info.password).then(function () {
+            $scope.has_login = true;
+            $scope.init_apply_content();
+            showConfirm("温馨提示", "是否提交加入组织的申请?").then(function () {
+                $scope.join_org();
+            }, function () {
+
+            })
+        }, function () {
+            $scope.loading = false;
+            $scope.login_text = "登录";
+        })
+    };
+
+    function get_qrcode_string() {
+        api.sys.qrcode_login_string().then(function (data) {
+            $scope.qr_info.qrcode_string = data.result.text;
+        })
+    }
+
+    $scope.check_qrcode = function () {
+        get_qrcode_string();
+        $scope.timer = $interval(function () {
+            if ($scope.tab_index != 0) {
+                return
+            }
+            api.sys.qrcode_login_check().then(function (data) {
+
+                var state = data.result.state;
+                if (state == 'waite') {
+                    $scope.scaned = false;
+                }
+                else if (state == "scan") {
+                    $scope.scaned = true;
+                }
+                else if (state == "ok") {
+                    localStorage.set("sessionid", data.result.sessionid);
+                    $scope.has_login = true;
+                    $scope.init_apply_content();
+                    showConfirm("温馨提示", "是否提交加入组织的申请?").then(function () {
+                        $scope.join_org();
+                    }, function () {
+
+                    })
+                }
+                else if (state == 'reload') {
+                    $interval.cancel($scope.timer);
+                    $scope.timer = null;
+                    get_qrcode_string();
+                }
+            }, function () {
+            });
+        }, 1000);
+    };
+    $scope.check_qrcode();
+
+
+    $scope.send_sms = function () {
+        if ($scope.wait_second > 0) {
+            return;
+        }
+        api.sys.send_sms_code_reg({tel: $scope.reg_info.username}).then(function (data) {
+            $scope.wait_second = 60;
+            showToast(data.message, 'success');
+            $scope.sms_countdown();
+        });
+
+    };
+
+    $scope.sms_countdown = function () {
+
+        $scope.sms_timer = $interval(function () {
+            if ($scope.wait_second > 0) {
+                $scope.wait_second--;
+            } else {
+                $interval.cancel($scope.sms_timer);
+                $scope.sms_timer = null;
+
+            }
+
+        }, 1000, 60);
+    };
+
+    $scope.reg_user = function () {
+        $scope.loading = true;
+        $scope.login_text = "注册中...";
+        auth.reg_user($scope.reg_info).then(function () {
+            $scope.has_login = true;
+            $scope.init_apply_content();
+            showConfirm("温馨提示", "是否提交加入组织的申请?").then(function () {
+                $scope.join_org();
+            }, function () {
+
+            })
+        })
+    };
 
     main();
 });

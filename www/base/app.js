@@ -12,6 +12,11 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', 'mqttPro
             templateUrl: "app/login/login.html",
             controller: "loginCtrl"
         })
+        .state('join_org', {
+            url: '/join_org',
+            templateUrl: "app/organization/join_org.html",
+            controller: "firstJoinOrgCtrl"
+        })
         .state('main', {
             url: '/main',
             templateUrl: "app/main/main.html",
@@ -31,6 +36,11 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', 'mqttPro
             url: '/org_group',
             templateUrl: "app/contacts/org_group/org_group.html",
             controller: "orgGroupCtrl"
+        })
+        .state('main.contacts.org_apply', {
+            url: '/org_apply',
+            templateUrl: "app/contacts/org_apply/org_apply.html",
+            controller: "orgApplyCtrl"
         })
         .state('main.contacts.relationship', {
             url: '/relationship',
@@ -94,6 +104,10 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', 'mqttPro
         .set("modefy_group", {
             templateUrl: "app/organization/modefy_group.html",
             controller: "groupModefyCtrl"
+        })
+        .set("join_organization", {
+            templateUrl: "app/organization/join_organization.html",
+            controller: "joinOrgCtrl"
         });
 
     base_config.mqtt.device_id = (new Date()).valueOf();

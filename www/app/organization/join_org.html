@@ -1,0 +1,85 @@
+<div class="lg-body">
+    <img src="static/desktop/images/home/close.png" class="login-windows-close" onclick="close_window()">
+    <div class="lg-body">
+        <img src="static/desktop/images/home/home-close.png" class="login-windows-close" onclick="close_window()">
+        <div class="lg-logo">
+            <a href="#"><img src="images/login/logo.jpg"></a>
+            <div>Angular Desktop</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>{{organization.name}}</h2>
+                <div class="form-group">
+                    <label for="apply_org_content">加入申请</label>
+                    <textarea ng-model="apply_content" cols="50" rows="10" class="form-control"
+                              id="apply_org_content">{{apply_content}}</textarea>
+                    <button class="lg-login-btn" ng-click="join_org()">提交</button>
+                </div>
+            </div>
+            <div class="lg-container col-sm-6" ng-if="has_login">
+                <img ng-src="{{userinfo.icon_url | icon_default:userinfo.id:userinfo.realname}}" />
+                <h3>{{userinfo.realname}}</h3>
+                <p class="help-block">请填写左边的申请信息,提交后,等待管理员的审核.</p>
+            </div>
+            <div class="lg-container col-sm-6" ng-if="!has_login">
+                <div class="lg-top">
+                    <div class="lg-top-btn" ng-class="{'active':tab_index==0}" ng-click="change_tab(0)">扫码登录</div>
+                    <div class="lg-top-btn" ng-class="{'active':tab_index==1}" ng-click="change_tab(1)">密码登录</div>
+                    <div class="lg-top-btn" ng-class="{'active':tab_index==2}" ng-click="change_tab(2)">用户注册</div>
+                </div>
+                <!--    二维码登录-->
+                <div ng-if="tab_index==0">
+                    <div class="lg-erweima-container">
+                        <qrcode qrcode-style="width: 100%;height: 100%" style="width: 100%;height: 100%"
+                                data="{{qr_info.qrcode_string}}"></qrcode>
+                    </div>
+                    <div ng-if="scaned" style="text-align: center;color: red;">扫码成功,在手机点击确认</div>
+                </div>
+
+                <!--    密码登录-->
+                <div class="lg-login-container" ng-if="tab_index==1">
+                    <div>
+                        <input class="form-control" placeholder="账号" ng-model="login_info.username">
+                        <input type="password" class="form-control" placeholder="密码" ng-model="login_info.password"
+                               key-enter="login()">
+                        <button class="lg-login-btn" ng-disabled="loading" ng-click="login()">{{login_text||"登录"}}
+                        </button>
+                        <!--                   <a href="/forget_password" class="pull-right">忘记密码</a>-->
+                    </div>
+                </div>
+                <!--    用户注册-->
+
+                <div class="lg-sign" ng-if="tab_index==2">
+                    <input id="tel" class="form-control user-num" placeholder="请输入手机号码" ng-model="reg_info.username">
+
+                    <div class="lg-sign-content">
+
+                        <input class="form-control pull-left" placeholder="请输入密码" ng-model="reg_info.password">
+                        <input class="form-control pull-right" placeholder="请确认密码" ng-model="reg_info.re_password">
+                        <input class="form-control pull-left" style="width: 100%" placeholder="请输入真实姓名"
+                               ng-model="reg_info.realname">
+                        <div class="clearfix"></div>
+                        <input class="form-control pull-left" placeholder="请输入验证码" ng-model="reg_info.code">
+                        <button class="btn btn-info yanzhenma" ng-disabled="wait_second>0" ng-click="send_sms()">
+                            {{wait_second||"发送验证码"}}
+                        </button>
+
+                    </div>
+                    <label>
+                        <input type="checkbox" id="ck_reg" class="pull-left" ng-checked="reg_info.agree_service==1"
+                               ng-model="reg_info.agree_service" ng-true-value="1" ng-false-value="0">
+
+                        <div class="pull-left sign-text">阅读并同意《平台协议》</div>
+                    </label>
+
+
+                    <button class="lg-login-btn" ng-disabled="reg_info.agree_service==0" ng-click="reg_user()"
+                            title="请同意《平台协议》">注&nbsp;&nbsp;&nbsp;&nbsp;册
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

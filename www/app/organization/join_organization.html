@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <button ng-click="close()" type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+    <h3 class="modal-title" >添加组织成员</h3>
+</div>
+
+<div class="modal-body" >
+    <div>
+        <div class="form-group">
+            <label>扫码二维码加入组织</label>
+            <div>
+                <qrcode qrcode-style="width: 100%;height: 100%" style="width: 200px;height: 200px;"
+                        data="{{organization.qrcode_string}}"></qrcode>
+            </div>
+            <p class="help-block">您也可以跳过此步骤,以后再自定义组织架构.</p>
+        </div>
+        <div class="form-group">
+            <label>点击邀请链接加入组织</label>
+
+            <p class="bg-primary">{{organization.add_url}}</p>
+        </div>
+
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" ng-click="close()">完成</button>
+</div>

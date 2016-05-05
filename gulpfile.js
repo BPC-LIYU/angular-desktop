@@ -37,13 +37,13 @@ gulp.task('iconfont', function () {
     return gulp.src(['iconfont/svg/*.svg'])
         .pipe(iconfontCss({
             fontName: "iconfont",
-            path: 'iconfont/templates/_icons._css',
-            targetPath: '../css/icons.css',
+            path: 'iconfont/templates/_icons._scss',
+            targetPath: '../../scss/_icons.scss',
             fontPath: '../fonts/'
         }))
         .pipe(iconfont({
             fontName: 'iconfont',
-            formats: ['ttf', 'eot', 'woff', 'svg', 'woff2']
+            formats: ['ttf', 'eot', 'woff', 'woff2', 'svg']
         }))
         .pipe(gulp.dest('www/fonts/'));
 });

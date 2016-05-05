@@ -1,0 +1,57 @@
+@font-face {
+	font-family: "iconfont";
+	src: url('../fonts/iconfont.eot');
+	src: url('../fonts/iconfont.eot?#iefix') format('eot'),
+		url('../fonts/iconfont.woff2') format('woff2'),
+		url('../fonts/iconfont.woff') format('woff'),
+		url('../fonts/iconfont.ttf') format('truetype'),
+		url('../fonts/iconfont.svg#iconfont') format('svg');
+}
+
+@mixin icon-styles {
+	font-family: "iconfont";
+  display: inline-block;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+%icon {
+	@include icon-styles;
+}
+
+@function icon-char($filename) {
+	$char: "";
+
+	@if $filename == group {
+		$char: "\E001";
+	}
+	@if $filename == remove {
+		$char: "\E002";
+	}
+
+	@return $char;
+}
+
+@mixin icon($filename, $insert: before, $extend: true) {
+	&:#{$insert} {
+		@if $extend {
+			@extend %icon;
+		} @else {
+			@include icon-styles;
+		}
+		content: icon-char($filename);
+	}
+}
+
+.icon-group {
+	@include icon(group);
+}
+.icon-remove {
+	@include icon(remove);
+}

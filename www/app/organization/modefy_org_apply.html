@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <button ng-click="close()" type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+    <h3 class="modal-title" >组织加入申请审核</h3>
+</div>
+
+<div class="modal-body" >
+    <div>
+        <div ng-repeat="apply in applylist track by apply.id">
+            <img ng-src="{{apply.user__icon_url | icon_default:apply.user_id:apply.user__realname}}">
+            <h5>{{apply.user__realname}}</h5>
+            <div>{{apply.content}}</div>
+            <div class="btn-group">
+                <button class="btn btn-danger" ng-click="reject_apply(apply)">拒绝</button>
+                <button class="btn btn-success" ng-click="agree_apply(apply)">同意</button>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" ng-click="close()">关闭</button>
+</div>

@@ -98,6 +98,9 @@ app.filter('trust', function ($sce) {
             /**
              * 根据person 校验用户的身份是否管理员
              */
+            if(!person){
+                return false;
+            }
             if (person.org_id != org.id) {
                 return false;
             }

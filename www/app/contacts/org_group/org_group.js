@@ -67,6 +67,9 @@ app.controller('orgGroupCtrl', function ($scope, api, my_organization, modalBox)
     $scope.add_member = function (org) {
         modalBox.show('join_organization', org);
     };
+    $scope.show_org_apply = function (org) {
+        modalBox.show('modefy_org_apply', org);
+    };
 
     $scope.$on("create_group", function (event, obj) {
         if ($scope.current_group.id == obj.id && $scope.current_group.org_id == obj.org_id) {

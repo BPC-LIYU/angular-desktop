@@ -364,4 +364,40 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
     };
 
     main();
+}).controller("modefyOrgApplyCtrl", function ($scope, args, modalBox, $uibModalInstance, $q, api, showToast, $interval) {
+
+    $scope.organization = {};
+    $scope.apply_content = "我是   ,请把我加入到组织中.";
+    $scope.query_complete = false;
+    $scope.query_page_index = 1;
+    $scope.applylist = [];
+
+    function main() {
+        $scope.organization = args;
+        
+    }
+    
+    $scope.close = function () {
+        $uibModalInstance.dismiss();
+    };
+    
+    $scope.query_apply_list = function () {
+        if($scope.query_complete){
+            return;
+        }
+        $scope.query_complete = true;
+        api.org.query_apply_organization_list({org_id:$scope.organization.id, page_index:$scope.page_index}).then(function (data) {
+            
+            if(data.result.page_count == $scope.query_page_index){
+                $scope.query_complete = true;
+            }else{
+                $scope.query_complete = false;
+                $scope.query_page_index++;
+            }
+            $scope.applylist.splice($scope.applylist.length,0,data.result.list);
+        });
+    };
+
+
+    main();
 });

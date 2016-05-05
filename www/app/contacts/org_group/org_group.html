@@ -32,15 +32,16 @@
                         <h4 ng-if="linkgroup.id == current_group.id">{{linkgroup.name}}</h4>
                     </div>
                     <div>
-                        <button ng-if="current_organization.name && current_group.name" ng-click="create_group(current_organization, current_group)">
+                        <button ng-if="current_group.my_person|org_manager_checker:current_organization:current_group:group"  ng-click="create_group(current_organization, current_group)">
                             创建
                             {{current_group.name}} 子分组
                         </button>
-                        <button ng-if="current_organization.name && !current_group.name"
+                        <button ng-if="current_group.my_person|org_manager_checker:current_organization:current_group:group"
                                 ng-click="create_group(current_organization, current_group)">创建
                             {{current_organization.name}} 子分组
                         </button>
-                        <button ng-if="current_organization.name" ng-click="add_member(current_organization)">添加成员</button>
+                        <button ng-if="current_group.my_person|org_manager_checker:current_organization:current_group:group" ng-click="add_member(current_organization)">添加成员</button>
+                        <button ng-if="current_group.my_person|org_manager_checker:current_organization:current_group:group" ng-click="show_org_apply(current_organization)">成员审核</button>
                     </div>
                 </div>
                 <div ng-click="show_group(current_organization, group)"

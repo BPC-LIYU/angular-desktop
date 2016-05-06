@@ -419,6 +419,30 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
         var api = $injector.get("api");
         var mqtt = $injector.get("mqtt");
         var myUserInfo = $injector.get("myUserInfo");
+        var showConfirm = $injector.get("showConfirm");
+
+        $rootScope.$on('im_kick', function () {
+            showConfirm('温馨提示', '您的账号在其他地方登录,是否重连?').then(function () {
+                myUserInfo.getUserInfo().then(function (my_user_info) {
+                    mqtt.login(my_user_info.id, my_user_info.imusername, my_user_info.impassword)
+                })
+            }, function () {
+                logout();
+            })
+        });
+        function logout() {
+            var deferred = $q.defer();
+            httpReq("/sys/logout").then(function (data) {
+                mqtt.logout();
+                $rootScope.my_user_info = null;
+                $location.replace().path("/login");
+                deferred.resolve();
+            }, function () {
+                deferred.reject();
+            });
+            return deferred.promise;
+        }
+
         return {
             login: function (username, password) {
                 var deferred = $q.defer();
@@ -439,18 +463,7 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
                 });
                 return deferred.promise;
             },
-            logout: function () {
-                var deferred = $q.defer();
-                httpReq("/sys/logout").then(function (data) {
-                    mqtt.logout();
-                    $rootScope.my_user_info = null;
-                    $location.replace().path("/login");
-                    deferred.resolve();
-                }, function () {
-                    deferred.reject();
-                });
-                return deferred.promise;
-            },
+            logout: logout,
             hasLogin: function () {
                 var deferred = $q.defer();
                 httpReq("/sys/check_login").then(function (data) {
@@ -608,6 +621,9 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
         var my_organization = [];
         var api = $injector.get("api");
         $rootScope.$on("org_change", function (data) {
+            get_my_organziation(true);
+        });
+        $rootScope.$on("agree_organization", function (data) {
             get_my_organziation(true);
         });
 

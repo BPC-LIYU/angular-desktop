@@ -205,7 +205,7 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
     };
 
     main();
-}).controller("firstJoinOrgCtrl", function ($scope, $location, modalBox, $q, api, showToast, $interval) {
+}).controller("firstJoinOrgCtrl", function ($scope, $location, auth, modalBox, $q, api, showToast, $interval) {
 
     $scope.organization = {};
     $scope.userinfo = {};
@@ -218,9 +218,9 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
         api.org.get_organization(parms).then(function (data) {
             $scope.organization = data.result;
 
-            return api.sys.check_login();
-        }).then(function (haslogin) {
-            $scope.has_login = haslogin;
+            return auth.hasLogin();
+        }).then(function (has_login) {
+            $scope.has_login = has_login;
             if ($scope.has_login) {
                 $scope.init_apply_content();
             }
@@ -289,6 +289,7 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
     $scope.check_qrcode = function () {
         get_qrcode_string();
         $scope.timer = $interval(function () {
+            alert($scope.tab_index);
             if ($scope.tab_index != 0) {
                 return
             }
@@ -318,7 +319,7 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
                 }
             }, function () {
             });
-        }, 1000);
+        }, 1000000);
     };
     $scope.check_qrcode();
 
@@ -394,7 +395,21 @@ app.controller('organizationCreateCtrl', function ($scope, args, modalBox, $uibM
                 $scope.query_complete = false;
                 $scope.query_page_index++;
             }
-            $scope.applylist.splice($scope.applylist.length,0,data.result.list);
+            _(data.result.list).each(function (item) {
+                $scope.applylist.push(item);
+            });
+        });
+    };
+    
+    $scope.reject_apply = function (apply) {
+        api.org.reject_organization({org_id:$scope.organization.id, orgapply_id:apply.id}).then(function (data) {
+            angular.extend(apply, data.result);
+        });    
+    };
+
+    $scope.agree_apply = function (apply) {
+        api.org.agree_organization({org_id:$scope.organization.id, orgapply_id:apply.id}).then(function (data) {
+            angular.extend(apply, data.result);
         });
     };
 

@@ -3,15 +3,19 @@
     <h3 class="modal-title" >组织加入申请审核</h3>
 </div>
 
-<div class="modal-body" >
+<div class="modal-body"  infinite-scroll="query_apply_list()"
+     infinite-scroll-disabled="query_complete">
     <div>
         <div ng-repeat="apply in applylist track by apply.id">
             <img ng-src="{{apply.user__icon_url | icon_default:apply.user_id:apply.user__realname}}">
             <h5>{{apply.user__realname}}</h5>
             <div>{{apply.content}}</div>
-            <div class="btn-group">
+            <div class="btn-group" ng-if="apply.status==0">
                 <button class="btn btn-danger" ng-click="reject_apply(apply)">拒绝</button>
                 <button class="btn btn-success" ng-click="agree_apply(apply)">同意</button>
+            </div>
+            <div ng-if="apply.status>0">
+                已经{{apply.status==1?"同意":"拒绝"}}
             </div>
         </div>
 

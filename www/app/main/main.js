@@ -16,16 +16,7 @@ app.controller('mainCtrl', function ($scope, auth, api, my_organization, modalBo
     $scope.enter_application = function () {
         $state.go("main.application");
     }
-
-    $scope.$on('im_kick', function () {
-        showConfirm('温馨提示', '您的账号在其他地方登录,是否重连?').then(function () {
-            myUserInfo.getUserInfo().then(function (my_user_info) {
-                mqtt.login(my_user_info.id, my_user_info.imusername, my_user_info.impassword)
-            })
-        }, function () {
-            auth.logout();
-        })
-    });
+    
 
     $scope.create_organization = function () {
         modalBox.show('create_organization', null);

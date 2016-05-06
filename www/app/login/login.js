@@ -55,7 +55,7 @@ app.controller('loginCtrl', function ($scope, httpReq, auth, $location, localSto
                 }
             }, function () {
             });
-        }, 1000);
+        }, 1000000);
     };
     $scope.check_qrcode();
 

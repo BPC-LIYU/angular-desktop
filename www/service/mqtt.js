@@ -240,9 +240,13 @@ service_app
                 request('set_chat_session_read_time', {session_id: session_id, time: time});
             }
 
-            function get_chat_history(session_id, last_time) {
+            function get_chat_history(target, target_type, last_time) {
                 var defered = $q.defer();
-                request('get_chat_history', {session_id: session_id, last_time: last_time}, function (result) {
+                request('get_chat_history', {
+                    target: target,
+                    target_type: target_type,
+                    last_time: last_time
+                }, function (result) {
                     defered.resolve(result);
                 });
                 return defered.promise;

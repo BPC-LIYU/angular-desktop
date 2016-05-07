@@ -147,7 +147,7 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
             $scope.current_session = session;
             session.unread = 0;
             mqtt.set_chat_session_read_time(session.session_id, session.last_message_time);
-            mqtt.get_chat_history(session.session_id).then(function (messages) {
+            mqtt.get_chat_history(session.target, session.target_type).then(function (messages) {
                 $scope.message_list = messages;
             });
         }
@@ -165,7 +165,7 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
             last_time = $scope.message_list[0].time;
         }
         $scope.scroll_down = false;
-        mqtt.get_chat_history($scope.current_session.session_id, last_time).then(function (messages) {
+        mqtt.get_chat_history($scope.current_session.target, $scope.current_session.target_type, last_time).then(function (messages) {
             $scope.message_list.splice.bind($scope.message_list, 0, 0).apply(null, messages);
             $timeout(function () {
                 $scope.scroll_down = true;

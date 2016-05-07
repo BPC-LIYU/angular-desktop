@@ -72,6 +72,10 @@
     Image thumbnail: <img ngf-thumbnail="file || '/thumb.jpg'">
     Audio preview: <audio controls ngf-src="file"></audio>
     Video preview: <video controls ngf-src="file"></video>
+
+    <div ng-mousemove="move($event)" class="well">
+        move
+    </div>
     <hr>
     <input popover-placement="auto" uib-popover-template="dynamicPopover.templateUrl" type="text" value="Click me!" uib-popover="I appeared on focus! Click away and I'll vanish..."  popover-trigger="outsideClick" class="form-control">
 

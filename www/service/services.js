@@ -337,10 +337,12 @@ var service_app = angular.module('desktop.services', ['ngCookies'])
     .factory('UserInfo', function ($q, $injector) {
 
         var api = $injector.get('api');
+        var icon_default = $injector.get('icon_default');
 
         function getUserInfoById(id) {
             var defered = $q.defer();
             api.sys.get_userinfo({user_id: id}).then(function (data) {
+                data.result.icon_url = icon_default(data.result.icon_url, data.result.id, data.result.realname);
                 defered.resolve(data.result);
             }, function (error) {
                 defered.reject(error);

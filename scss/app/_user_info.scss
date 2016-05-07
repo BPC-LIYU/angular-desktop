@@ -1,0 +1,26 @@
+.user-info-modal {
+  .header {
+    background-size: cover;
+    background: url("../images/user_info/profile_modal_bg.png");
+    height: 150px;
+    .user-info-head-image {
+      width: 57px;
+      height: 57px;
+      background: #fff;
+      border-radius: 50%;
+      padding: 4px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+    }
+  }
+  .detail-content {
+
+  }
+  .footer {
+
+  }
+}

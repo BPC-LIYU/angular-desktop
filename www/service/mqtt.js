@@ -46,7 +46,12 @@ service_app
                     safeApply($rootScope, function () {
                         $rootScope.$broadcast('im_kick');
                     })
-                }else{
+                } else if (event_type === 'delete_chat_session') {
+                    safeApply($rootScope, function () {
+                        $rootScope.$broadcast('im_delete_chat_session', event_obj);
+                    })
+                }
+                else {
                     safeApply($rootScope, function () {
                         $rootScope.$broadcast(event_type, event_obj);
                     })
@@ -240,6 +245,10 @@ service_app
                 return defered.promise;
             }
 
+            function delete_chat_session(target, target_type) {
+                request('delete_chat_session', {target: target, target_type: target_type});
+            }
+
             return {
                 login: login,
                 ready: ready,
@@ -248,7 +257,8 @@ service_app
                 send_text_message: send_text_message,
                 get_chat_session: get_chat_session,
                 set_chat_session_read_time: set_chat_session_read_time,
-                get_chat_history: get_chat_history
+                get_chat_history: get_chat_history,
+                delete_chat_session: delete_chat_session
             }
         }
 

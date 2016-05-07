@@ -66,6 +66,10 @@ app
                 console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
             });
         };
+
+        $scope.move=function ($event) {
+         console.log($event);
+        }
     })
     .controller('testRigthBoxCtrl', function ($scope, args, modalBox, $uibModalInstance) {
         $scope.list = ['1', '2', '3'];

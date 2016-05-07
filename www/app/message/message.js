@@ -1,11 +1,58 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_default, $timeout, safeApply, $rootScope, update_array) {
+app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_default, $timeout, safeApply, $rootScope, update_array, IM) {
     $scope.current_session = null;
     $scope.message_list = [];
     $scope.chat_session_list = [];
     $scope.input_content = "";
+    var args;
+
+    function main() {
+
+        mqtt.ready(function () {
+            mqtt.get_chat_session().then(function (list) {
+                $scope.chat_session_list = list;
+                _(list).each(function (item) {
+                    get_chat_session_user_info(item);
+                })
+
+                args = IM.get_args_and_clean();
+                if (args) {
+                    if (args.action === 'go_chat') {
+                        var is_group = (args.target_type === 1);
+                        var session = _($scope.chat_session_list).find(function (item) {
+                            return item.target_type === args.target_type && item.target === args.target;
+                        });
+                        if (!session) {
+                            var session_id;
+                            if (is_group) {
+                                session_id = $rootScope.my_user_info.id + "_g_" + args.target;
+                            }
+                            else {
+                                session_id = $rootScope.my_user_info.id + "_p_" + args.target;
+                            }
+                            session = {
+                                session_id: session_id, //每个会话一个id：好友会话[user_id]_p_[user_id] : 群会话[user_id]_g_[group_id]：系统会话[user_id]_s_[sys_id]
+                                owner: $rootScope.my_user_info.id, //用户id
+                                target: args.target, //聊天对象id
+                                target_type: args.target_type, //聊天对象类型
+                                last_message_time: (new Date()).valueOf()
+                            };
+                            get_chat_session_user_info(session);
+                            $scope.chat_session_list.splice(0, 0, session);
+                        }
+                        $scope.select_session(session);
+
+                    }
+                }
+            })
+        });
+
+    }
+
+    main();
+
     $scope.send_text = function () {
         var fname;
         var target_type = $scope.current_session.target_type;
@@ -65,6 +112,15 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
         });
         console.log('im_chat_session data:', $scope.chat_session_list);
     });
+    $scope.$on('im_delete_chat_session', function (event, data) {
+        $scope.chat_session_list = _($scope.chat_session_list).filter(function (item) {
+            return item.session_id != data.session_id;
+        });
+        if (data.session_id === $scope.current_session.session_id) {
+            $scope.current_session = null;
+        }
+        console.log('im_chat_session data:', $scope.chat_session_list);
+    });
     function get_chat_session_user_info(chat_session) {
         chat_session.icon_url = 'http://www.baidu.com';
         var target = chat_session.target;
@@ -93,12 +149,10 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
         }
 
     };
-    mqtt.ready(function () {
-        mqtt.get_chat_session().then(function (list) {
-            $scope.chat_session_list = list;
-            _(list).each(function (item) {
-                get_chat_session_user_info(item);
-            })
-        })
-    });
+
+    $scope.delete_session = function ($event, session) {
+        $event.stopPropagation();
+        mqtt.delete_chat_session(session.target, session.target_type);
+    }
+
 });

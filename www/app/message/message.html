@@ -2,7 +2,7 @@
     <div class="left">
         <div ng-repeat="session in chat_session_list" class="chat-session-item ellipsis"
              ng-class="{'active':current_session==session}" ng-click="select_session(session)">
-            <img class="message-close" src="images/message/del_message.png">
+            <img ng-click="delete_session($event,session)" class="message-close" src="images/message/del_message.png">
             <img ng-src="{{session.icon_url}}" src="images/main/header.png">
             <span ng-bind="session.last_message_time|format_datetime"></span>
             <h2 ng-bind="session.name"></h2>
@@ -15,11 +15,12 @@
             <div class="message-top">
 
             </div>
-            <perfect-scrollbar suppress-scroll-x="true" class="message-content" wheel-propagation="true" wheel-speed="10" min-scrollbar-length="20">
+            <perfect-scrollbar suppress-scroll-x="true" class="message-content" wheel-propagation="true"
+                               wheel-speed="10" min-scrollbar-length="20">
 
                 <div class="message-item" ng-repeat="message in message_list">
                     <div ng-class="{'target-message-item':message.fuser!==my_user_info.id,'my-message-item':message.fuser===my_user_info.id}">
-                    <!--<div ng-class="{'target-message-item':$index%2==0,'my-message-item':$index%2==1}">-->
+                        <!--<div ng-class="{'target-message-item':$index%2==0,'my-message-item':$index%2==1}">-->
                         <div class="messag-profile-info">
                             <div class="message-name">
                                 {{message.fname}}

@@ -88,6 +88,10 @@ app.config(['$stateProvider', '$urlRouterProvider', 'modalBoxProvider', 'mqttPro
             controller: "developRigthBoxCtrl",
             type: "rightBox"
         })
+        .set("user_info", {
+            templateUrl: "app/user_info/user_info.html",
+            controller: "userInfoCtrl"
+        })
         .set("create_organization", {
             templateUrl: "app/organization/create_organization.html",
             controller: "organizationCreateCtrl"

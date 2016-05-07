@@ -53,17 +53,17 @@ app.controller('orgGroupCtrl', function ($scope, api, my_organization, modalBox)
             $scope.current_group = data.result;
         });
     };
-    
+
 
     $scope.show_person = function (user_id) {
-        alert("显示用户信息" + user_id);
+        modalBox.show("user_info", {user_id: user_id});
     };
 
     $scope.create_group = function (org, group) {
         modalBox.show('create_group', {"group": group, "org": org});
 
     };
-    
+
     $scope.add_member = function (org) {
         modalBox.show('join_organization', org);
     };
@@ -74,7 +74,7 @@ app.controller('orgGroupCtrl', function ($scope, api, my_organization, modalBox)
     $scope.$on("create_group", function (event, obj) {
         if ($scope.current_group.id == obj.id && $scope.current_group.org_id == obj.org_id) {
             var parm = {org_id: $scope.current_organization.id};
-            if(obj.org_id){
+            if (obj.org_id) {
                 parm.group_id = obj.id;
             }
 
@@ -87,7 +87,7 @@ app.controller('orgGroupCtrl', function ($scope, api, my_organization, modalBox)
     function org_change_handler(event, obj) {
         if ($scope.current_organization.id == obj.org_id) {
             var parm = {org_id: $scope.current_organization.id};
-            if($scope.current_group.my_person){
+            if ($scope.current_group.my_person) {
                 parm.group_id = $scope.current_group.id;
             }
 
@@ -96,7 +96,7 @@ app.controller('orgGroupCtrl', function ($scope, api, my_organization, modalBox)
             });
         }
     }
-    
+
     $scope.$on("org_group_change", org_change_handler);
 
     $scope.$on("org_member_change", org_change_handler);

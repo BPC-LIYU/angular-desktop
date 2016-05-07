@@ -52,10 +52,10 @@
                         修改分组信息
                     </button>
                 </div>
-                <div ng-repeat="person in current_group.members track by person.user_id">
+                <div ng-click="show_person(person.user_id)" ng-repeat="person in current_group.members track by person.user_id">
                     <img class="header-img"
                          ng-src="{{person.user__icon_url | icon_default:person.user_id:person.realname}}"/>
-                    <h4 ng-click="show_person(person.user_id)">{{person.realname}}</h4>
+                    <h4>{{person.realname}}</h4>
                     <h4 ng-if="person.manager_type==1">管理员</h4>
                     <h4 ng-if="person.manager_type==2">超级管理员</h4>
                 </div>

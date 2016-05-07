@@ -6,6 +6,7 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
     $scope.message_list = [];
     $scope.chat_session_list = [];
     $scope.input_content = "";
+    $scope.scroll_down = true;
     var args;
 
     function main() {
@@ -156,6 +157,25 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
     $scope.delete_session = function ($event, session) {
         $event.stopPropagation();
         mqtt.delete_chat_session(session.target, session.target_type);
+    }
+    function load_more_history() {
+        $scope.scroll_down = false;
+        var last_time = null;
+        if ($scope.message_list.length > 0) {
+            last_time = $scope.message_list[0].time;
+        }
+        $scope.scroll_down = false;
+        mqtt.get_chat_history($scope.current_session.session_id, last_time).then(function (messages) {
+            $scope.message_list.splice.bind($scope.message_list, 0, 0).apply(null, messages);
+
+            // $scope.scroll_down = true;
+        });
+    }
+
+    $scope.scroll = function (top) {
+        if (top < 50) {
+            load_more_history();
+        }
     }
 
 });

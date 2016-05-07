@@ -15,7 +15,7 @@
             <div class="message-top">
 
             </div>
-            <perfect-scrollbar suppress-scroll-x="true" class="message-content" wheel-propagation="true"
+            <perfect-scrollbar on-scroll="scroll(scrollTop)" scroll-down="{{scroll_down}}" refresh-on-change="message_list" refresh-on-resize="true" suppress-scroll-x="true" class="message-content" wheel-propagation="true"
                                wheel-speed="10" min-scrollbar-length="20">
 
                 <div class="message-item" ng-repeat="message in message_list">

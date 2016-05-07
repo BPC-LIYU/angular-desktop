@@ -133,6 +133,9 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
             UserInfo.getUserInfoById(target).then(function (info) {
                 safeApply($scope, function () {
                     chat_session.icon_url = icon_default(info.icon_url, info.id, info.realname);
+                    if (!chat_session.name) {
+                        chat_session.name = info.realname;
+                    }
                 })
             })
         }

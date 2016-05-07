@@ -1,7 +1,7 @@
 /**
  * Created by fanjunwei on 16/4/18.
  */
-app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_default, $timeout, safeApply, $rootScope, update_array, IM) {
+app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_default, $timeout, safeApply, $rootScope, update_array, IM, $timeout) {
     $scope.current_session = null;
     $scope.message_list = [];
     $scope.chat_session_list = [];
@@ -167,8 +167,9 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
         $scope.scroll_down = false;
         mqtt.get_chat_history($scope.current_session.session_id, last_time).then(function (messages) {
             $scope.message_list.splice.bind($scope.message_list, 0, 0).apply(null, messages);
-
-            // $scope.scroll_down = true;
+            $timeout(function () {
+                $scope.scroll_down = true;
+            }, 1000);
         });
     }
 

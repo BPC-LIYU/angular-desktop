@@ -15,7 +15,9 @@
             <div class="message-top">
 
             </div>
-            <perfect-scrollbar on-scroll="scroll(scrollTop)" scroll-down="{{scroll_down}}" refresh-on-change="message_list" refresh-on-resize="true" suppress-scroll-x="true" class="message-content" wheel-propagation="true"
+            <perfect-scrollbar on-scroll="scroll(scrollTop)" scroll-down="{{scroll_down}}"
+                               refresh-on-change="message_list" refresh-on-resize="true" suppress-scroll-x="true"
+                               class="message-content" wheel-propagation="true"
                                wheel-speed="10" min-scrollbar-length="20">
 
                 <div class="message-item" ng-repeat="message in message_list">
@@ -30,10 +32,11 @@
                             </div>
                         </div>
                         <div class="message-info">
-                            <img class="messge-header-img" src="images/main/header.png">
+                            <img class="messge-header-img" ng-src="{{message.icon_url}}">
                             <div class="messag-block">
                                 <div class="msg-bubble-tri"></div>
-                                <div class="message-txt" ng-if="message.ctype ==='txt'" ng-bind="message.content.text"></div>
+                                <div class="message-txt" ng-if="message.ctype ==='txt'"
+                                     ng-bind="message.content.text"></div>
                             </div>
                             <div class="message-control-container">
                                 <i class="message-control glyphicon glyphicon-option-horizontal"></i>
@@ -53,7 +56,8 @@
                     </div>
                     <div contenteditable ng-model="$parent.input_content" class="input-area"></div>
                 </div>
-                <button ng-disabled="!input_content" class="btn btn-default send-button" ng-click="send_text()">发送消息</button>
+                <button ng-disabled="!input_content" class="btn btn-default send-button" ng-click="send_text()">发送消息
+                </button>
             </div>
         </div>
         <div ng-if="!current_session" class="empty-content">

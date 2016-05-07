@@ -75,6 +75,7 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
         if (is_group) {
             if ($scope.current_session && data.target === $scope.current_session.target) {
                 $scope.message_list.push(data);
+                get_message_user_info(data);
                 mqtt.set_chat_session_read_time($scope.current_session.session_id, data.time);
             }
             else {
@@ -89,10 +90,12 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
         else {
             if ($scope.current_session && data.fuser === $scope.current_session.target) {
                 $scope.message_list.push(data);
+                get_message_user_info(data);
                 mqtt.set_chat_session_read_time($scope.current_session.session_id, data.time);
             }
             else if ($scope.current_session && data.target === $scope.current_session.target) {
                 $scope.message_list.push(data);
+                get_message_user_info(data);
             }
             else {
                 var find = _($scope.chat_session_list).find(function (item) {
@@ -123,7 +126,6 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
         console.log('im_chat_session data:', $scope.chat_session_list);
     });
     function get_chat_session_user_info(chat_session) {
-        chat_session.icon_url = 'http://www.baidu.com';
         var target = chat_session.target;
         var target_type = chat_session.target_type;
         var is_group = (target_type === 1);
@@ -141,6 +143,25 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
             })
         }
     }
+    
+    function get_message_user_info(message) {
+        var target = message.target;
+        var target_type = message.target_type;
+        var is_group = (target_type === 1);
+        if (is_group) {
+
+        }
+        else {
+            UserInfo.getUserInfoById(target).then(function (info) {
+                safeApply($scope, function () {
+                    message.icon_url = icon_default(info.icon_url, info.id, info.realname);
+                    if (!message.name) {
+                        message.name = info.realname;
+                    }
+                })
+            })
+        }
+    }
 
     $scope.select_session = function (session) {
         if (session !== $scope.current_session) {
@@ -149,6 +170,9 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
             mqtt.set_chat_session_read_time(session.session_id, session.last_message_time);
             mqtt.get_chat_history(session.target, session.target_type).then(function (messages) {
                 $scope.message_list = messages;
+                _(messages).each(function (item) {
+                    get_message_user_info(item);
+                })
             });
         }
 
@@ -167,6 +191,9 @@ app.controller('messageCtrl', function ($scope, httpReq, mqtt, UserInfo, icon_de
         $scope.scroll_down = false;
         mqtt.get_chat_history($scope.current_session.target, $scope.current_session.target_type, last_time).then(function (messages) {
             $scope.message_list.splice.bind($scope.message_list, 0, 0).apply(null, messages);
+            _(messages).each(function (item) {
+                get_message_user_info(item);
+            });
             $timeout(function () {
                 $scope.scroll_down = true;
             }, 1000);

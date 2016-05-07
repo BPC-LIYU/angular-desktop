@@ -33,9 +33,7 @@
                             <img class="messge-header-img" src="images/main/header.png">
                             <div class="messag-block">
                                 <div class="msg-bubble-tri"></div>
-                                <div ng-if="message.ctype ==='txt'">
-                                    {{message.content.text}}
-                                </div>
+                                <div class="message-txt" ng-if="message.ctype ==='txt'" ng-bind="message.content.text"></div>
                             </div>
                             <div class="message-control-container">
                                 <i class="message-control glyphicon glyphicon-option-horizontal"></i>

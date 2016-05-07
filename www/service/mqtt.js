@@ -102,36 +102,39 @@ service_app
                     state = -1;
                 });
                 client.on('message', function (topic, message) {
-                    if (topic.indexOf('user/') === 0) {
-                        message = JSON.parse(message.toString());
-                        console.log('--user', topic, message);
-                        if (message.type === 'event') {
-                            handle_event('user', message.obj);
+                    if (message && message.length > 0) {
+                        if (topic.indexOf('user/') === 0) {
+                            message = JSON.parse(message.toString());
+                            console.log('--user', topic, message);
+                            if (message.type === 'event') {
+                                handle_event('user', message.obj);
+                            }
+                            else if (message.type === 'request') {
+                                handle_request(message.obj);
+                            }
+                            else if (message.type === 'chat') {
+                                handle_chat(message.obj);
+                            }
+                            else if (message.type === 'chat_session') {
+                                handle_chat_session(message.obj);
+                            }
                         }
-                        else if (message.type === 'request') {
-                            handle_request(message.obj);
-                        }
-                        else if (message.type === 'chat') {
-                            handle_chat(message.obj);
-                        }
-                        else if (message.type === 'chat_session') {
-                            handle_chat_session(message.obj);
-                        }
+                        else if (topic.indexOf('group/') === 0) {
 
+                            message = JSON.parse(message.toString());
+                            console.log('--group', topic, message);
+                            if (message.type === 'event') {
+                                handle_event('group', message.obj);
+                            }
+                            else if (message.type === 'chat') {
+                                handle_chat(message.obj);
+                            }
+                            else if (message.type === 'chat_session') {
+                                handle_chat_session(message.obj);
+                            }
+                        }
                     }
-                    else if (topic.indexOf('group/') === 0) {
-                        message = JSON.parse(message.toString());
-                        console.log('--group', topic, message);
-                        if (message.type === 'event') {
-                            handle_event('group', message.obj);
-                        }
-                        else if (message.type === 'chat') {
-                            handle_chat(message.obj);
-                        }
-                        else if (message.type === 'chat_session') {
-                            handle_chat_session(message.obj);
-                        }
-                    }
+
 
                 });
             }

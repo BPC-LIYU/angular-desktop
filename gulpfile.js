@@ -8,6 +8,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var iconfontCss = require('gulp-iconfont-css');
 var concat = require('gulp-concat');
 var autoprefixer = require('gulp-autoprefixer');
+var browserSync = require('browser-sync').create();
 
 var autoprefixerOptions = {
     browsers: [
@@ -27,7 +28,8 @@ gulp.task('sass', function () {
         .pipe(minifyCss())
         .pipe(rename({suffix: '.min'}))
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest('www/css/'));
+        .pipe(gulp.dest('www/css/'))
+        .pipe(browserSync.stream());
 });
 gulp.task('w', ['sass'], function () {
     gulp.watch("scss/**/*.scss", ['sass'])
@@ -48,3 +50,14 @@ gulp.task('iconfont', function () {
         .pipe(gulp.dest('www/fonts/'));
 });
 gulp.task('default', ["iconfont", "sass"]);
+
+gulp.task('serve', ['sass'], function() {
+
+    browserSync.init({
+        server: "./www"
+    });
+
+    gulp.watch("scss/**/*.scss", ['sass']);
+    gulp.watch("www/**/*.html").on('change', browserSync.reload);
+    gulp.watch("www/**/*.js").on('change', browserSync.reload);
+});

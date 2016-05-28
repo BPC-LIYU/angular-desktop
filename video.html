@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<video id="video" autoplay></video>
+
+<script>
+    navigator.getMedia = (navigator.getUserMedia ||
+    navigator.webkitGetUserMedia || navigator.mozGetUserMedia ||
+    navigator.msGetUserMedia);
+    if (navigator.getMedia) {
+        navigator.getMedia(
+                {
+                    video: true,
+                    autio:true
+                },
+                // successCallback
+                function (stream) {
+                    var s = window.URL.createObjectURL(stream);
+                    console.log(s);
+                    var video = document.getElementById('video');
+                    video.src = s;
+                    mediaStream = stream;
+                    track = stream.getTracks()[0];
+
+                },
+                // errorCallback
+                function (err) {
+
+                    console.log("The following error occured:" + err);
+                });
+    } else {
+
+    }
+</script>
+</body>
+</html>
